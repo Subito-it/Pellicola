@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'Pellicola_Example' do
+  pod 'Pellicola', :path => '../'
+
+  target 'Pellicola_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
