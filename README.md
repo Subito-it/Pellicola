@@ -1,15 +1,18 @@
 # Pellicola
 
-[![CI Status](http://img.shields.io/travis/francybiga/Pellicola.svg?style=flat)](https://travis-ci.org/francybiga/Pellicola)
 [![Version](https://img.shields.io/cocoapods/v/Pellicola.svg?style=flat)](http://cocoapods.org/pods/Pellicola)
 [![License](https://img.shields.io/cocoapods/l/Pellicola.svg?style=flat)](http://cocoapods.org/pods/Pellicola)
 [![Platform](https://img.shields.io/cocoapods/p/Pellicola.svg?style=flat)](http://cocoapods.org/pods/Pellicola)
 
+A replacement for UIImagePickerController with multiselection support.
+  
+Features:
+* Specify a maximum number of items to select
+* Objective-C compatibility
+
 ## Example
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
-
-## Requirements
 
 ## Installation
 
@@ -20,10 +23,11 @@ it, simply add the following line to your Podfile:
 pod 'Pellicola'
 ```
 
-## Author
+## Authors
 
-francybiga, francesco.bigagnoli@scmitaly.it
+[Francesco Bigagnoli](https://github.com/francybiga) ([@francybiga](https://twitter.com/francybiga))
+
 
 ## License
 
-Pellicola is available under the MIT license. See the LICENSE file for more info.
+Pellicola is available under the Apache License, Version 2.0. See the LICENSE file for more info.
