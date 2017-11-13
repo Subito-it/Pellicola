@@ -1,22 +1,20 @@
 {
   "name": "Pellicola",
   "version": "0.1.0",
-  "summary": "A short description of Pellicola.",
-  "description": "TODO: Add long description of the pod here.",
+  "summary": "A replacement for UIImagePickerController with multiselection support.",
+  "description": "A replacement for UIImagePickerController with multiselection support.\n\nFeatures:\n  - Specify a maximum number of items to select\n  - Objective-C compatibility",
   "homepage": "https://github.com/francybiga/Pellicola",
-  "license": {
-    "type": "MIT",
-    "file": "LICENSE"
-  },
+  "license": "Apache License, Version 2.0",
   "authors": {
     "francybiga": "francesco.bigagnoli@scmitaly.it"
   },
   "source": {
-    "git": "https://github.com/francybiga/Pellicola.git",
+    "git": "https://github.com/Subito-it/Pellicola.git",
     "tag": "0.1.0"
   },
   "platforms": {
-    "ios": "8.0"
+    "ios": "9.0"
   },
-  "source_files": "Pellicola/Classes/**/*"
+  "source_files": "Pellicola/Classes/**/*",
+  "resources": "Pellicola/Classes/**.xib"
 }
