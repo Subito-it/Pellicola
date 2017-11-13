@@ -1,0 +1,22 @@
+{
+  "name": "Pellicola",
+  "version": "0.1.0",
+  "summary": "A short description of Pellicola.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/francybiga/Pellicola",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "francybiga": "francesco.bigagnoli@scmitaly.it"
+  },
+  "source": {
+    "git": "https://github.com/francybiga/Pellicola.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source_files": "Pellicola/Classes/**/*"
+}

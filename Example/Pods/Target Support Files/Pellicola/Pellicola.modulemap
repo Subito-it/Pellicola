@@ -1,0 +1,6 @@
+framework module Pellicola {
+  umbrella header "Pellicola-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -29,8 +29,8 @@
 
 /* Begin PBXFileReference section */
 		1CB7C215286B95224939B4E8 /* Pods-Pellicola_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pellicola_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Pellicola_Tests/Pods-Pellicola_Tests.debug.xcconfig"; sourceTree = "<group>"; };
-		2DD402A6077C72640241B367 /* Pellicola.podspec */ = {isa = PBXFileReference; includeInIndex = 1; name = Pellicola.podspec; path = ../Pellicola.podspec; sourceTree = "<group>"; };
-		334F17206746259F6BED01E7 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		2DD402A6077C72640241B367 /* Pellicola.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Pellicola.podspec; path = ../Pellicola.podspec; sourceTree = "<group>"; };
+		334F17206746259F6BED01E7 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		5167D7D47B06A769550A0655 /* Pods-Pellicola_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pellicola_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Pellicola_Tests/Pods-Pellicola_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		607FACD01AFB9204008FA782 /* Pellicola_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pellicola_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -45,7 +45,7 @@
 		AB1142B580B5DD8D92B9D98D /* Pods_Pellicola_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Pellicola_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B78BDB3492906F17059F2DA8 /* Pods-Pellicola_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pellicola_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Pellicola_Example/Pods-Pellicola_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		C8E21D946E22340AC654079A /* Pods-Pellicola_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pellicola_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-Pellicola_Example/Pods-Pellicola_Example.release.xcconfig"; sourceTree = "<group>"; };
-		D3E7B03941E6289E07651821 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		D3E7B03941E6289E07651821 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		DFA48CD47B44D11DD0256FF6 /* Pods_Pellicola_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Pellicola_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -458,7 +458,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -504,7 +504,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
