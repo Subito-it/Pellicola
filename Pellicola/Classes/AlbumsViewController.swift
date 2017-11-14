@@ -15,8 +15,8 @@ public final class AlbumsViewController: UIViewController {
     override public func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(actionDismiss))        
-    
+        customizeUI()
+        
     }
     
     @objc func actionDismiss() {
@@ -24,6 +24,15 @@ public final class AlbumsViewController: UIViewController {
     }
 }
 
+//MARK: UI
+extension AlbumsViewController {
+    private func customizeUI() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(actionDismiss))
+        title = NSLocalizedString("albums.title", bundle:  Bundle(for: AlbumsViewController.self), comment: "")
+    }
+}
+
+//MARK: UITableViewDataSource
 extension AlbumsViewController: UITableViewDataSource {
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
@@ -34,6 +43,7 @@ extension AlbumsViewController: UITableViewDataSource {
     }
 }
 
+//MARK: UITableViewDelegate
 extension AlbumsViewController: UITableViewDelegate {
     
 }
