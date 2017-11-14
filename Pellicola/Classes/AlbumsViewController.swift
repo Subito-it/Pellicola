@@ -54,8 +54,9 @@ extension AlbumsViewController {
         var albumsForSubtypes: [PHAssetCollectionSubtype: [PHAssetCollection]] = [:]
         
         smartAlbumsFetch.enumerateObjects { (album, idx, stop) in
+            let assetsFetch = PHAsset.fetchAssets(in: album, options: nil)
             let albumSubtype = album.assetCollectionSubtype
-            if subtypes.contains(albumSubtype) {
+            if subtypes.contains(albumSubtype), assetsFetch.count > 0 {
                 if let albums = albumsForSubtypes[albumSubtype] {
                     albumsForSubtypes[albumSubtype] = albums + [album]
                 } else {
