@@ -16,5 +16,8 @@
     "ios": "9.0"
   },
   "source_files": "Pellicola/Classes/**/*",
-  "resources": "Pellicola/Classes/**.xib"
+  "resources": [
+    "Pellicola/Classes/**.xib",
+    "Pellicola/Resources/*"
+  ]
 }
