@@ -22,7 +22,7 @@ public final class AlbumsViewController: UIViewController {
     override public func viewDidLoad() {
         super.viewDidLoad()
         
-        customizeUI()
+        configureUI()
         fetchAlbums()
     }
     
@@ -70,7 +70,7 @@ extension AlbumsViewController {
 
 //MARK: UI
 extension AlbumsViewController {
-    private func customizeUI() {
+    private func configureUI() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(actionDismiss))
         title = NSLocalizedString("albums.title", bundle:  Bundle(for: AlbumsViewController.self), comment: "")
     }
