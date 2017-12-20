@@ -10,74 +10,67 @@ import UIKit
 import Photos
 
 public final class AlbumsViewController: UIViewController {
-    private static let smartAlbumSubtypes: [PHAssetCollectionSubtype]  = [.smartAlbumUserLibrary,
-                                                                          .smartAlbumFavorites,
-                                                                          .smartAlbumSelfPortraits,
-                                                                          .smartAlbumScreenshots,
-                                                                          .smartAlbumPanoramas]
-    @IBOutlet var tableView: UITableView!
-    private var albums: [PHAssetCollection] = []
+    
+    // Private properties
+    
+    @IBOutlet private var tableView: UITableView!
+    
+    private let assetCollectionType: PHAssetCollectionType = .smartAlbum
+    
+    private let smartAlbumSubtypes: [PHAssetCollectionSubtype]  = [.smartAlbumUserLibrary,
+                                                                   .smartAlbumFavorites,
+                                                                   .smartAlbumSelfPortraits,
+                                                                   .smartAlbumScreenshots,
+                                                                   .smartAlbumPanoramas]
+    
+    private var albums: [PHAssetCollection] = [] {
+        didSet {
+            tableView.reloadData()
+        }
+    }
+    
+    // View cycle
     
     override public func viewDidLoad() {
         super.viewDidLoad()
-        
         configureUI()
         fetchAlbums()
     }
+    
+    // MARK: - UI
+    
+    private func configureUI() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel,
+                                                            target: self,
+                                                            action: #selector(actionDismiss))
+        title = NSLocalizedString("albums.title", bundle:  Bundle(for: AlbumsViewController.self), comment: "")
+        
+        tableView.register(UINib(nibName: "AlbumTableViewCell", bundle: Bundle(for: AlbumTableViewCell.self)),
+                           forCellReuseIdentifier: "AlbumCell")
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 85
+        tableView.dataSource = self
+        tableView.delegate = self
+    }
+    
+    // MARK: - Albums fetching
+    
+    private func fetchAlbums() {
+        self.albums = AlbumsFetcher.fetch(assetCollectionType: assetCollectionType,
+                                          sortedBy: smartAlbumSubtypes)
+    }
+    
+    
+    
+    // MARK: - Action
     
     @objc func actionDismiss() {
         dismiss(animated: true, completion: nil)
     }
 }
 
-//MARK: Albums Fetching
-extension AlbumsViewController {
-    private func fetchAlbums() {
-        self.albums = smartAlbumsSorted(bySubtypes: AlbumsViewController.smartAlbumSubtypes)
-    }
-    
-    private func smartAlbumsSorted(bySubtypes subtypes: [PHAssetCollectionSubtype]) -> [PHAssetCollection] {
-        var albums: [PHAssetCollection] = []
-        let albumsForSubtypes = smartAlbums(forSubTypes: subtypes)
-        subtypes.forEach { subtype in
-            if let albumsToAdd = albumsForSubtypes[subtype] {
-                albums += albumsToAdd
-            }
-        }
-        
-        return albums
-    }
-    
-    private func smartAlbums(forSubTypes subtypes: [PHAssetCollectionSubtype]) -> [PHAssetCollectionSubtype: [PHAssetCollection]] {
-        let smartAlbumsFetch = PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: .any, options: nil)
-        var albumsForSubtypes: [PHAssetCollectionSubtype: [PHAssetCollection]] = [:]
-        
-        smartAlbumsFetch.enumerateObjects { (album, idx, stop) in
-            let assetsFetch = PHAsset.fetchAssets(in: album, options: nil)
-            let albumSubtype = album.assetCollectionSubtype
-            if subtypes.contains(albumSubtype), assetsFetch.count > 0 {
-                if let albums = albumsForSubtypes[albumSubtype] {
-                    albumsForSubtypes[albumSubtype] = albums + [album]
-                } else {
-                    albumsForSubtypes[albumSubtype] = [album]
-                }
-            }
-        }
-        
-        return albumsForSubtypes
-    }
-}
-
 //MARK: UI
 extension AlbumsViewController {
-    private func configureUI() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(actionDismiss))
-        title = NSLocalizedString("albums.title", bundle:  Bundle(for: AlbumsViewController.self), comment: "")
-        
-        tableView.register(UINib(nibName: "AlbumTableViewCell", bundle: Bundle(for: AlbumTableViewCell.self)), forCellReuseIdentifier: "AlbumCell")
-        tableView.rowHeight = UITableViewAutomaticDimension
-        tableView.estimatedRowHeight = 85
-    }
     
     private func configuredCell(forAlbum album: PHAssetCollection, atIndex indexPath: IndexPath) -> UITableViewCell {
         guard let albumCell = tableView.dequeueReusableCell(withIdentifier: "AlbumCell", for: indexPath) as? AlbumTableViewCell else {
@@ -103,8 +96,8 @@ extension AlbumsViewController {
             let requestOptions = PHImageRequestOptions()
             requestOptions.deliveryMode = .fastFormat
             requestOptions.isNetworkAccessAllowed = true
-            let targetSize = 
-            imageManager.requestImage(for: thumbAsset, targetSize: CGSizeScale(albumCell.albumThumb.frame.size, UIScreen.main.scale), contentMode: .default, options: requestOptions, resultHandler: { (image, info) in
+            
+            imageManager.requestImage(for: thumbAsset, targetSize: albumCell.albumThumb.frame.size, contentMode: .default, options: requestOptions, resultHandler: { (image, info) in
                 albumCell.albumThumb.image = image
             })
             
