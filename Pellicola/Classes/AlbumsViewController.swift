@@ -39,7 +39,7 @@ public final class AlbumsViewController: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel,
                                                             target: self,
                                                             action: #selector(actionDismiss))
-        title = NSLocalizedString("albums.title", bundle:  Bundle(for: AlbumsViewController.self), comment: "")
+        title = NSLocalizedString("albums.title", bundle:  Bundle.framework, comment: "")
         
         tableView.register(UINib(nibName: "AlbumTableViewCell", bundle: Bundle(for: AlbumTableViewCell.self)),
                            forCellReuseIdentifier: "AlbumCell")
@@ -109,5 +109,13 @@ extension AlbumsViewController: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 
 extension AlbumsViewController: UITableViewDelegate {
+    
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let imagePickerViewController = ImagePickerViewController(nibName: nil, bundle: Bundle.framework)
+        let assetCollection = albums[indexPath.row]
+        imagePickerViewController.assetCollection = assetCollection
+        imagePickerViewController.fetchResult = PHAsset.fetchAssets(in: assetCollection, options: nil)
+        self.navigationController?.show(imagePickerViewController, sender: nil)
+    }
     
 }

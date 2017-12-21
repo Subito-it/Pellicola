@@ -24,6 +24,11 @@
 		C85A3C1331BBB8B926ECE2E9645DC2C2 /* Pellicola-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 1CA837929A50B6AABA28D4E84EB7BE3F /* Pellicola-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C91C3652A08776DF6E182D6DFD5DB203 /* Pods-Pellicola_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 8DA9ED7349185379A4D8B5C8935532C7 /* Pods-Pellicola_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CE1899491FEAB7B700029D21 /* AlbumsFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1899481FEAB7B600029D21 /* AlbumsFetcher.swift */; };
+		CE41B88F1FEBF7E1004DE945 /* ImagePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE41B88D1FEBF7E1004DE945 /* ImagePickerViewController.swift */; };
+		CE41B8901FEBF7E1004DE945 /* ImagePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE41B88E1FEBF7E1004DE945 /* ImagePickerViewController.xib */; };
+		CE41B8921FEBF978004DE945 /* Bundle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE41B8911FEBF978004DE945 /* Bundle+Extension.swift */; };
+		CE41B8951FEBFFF1004DE945 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE41B8931FEBFFF1004DE945 /* ImageCollectionViewCell.swift */; };
+		CE41B8961FEBFFF1004DE945 /* ImageCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE41B8941FEBFFF1004DE945 /* ImageCollectionViewCell.xib */; };
 		DFFFFD774AD3D67FD4F9C38EAF1079DF /* Pellicola-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 968C9D690A40307393EACC5FECA43374 /* Pellicola-dummy.m */; };
 /* End PBXBuildFile section */
 
@@ -71,6 +76,11 @@
 		C8749EE20833747E52DF776DB61CAF10 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CA7153B6305F66448840F6C7D1434E9D /* Pods-Pellicola_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Pellicola_Tests-dummy.m"; sourceTree = "<group>"; };
 		CE1899481FEAB7B600029D21 /* AlbumsFetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AlbumsFetcher.swift; path = Pellicola/Classes/AlbumsFetcher.swift; sourceTree = "<group>"; };
+		CE41B88D1FEBF7E1004DE945 /* ImagePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ImagePickerViewController.swift; path = Pellicola/Classes/ImagePickerViewController.swift; sourceTree = "<group>"; };
+		CE41B88E1FEBF7E1004DE945 /* ImagePickerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ImagePickerViewController.xib; path = Pellicola/Classes/ImagePickerViewController.xib; sourceTree = "<group>"; };
+		CE41B8911FEBF978004DE945 /* Bundle+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Extension.swift"; sourceTree = "<group>"; };
+		CE41B8931FEBFFF1004DE945 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
+		CE41B8941FEBFFF1004DE945 /* ImageCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImageCollectionViewCell.xib; sourceTree = "<group>"; };
 		D33AABB357D1D4B5B83EBB6E34EF18E9 /* Pods-Pellicola_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Pellicola_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		E65F1A5F41FDC6D9FB59B6DE249558C3 /* Pods-Pellicola_Tests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Pellicola_Tests-frameworks.sh"; sourceTree = "<group>"; };
 		EAF51BD7705B3DB2FF07DE0FE559CD0E /* PellicolaPresenter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PellicolaPresenter.swift; path = Pellicola/Classes/PellicolaPresenter.swift; sourceTree = "<group>"; };
@@ -153,6 +163,9 @@
 				684C81397990D5DA199B9B122E0DAA51 /* Resources */,
 				6A26F6BA8069AAAB3170608F62300DF0 /* Support Files */,
 				8802140571F482589FA73D9730811D48 /* Views */,
+				CE41B88D1FEBF7E1004DE945 /* ImagePickerViewController.swift */,
+				CE41B88E1FEBF7E1004DE945 /* ImagePickerViewController.xib */,
+				CE41B8911FEBF978004DE945 /* Bundle+Extension.swift */,
 			);
 			name = Pellicola;
 			path = ../..;
@@ -197,6 +210,8 @@
 			children = (
 				EFD638BD237CD3656B2FE1CD067D5D74 /* AlbumTableViewCell.swift */,
 				9E93EF85B158C32F911A67C9D1CC1E20 /* AlbumTableViewCell.xib */,
+				CE41B8931FEBFFF1004DE945 /* ImageCollectionViewCell.swift */,
+				CE41B8941FEBFFF1004DE945 /* ImageCollectionViewCell.xib */,
 			);
 			name = Views;
 			path = Pellicola/Classes/Views;
@@ -381,7 +396,9 @@
 			files = (
 				05BDC06116B3B8260679542B628E1741 /* AlbumsViewController.xib in Resources */,
 				7F83E1AA2048B2DDE53FED183F39631D /* en.lproj in Resources */,
+				CE41B8901FEBF7E1004DE945 /* ImagePickerViewController.xib in Resources */,
 				09696739153C7250E8DDF0BBFB00EB00 /* it.lproj in Resources */,
+				CE41B8961FEBFFF1004DE945 /* ImageCollectionViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -393,9 +410,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				48E09CE891E98F67C4BF2C8B9C2C76EA /* AlbumsViewController.swift in Sources */,
+				CE41B8921FEBF978004DE945 /* Bundle+Extension.swift in Sources */,
 				948347F3A7E8D785EE5475A4A0844FF0 /* AlbumsViewController.xib in Sources */,
+				CE41B88F1FEBF7E1004DE945 /* ImagePickerViewController.swift in Sources */,
 				B6CB29CC283D9DAE2FFCE4FEA121B123 /* AlbumTableViewCell.swift in Sources */,
 				72C51009DE3DBA13A88A5E2DC3CA781D /* AlbumTableViewCell.xib in Sources */,
+				CE41B8951FEBFFF1004DE945 /* ImageCollectionViewCell.swift in Sources */,
 				CE1899491FEAB7B700029D21 /* AlbumsFetcher.swift in Sources */,
 				DFFFFD774AD3D67FD4F9C38EAF1079DF /* Pellicola-dummy.m in Sources */,
 				0523E03E67B01EAB768C48B39F367D7E /* PellicolaPresenter.swift in Sources */,
