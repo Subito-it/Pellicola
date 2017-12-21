@@ -32,15 +32,11 @@ final class AlbumsFetcher {
             .fetchAssetCollections(with: type, subtype: .any, options: nil)
             .enumerateObjects { (album, _, _) in
                 guard subtypes.contains(album.assetCollectionSubtype) else { return }
-                guard PHAsset.fetchAssets(in: album, options: nil).count > 0 else { return }
+                guard PHAsset.fetchAssets(in: album, options: nil).countOfAssets(with: .image) > 0 else { return }
                 filteredSmartAlbums.append(album)
         }
         
         return Dictionary(grouping: filteredSmartAlbums,
-                          by: {
-                            print($0.assetCollectionSubtype)
-                            return $0.assetCollectionSubtype
-                            
-        })
+                          by: { return $0.assetCollectionSubtype })
     }
 }

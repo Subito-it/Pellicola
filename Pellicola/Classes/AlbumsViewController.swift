@@ -23,11 +23,7 @@ public final class AlbumsViewController: UIViewController {
                                                                    .smartAlbumScreenshots,
                                                                    .smartAlbumPanoramas]
     
-    private var albums: [PHAssetCollection] = [] {
-        didSet {
-            tableView.reloadData()
-        }
-    }
+    private var albums: [PHAssetCollection] = []
     
     // View cycle
     
@@ -47,8 +43,7 @@ public final class AlbumsViewController: UIViewController {
         
         tableView.register(UINib(nibName: "AlbumTableViewCell", bundle: Bundle(for: AlbumTableViewCell.self)),
                            forCellReuseIdentifier: "AlbumCell")
-        tableView.rowHeight = UITableViewAutomaticDimension
-        tableView.estimatedRowHeight = 85
+        tableView.rowHeight = 85
         tableView.dataSource = self
         tableView.delegate = self
     }
@@ -60,8 +55,6 @@ public final class AlbumsViewController: UIViewController {
                                           sortedBy: smartAlbumSubtypes)
     }
     
-    
-    
     // MARK: - Action
     
     @objc func actionDismiss() {
@@ -69,36 +62,39 @@ public final class AlbumsViewController: UIViewController {
     }
 }
 
-//MARK: UI
-extension AlbumsViewController {
+// MARK: - UITableViewDataSource
+
+extension AlbumsViewController: UITableViewDataSource {
     
-    private func configuredCell(forAlbum album: PHAssetCollection, atIndex indexPath: IndexPath) -> UITableViewCell {
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return albums.count
+    }
+    
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         guard let albumCell = tableView.dequeueReusableCell(withIdentifier: "AlbumCell", for: indexPath) as? AlbumTableViewCell else {
-            assertionFailure("Error dequeuing album cell")
+            assertionFailure("Error dequeuing cell")
             return UITableViewCell()
         }
         
-        if let albumTitle = album.localizedTitle {
-            albumCell.albumTitle.text = albumTitle
-        } else {
-            assertionFailure("You should provide an album placeholder title")
-        }
+        let album = albums[indexPath.row]
+        albumCell.title = album.localizedTitle ?? ""
         
-        //Photos Count
-        let assetsFetch = PHAsset.fetchAssets(in: album, options: nil)
-        let numOfImages = assetsFetch.countOfAssets(with: .image)
-        albumCell.photosCount.text = String(numOfImages)
+        // Photos Count
+        let fetchedAssets = PHAsset.fetchAssets(in: album, options: nil)
+        let numberOfImages = fetchedAssets.countOfAssets(with: .image)
+        albumCell.subtitle = String(numberOfImages)
         
-        //Album thumbnail
+        // Album thumbnail
         let keyImageFetch = PHAsset.fetchKeyAssets(in: album, options: nil)
-        if let thumbAsset = keyImageFetch?.firstObject ?? (assetsFetch.firstObject ?? nil) {
+        if let thumbAsset = keyImageFetch?.firstObject ?? (fetchedAssets.firstObject ?? nil) {
             let imageManager = PHImageManager()
             let requestOptions = PHImageRequestOptions()
             requestOptions.deliveryMode = .fastFormat
             requestOptions.isNetworkAccessAllowed = true
             
-            imageManager.requestImage(for: thumbAsset, targetSize: albumCell.albumThumb.frame.size, contentMode: .default, options: requestOptions, resultHandler: { (image, info) in
-                albumCell.albumThumb.image = image
+            imageManager.requestImage(for: thumbAsset, targetSize: albumCell.thumbnailSize, contentMode: .default, options: requestOptions, resultHandler: { (image, info) in
+                albumCell.thumbail = image
             })
             
         } else {
@@ -107,21 +103,11 @@ extension AlbumsViewController {
         
         return albumCell
     }
-}
-
-//MARK: UITableViewDataSource
-extension AlbumsViewController: UITableViewDataSource {
-    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return albums.count
-    }
     
-    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let album = albums[indexPath.row]
-        return configuredCell(forAlbum: album, atIndex: indexPath)
-    }
 }
 
-//MARK: UITableViewDelegate
+// MARK: - UITableViewDelegate
+
 extension AlbumsViewController: UITableViewDelegate {
     
 }
