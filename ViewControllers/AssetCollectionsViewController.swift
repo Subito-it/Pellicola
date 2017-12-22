@@ -9,7 +9,7 @@
 import UIKit
 import Photos
 
-public final class ImagePickerViewController: UIViewController {
+final class AssetCollectionsViewController: UIViewController {
     
     // Private properties
     
@@ -41,8 +41,8 @@ public final class ImagePickerViewController: UIViewController {
                                                             action: #selector(actionDismiss))
         title = NSLocalizedString("albums.title", bundle:  Bundle.framework, comment: "")
         
-        tableView.register(UINib(nibName: "AssetCollectionCell", bundle: Bundle(for: AssetCollectionCell.self)),
-                           forCellReuseIdentifier: "AlbumCell")
+        tableView.register(UINib(nibName: AssetCollectionCell.identifier, bundle: Bundle(for: AssetCollectionCell.self)),
+                           forCellReuseIdentifier: AssetCollectionCell.identifier)
         tableView.rowHeight = 85
         tableView.dataSource = self
         tableView.delegate = self
@@ -64,7 +64,7 @@ public final class ImagePickerViewController: UIViewController {
 
 // MARK: - UITableViewDataSource
 
-extension ImagePickerViewController: UITableViewDataSource {
+extension AssetCollectionsViewController: UITableViewDataSource {
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return albums.count
@@ -72,7 +72,7 @@ extension ImagePickerViewController: UITableViewDataSource {
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        guard let albumCell = tableView.dequeueReusableCell(withIdentifier: "AlbumCell", for: indexPath) as? AssetCollectionCell else {
+        guard let albumCell = tableView.dequeueReusableCell(withIdentifier: AssetCollectionCell.identifier, for: indexPath) as? AssetCollectionCell else {
             assertionFailure("Error dequeuing cell")
             return UITableViewCell()
         }
@@ -108,7 +108,7 @@ extension ImagePickerViewController: UITableViewDataSource {
 
 // MARK: - UITableViewDelegate
 
-extension ImagePickerViewController: UITableViewDelegate {
+extension AssetCollectionsViewController: UITableViewDelegate {
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let imagePickerViewController = AssetsViewController(nibName: nil, bundle: Bundle.framework)

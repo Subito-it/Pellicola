@@ -72,8 +72,8 @@ class AssetsViewController: UIViewController {
         let scale = UIScreen.main.scale
         thumbnailSize = CGSize(width: cellSize.width * scale, height: cellSize.height * scale)
         
-        collectionView.register(UINib(nibName: "AssetCell", bundle: Bundle.framework),
-                                forCellWithReuseIdentifier: "AssetCell")
+        collectionView.register(UINib(nibName: AssetCell.identifier, bundle: Bundle.framework),
+                                forCellWithReuseIdentifier: AssetCell.identifier)
         collectionView.dataSource = self
         collectionView.delegate = self
     }
@@ -159,7 +159,7 @@ extension AssetsViewController: UICollectionViewDataSource {
     }
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AssetCell", for: indexPath) as? AssetCell else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AssetCell.identifier, for: indexPath) as? AssetCell else {
             assertionFailure("Error dequeuing photo cell")
             return UICollectionViewCell()
         }

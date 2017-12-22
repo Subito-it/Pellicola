@@ -9,6 +9,6 @@ import Foundation
 
 extension Bundle {
     static var framework: Bundle {
-        return Bundle(for: ImagePickerViewController.self)
+        return Bundle(for: AssetCollectionsViewController.self)
     }
 }

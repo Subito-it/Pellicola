@@ -12,8 +12,8 @@ public final class PellicolaPresenter: NSObject {
     private weak var presenterViewController: UIViewController?
     
     @objc public func presentPellicola(on presenterViewController: UIViewController) {
-        let albumsVC = ImagePickerViewController(nibName: nil, bundle: Bundle.framework)
-        let navigationController = UINavigationController(rootViewController: albumsVC)
+        let assetCollectionsVC = AssetCollectionsViewController(nibName: nil, bundle: Bundle.framework)
+        let navigationController = UINavigationController(rootViewController: assetCollectionsVC)
         presenterViewController.present(navigationController, animated: true, completion: nil)
         self.presenterViewController = presenterViewController
     }
