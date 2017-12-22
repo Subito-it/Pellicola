@@ -8,7 +8,7 @@
 import Foundation
 import Photos
 
-final class AlbumsFetcher {
+final class AssetCollectionsFetcher {
     
     private init() { }
     

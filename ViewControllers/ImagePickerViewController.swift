@@ -9,7 +9,7 @@
 import UIKit
 import Photos
 
-public final class AlbumsViewController: UIViewController {
+public final class ImagePickerViewController: UIViewController {
     
     // Private properties
     
@@ -41,7 +41,7 @@ public final class AlbumsViewController: UIViewController {
                                                             action: #selector(actionDismiss))
         title = NSLocalizedString("albums.title", bundle:  Bundle.framework, comment: "")
         
-        tableView.register(UINib(nibName: "AlbumTableViewCell", bundle: Bundle(for: AlbumTableViewCell.self)),
+        tableView.register(UINib(nibName: "AssetCollectionCell", bundle: Bundle(for: AssetCollectionCell.self)),
                            forCellReuseIdentifier: "AlbumCell")
         tableView.rowHeight = 85
         tableView.dataSource = self
@@ -51,7 +51,7 @@ public final class AlbumsViewController: UIViewController {
     // MARK: - Albums fetching
     
     private func fetchAlbums() {
-        self.albums = AlbumsFetcher.fetch(assetCollectionType: assetCollectionType,
+        self.albums = AssetCollectionsFetcher.fetch(assetCollectionType: assetCollectionType,
                                           sortedBy: smartAlbumSubtypes)
     }
     
@@ -64,7 +64,7 @@ public final class AlbumsViewController: UIViewController {
 
 // MARK: - UITableViewDataSource
 
-extension AlbumsViewController: UITableViewDataSource {
+extension ImagePickerViewController: UITableViewDataSource {
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return albums.count
@@ -72,7 +72,7 @@ extension AlbumsViewController: UITableViewDataSource {
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        guard let albumCell = tableView.dequeueReusableCell(withIdentifier: "AlbumCell", for: indexPath) as? AlbumTableViewCell else {
+        guard let albumCell = tableView.dequeueReusableCell(withIdentifier: "AlbumCell", for: indexPath) as? AssetCollectionCell else {
             assertionFailure("Error dequeuing cell")
             return UITableViewCell()
         }
@@ -108,10 +108,10 @@ extension AlbumsViewController: UITableViewDataSource {
 
 // MARK: - UITableViewDelegate
 
-extension AlbumsViewController: UITableViewDelegate {
+extension ImagePickerViewController: UITableViewDelegate {
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let imagePickerViewController = ImagePickerViewController(nibName: nil, bundle: Bundle.framework)
+        let imagePickerViewController = AssetsViewController(nibName: nil, bundle: Bundle.framework)
         let assetCollection = albums[indexPath.row]
         imagePickerViewController.assetCollection = assetCollection
         imagePickerViewController.fetchResult = PHAsset.fetchAssets(in: assetCollection, options: nil)

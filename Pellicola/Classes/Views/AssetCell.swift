@@ -7,12 +7,10 @@
 
 import UIKit
 
-class ImageCollectionViewCell: UICollectionViewCell {
+class AssetCell: UICollectionViewCell {
 
     @IBOutlet weak private var imageView: UIImageView!
-    
     @IBOutlet weak private var overlayView: UIView!
-    
     @IBOutlet weak var checkmarkView: CheckmarkView!
     
     var assetIdentifier: String!

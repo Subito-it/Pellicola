@@ -7,7 +7,7 @@
 
 import UIKit
 
-class AlbumTableViewCell: UITableViewCell {
+class AssetCollectionCell: UITableViewCell {
 
     @IBOutlet weak private var albumTitle: UILabel!
     @IBOutlet weak private var photosCount: UILabel!

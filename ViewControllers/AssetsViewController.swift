@@ -15,7 +15,7 @@ private extension UICollectionView {
     }
 }
 
-class ImagePickerViewController: UIViewController {
+class AssetsViewController: UIViewController {
 
     @IBOutlet weak private var collectionView: UICollectionView!
     
@@ -72,8 +72,8 @@ class ImagePickerViewController: UIViewController {
         let scale = UIScreen.main.scale
         thumbnailSize = CGSize(width: cellSize.width * scale, height: cellSize.height * scale)
         
-        collectionView.register(UINib(nibName: "ImageCollectionViewCell", bundle: Bundle.framework),
-                                forCellWithReuseIdentifier: "ImageCollectionViewCell")
+        collectionView.register(UINib(nibName: "AssetCell", bundle: Bundle.framework),
+                                forCellWithReuseIdentifier: "AssetCell")
         collectionView.dataSource = self
         collectionView.delegate = self
     }
@@ -152,14 +152,14 @@ class ImagePickerViewController: UIViewController {
 
 // MARK: - UICollectionViewDataSource
 
-extension ImagePickerViewController: UICollectionViewDataSource {
+extension AssetsViewController: UICollectionViewDataSource {
     
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return fetchResult.countOfAssets(with: .image)
     }
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCollectionViewCell", for: indexPath) as? ImageCollectionViewCell else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AssetCell", for: indexPath) as? AssetCell else {
             assertionFailure("Error dequeuing photo cell")
             return UICollectionViewCell()
         }
@@ -183,7 +183,7 @@ extension ImagePickerViewController: UICollectionViewDataSource {
 
 // MARK: - UICollectionViewDelegate
 
-extension ImagePickerViewController: UICollectionViewDelegate {
+extension AssetsViewController: UICollectionViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         updateCachedAssets()

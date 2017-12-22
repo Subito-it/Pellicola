@@ -8,27 +8,27 @@
 
 /* Begin PBXBuildFile section */
 		0523E03E67B01EAB768C48B39F367D7E /* PellicolaPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF51BD7705B3DB2FF07DE0FE559CD0E /* PellicolaPresenter.swift */; };
-		05BDC06116B3B8260679542B628E1741 /* AlbumsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3FD0CFF72695D0DB27ED34FF6D25C1A9 /* AlbumsViewController.xib */; };
+		05BDC06116B3B8260679542B628E1741 /* ImagePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3FD0CFF72695D0DB27ED34FF6D25C1A9 /* ImagePickerViewController.xib */; };
 		09696739153C7250E8DDF0BBFB00EB00 /* it.lproj in Resources */ = {isa = PBXBuildFile; fileRef = A40C1C4ED6206307A40F899D41CBE8F0 /* it.lproj */; };
-		48E09CE891E98F67C4BF2C8B9C2C76EA /* AlbumsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90F8FB55327B0B3584431C64E16C3028 /* AlbumsViewController.swift */; };
+		48E09CE891E98F67C4BF2C8B9C2C76EA /* ImagePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90F8FB55327B0B3584431C64E16C3028 /* ImagePickerViewController.swift */; };
 		724E5B26E00F1E85CDE7A4294B48F6D6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */; };
-		72C51009DE3DBA13A88A5E2DC3CA781D /* AlbumTableViewCell.xib in Sources */ = {isa = PBXBuildFile; fileRef = 9E93EF85B158C32F911A67C9D1CC1E20 /* AlbumTableViewCell.xib */; };
+		72C51009DE3DBA13A88A5E2DC3CA781D /* AssetCollectionCell.xib in Sources */ = {isa = PBXBuildFile; fileRef = 9E93EF85B158C32F911A67C9D1CC1E20 /* AssetCollectionCell.xib */; };
 		7F83E1AA2048B2DDE53FED183F39631D /* en.lproj in Resources */ = {isa = PBXBuildFile; fileRef = F1E6A29965D754B377D8B018A94FC53F /* en.lproj */; };
 		806E93C665C3A7B9424FB64D68A24E6E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */; };
 		8EDCA6F40A3FED3E71D2211DD59B349A /* Pods-Pellicola_Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = C0D9E78655577C94157DD710EB0DB000 /* Pods-Pellicola_Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		91ECAEE1EC5929D54B5919EA568AAA63 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */; };
-		948347F3A7E8D785EE5475A4A0844FF0 /* AlbumsViewController.xib in Sources */ = {isa = PBXBuildFile; fileRef = 3FD0CFF72695D0DB27ED34FF6D25C1A9 /* AlbumsViewController.xib */; };
+		948347F3A7E8D785EE5475A4A0844FF0 /* ImagePickerViewController.xib in Sources */ = {isa = PBXBuildFile; fileRef = 3FD0CFF72695D0DB27ED34FF6D25C1A9 /* ImagePickerViewController.xib */; };
 		9CDD7646AF71DF69AF6156F1F4CF709D /* Pods-Pellicola_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 658D5F8A2AA253E1511271DC19C48904 /* Pods-Pellicola_Example-dummy.m */; };
-		B6CB29CC283D9DAE2FFCE4FEA121B123 /* AlbumTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD638BD237CD3656B2FE1CD067D5D74 /* AlbumTableViewCell.swift */; };
+		B6CB29CC283D9DAE2FFCE4FEA121B123 /* AssetCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD638BD237CD3656B2FE1CD067D5D74 /* AssetCollectionCell.swift */; };
 		C706CC1C7C52BB644722956CFC8F1024 /* Pods-Pellicola_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = CA7153B6305F66448840F6C7D1434E9D /* Pods-Pellicola_Tests-dummy.m */; };
 		C85A3C1331BBB8B926ECE2E9645DC2C2 /* Pellicola-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 1CA837929A50B6AABA28D4E84EB7BE3F /* Pellicola-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C91C3652A08776DF6E182D6DFD5DB203 /* Pods-Pellicola_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 8DA9ED7349185379A4D8B5C8935532C7 /* Pods-Pellicola_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CE1899491FEAB7B700029D21 /* AlbumsFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1899481FEAB7B600029D21 /* AlbumsFetcher.swift */; };
-		CE41B88F1FEBF7E1004DE945 /* ImagePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE41B88D1FEBF7E1004DE945 /* ImagePickerViewController.swift */; };
-		CE41B8901FEBF7E1004DE945 /* ImagePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE41B88E1FEBF7E1004DE945 /* ImagePickerViewController.xib */; };
+		CE1899491FEAB7B700029D21 /* AssetCollectionsFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1899481FEAB7B600029D21 /* AssetCollectionsFetcher.swift */; };
+		CE41B88F1FEBF7E1004DE945 /* AssetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE41B88D1FEBF7E1004DE945 /* AssetsViewController.swift */; };
+		CE41B8901FEBF7E1004DE945 /* AssetsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE41B88E1FEBF7E1004DE945 /* AssetsViewController.xib */; };
 		CE41B8921FEBF978004DE945 /* Bundle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE41B8911FEBF978004DE945 /* Bundle+Extension.swift */; };
-		CE41B8951FEBFFF1004DE945 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE41B8931FEBFFF1004DE945 /* ImageCollectionViewCell.swift */; };
-		CE41B8961FEBFFF1004DE945 /* ImageCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE41B8941FEBFFF1004DE945 /* ImageCollectionViewCell.xib */; };
+		CE41B8951FEBFFF1004DE945 /* AssetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE41B8931FEBFFF1004DE945 /* AssetCell.swift */; };
+		CE41B8961FEBFFF1004DE945 /* AssetCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE41B8941FEBFFF1004DE945 /* AssetCell.xib */; };
 		CE41B89A1FECF6B2004DE945 /* CheckmarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE41B8991FECF6B2004DE945 /* CheckmarkView.swift */; };
 		DFFFFD774AD3D67FD4F9C38EAF1079DF /* Pellicola-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 968C9D690A40307393EACC5FECA43374 /* Pellicola-dummy.m */; };
 /* End PBXBuildFile section */
@@ -52,7 +52,7 @@
 		364EA2D91B6043A6DCB6E9FED8AD7909 /* Pods-Pellicola_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Pellicola_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
 		37890095B7BFB765B21BCEFABE51D2A5 /* Pods-Pellicola_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-Pellicola_Tests.modulemap"; sourceTree = "<group>"; };
 		38CE5E177C380911166ACBA1671DC7F6 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		3FD0CFF72695D0DB27ED34FF6D25C1A9 /* AlbumsViewController.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; name = AlbumsViewController.xib; path = Pellicola/Classes/AlbumsViewController.xib; sourceTree = "<group>"; };
+		3FD0CFF72695D0DB27ED34FF6D25C1A9 /* ImagePickerViewController.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; path = ImagePickerViewController.xib; sourceTree = "<group>"; };
 		4579F99F90208D44C76889AD017F9F15 /* Pods_Pellicola_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Pellicola_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5766B432FB25FA70C836EA1C7CAE4FAE /* Pellicola.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Pellicola.xcconfig; sourceTree = "<group>"; };
 		5BFE188FC09FA1EA00B04235F9D1713C /* Pods-Pellicola_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Pellicola_Example-frameworks.sh"; sourceTree = "<group>"; };
@@ -62,12 +62,12 @@
 		6EFAA1066BCA19362EB3D33AD52C560F /* Pods-Pellicola_Example-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Pellicola_Example-resources.sh"; sourceTree = "<group>"; };
 		6F63067347AB3688EF42B1E30D957239 /* Pods-Pellicola_Tests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Pellicola_Tests-resources.sh"; sourceTree = "<group>"; };
 		8DA9ED7349185379A4D8B5C8935532C7 /* Pods-Pellicola_Tests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-Pellicola_Tests-umbrella.h"; sourceTree = "<group>"; };
-		90F8FB55327B0B3584431C64E16C3028 /* AlbumsViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AlbumsViewController.swift; path = Pellicola/Classes/AlbumsViewController.swift; sourceTree = "<group>"; };
+		90F8FB55327B0B3584431C64E16C3028 /* ImagePickerViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ImagePickerViewController.swift; sourceTree = "<group>"; };
 		938A51C1273F5A54B1225E7A658BBC1B /* Pellicola.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = Pellicola.modulemap; sourceTree = "<group>"; };
 		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9599D3B6434AA850B84731C89660F140 /* Pods-Pellicola_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Pellicola_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		968C9D690A40307393EACC5FECA43374 /* Pellicola-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pellicola-dummy.m"; sourceTree = "<group>"; };
-		9E93EF85B158C32F911A67C9D1CC1E20 /* AlbumTableViewCell.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; path = AlbumTableViewCell.xib; sourceTree = "<group>"; };
+		9E93EF85B158C32F911A67C9D1CC1E20 /* AssetCollectionCell.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; path = AssetCollectionCell.xib; sourceTree = "<group>"; };
 		A40C1C4ED6206307A40F899D41CBE8F0 /* it.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; path = it.lproj; sourceTree = "<group>"; };
 		A5D8374C038B3D42CF87723EDEFCB9B8 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B1D0F7153951CAE1935A8B08C3C00745 /* Pods-Pellicola_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-Pellicola_Example.modulemap"; sourceTree = "<group>"; };
@@ -76,18 +76,18 @@
 		C4D13E39FFAF5E3CEB3FE59DE0713A88 /* Pods-Pellicola_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Pellicola_Example.release.xcconfig"; sourceTree = "<group>"; };
 		C8749EE20833747E52DF776DB61CAF10 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CA7153B6305F66448840F6C7D1434E9D /* Pods-Pellicola_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Pellicola_Tests-dummy.m"; sourceTree = "<group>"; };
-		CE1899481FEAB7B600029D21 /* AlbumsFetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AlbumsFetcher.swift; path = Pellicola/Classes/AlbumsFetcher.swift; sourceTree = "<group>"; };
-		CE41B88D1FEBF7E1004DE945 /* ImagePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ImagePickerViewController.swift; path = Pellicola/Classes/ImagePickerViewController.swift; sourceTree = "<group>"; };
-		CE41B88E1FEBF7E1004DE945 /* ImagePickerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ImagePickerViewController.xib; path = Pellicola/Classes/ImagePickerViewController.xib; sourceTree = "<group>"; };
+		CE1899481FEAB7B600029D21 /* AssetCollectionsFetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AssetCollectionsFetcher.swift; path = Pellicola/Classes/AssetCollectionsFetcher.swift; sourceTree = "<group>"; };
+		CE41B88D1FEBF7E1004DE945 /* AssetsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetsViewController.swift; sourceTree = "<group>"; };
+		CE41B88E1FEBF7E1004DE945 /* AssetsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AssetsViewController.xib; sourceTree = "<group>"; };
 		CE41B8911FEBF978004DE945 /* Bundle+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Extension.swift"; sourceTree = "<group>"; };
-		CE41B8931FEBFFF1004DE945 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
-		CE41B8941FEBFFF1004DE945 /* ImageCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImageCollectionViewCell.xib; sourceTree = "<group>"; };
+		CE41B8931FEBFFF1004DE945 /* AssetCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetCell.swift; sourceTree = "<group>"; };
+		CE41B8941FEBFFF1004DE945 /* AssetCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AssetCell.xib; sourceTree = "<group>"; };
 		CE41B8991FECF6B2004DE945 /* CheckmarkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckmarkView.swift; sourceTree = "<group>"; };
 		D33AABB357D1D4B5B83EBB6E34EF18E9 /* Pods-Pellicola_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Pellicola_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		E65F1A5F41FDC6D9FB59B6DE249558C3 /* Pods-Pellicola_Tests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Pellicola_Tests-frameworks.sh"; sourceTree = "<group>"; };
 		EAF51BD7705B3DB2FF07DE0FE559CD0E /* PellicolaPresenter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PellicolaPresenter.swift; path = Pellicola/Classes/PellicolaPresenter.swift; sourceTree = "<group>"; };
 		EC42BE92ADDE6D3DA8A8DD367EE065DF /* Pods-Pellicola_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Pellicola_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
-		EFD638BD237CD3656B2FE1CD067D5D74 /* AlbumTableViewCell.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AlbumTableViewCell.swift; sourceTree = "<group>"; };
+		EFD638BD237CD3656B2FE1CD067D5D74 /* AssetCollectionCell.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AssetCollectionCell.swift; sourceTree = "<group>"; };
 		F1E6A29965D754B377D8B018A94FC53F /* en.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; path = en.lproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -158,15 +158,12 @@
 		290CDAACA47F729C9DA8C19B64DD6134 /* Pellicola */ = {
 			isa = PBXGroup;
 			children = (
-				CE1899481FEAB7B600029D21 /* AlbumsFetcher.swift */,
-				90F8FB55327B0B3584431C64E16C3028 /* AlbumsViewController.swift */,
-				3FD0CFF72695D0DB27ED34FF6D25C1A9 /* AlbumsViewController.xib */,
+				CE41B89B1FED043C004DE945 /* ViewControllers */,
+				CE1899481FEAB7B600029D21 /* AssetCollectionsFetcher.swift */,
 				EAF51BD7705B3DB2FF07DE0FE559CD0E /* PellicolaPresenter.swift */,
 				684C81397990D5DA199B9B122E0DAA51 /* Resources */,
 				6A26F6BA8069AAAB3170608F62300DF0 /* Support Files */,
 				8802140571F482589FA73D9730811D48 /* Views */,
-				CE41B88D1FEBF7E1004DE945 /* ImagePickerViewController.swift */,
-				CE41B88E1FEBF7E1004DE945 /* ImagePickerViewController.xib */,
 				CE41B8911FEBF978004DE945 /* Bundle+Extension.swift */,
 			);
 			name = Pellicola;
@@ -210,10 +207,10 @@
 		8802140571F482589FA73D9730811D48 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				EFD638BD237CD3656B2FE1CD067D5D74 /* AlbumTableViewCell.swift */,
-				9E93EF85B158C32F911A67C9D1CC1E20 /* AlbumTableViewCell.xib */,
-				CE41B8931FEBFFF1004DE945 /* ImageCollectionViewCell.swift */,
-				CE41B8941FEBFFF1004DE945 /* ImageCollectionViewCell.xib */,
+				EFD638BD237CD3656B2FE1CD067D5D74 /* AssetCollectionCell.swift */,
+				9E93EF85B158C32F911A67C9D1CC1E20 /* AssetCollectionCell.xib */,
+				CE41B8931FEBFFF1004DE945 /* AssetCell.swift */,
+				CE41B8941FEBFFF1004DE945 /* AssetCell.xib */,
 				CE41B8991FECF6B2004DE945 /* CheckmarkView.swift */,
 			);
 			name = Views;
@@ -236,6 +233,17 @@
 				D35AF013A5F0BAD4F32504907A52519E /* iOS */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CE41B89B1FED043C004DE945 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				90F8FB55327B0B3584431C64E16C3028 /* ImagePickerViewController.swift */,
+				3FD0CFF72695D0DB27ED34FF6D25C1A9 /* ImagePickerViewController.xib */,
+				CE41B88D1FEBF7E1004DE945 /* AssetsViewController.swift */,
+				CE41B88E1FEBF7E1004DE945 /* AssetsViewController.xib */,
+			);
+			path = ViewControllers;
 			sourceTree = "<group>";
 		};
 		D35AF013A5F0BAD4F32504907A52519E /* iOS */ = {
@@ -397,11 +405,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				05BDC06116B3B8260679542B628E1741 /* AlbumsViewController.xib in Resources */,
+				05BDC06116B3B8260679542B628E1741 /* ImagePickerViewController.xib in Resources */,
 				7F83E1AA2048B2DDE53FED183F39631D /* en.lproj in Resources */,
-				CE41B8901FEBF7E1004DE945 /* ImagePickerViewController.xib in Resources */,
+				CE41B8901FEBF7E1004DE945 /* AssetsViewController.xib in Resources */,
 				09696739153C7250E8DDF0BBFB00EB00 /* it.lproj in Resources */,
-				CE41B8961FEBFFF1004DE945 /* ImageCollectionViewCell.xib in Resources */,
+				CE41B8961FEBFFF1004DE945 /* AssetCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -412,15 +420,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				48E09CE891E98F67C4BF2C8B9C2C76EA /* AlbumsViewController.swift in Sources */,
+				48E09CE891E98F67C4BF2C8B9C2C76EA /* ImagePickerViewController.swift in Sources */,
 				CE41B89A1FECF6B2004DE945 /* CheckmarkView.swift in Sources */,
 				CE41B8921FEBF978004DE945 /* Bundle+Extension.swift in Sources */,
-				948347F3A7E8D785EE5475A4A0844FF0 /* AlbumsViewController.xib in Sources */,
-				CE41B88F1FEBF7E1004DE945 /* ImagePickerViewController.swift in Sources */,
-				B6CB29CC283D9DAE2FFCE4FEA121B123 /* AlbumTableViewCell.swift in Sources */,
-				72C51009DE3DBA13A88A5E2DC3CA781D /* AlbumTableViewCell.xib in Sources */,
-				CE41B8951FEBFFF1004DE945 /* ImageCollectionViewCell.swift in Sources */,
-				CE1899491FEAB7B700029D21 /* AlbumsFetcher.swift in Sources */,
+				948347F3A7E8D785EE5475A4A0844FF0 /* ImagePickerViewController.xib in Sources */,
+				CE41B88F1FEBF7E1004DE945 /* AssetsViewController.swift in Sources */,
+				B6CB29CC283D9DAE2FFCE4FEA121B123 /* AssetCollectionCell.swift in Sources */,
+				72C51009DE3DBA13A88A5E2DC3CA781D /* AssetCollectionCell.xib in Sources */,
+				CE41B8951FEBFFF1004DE945 /* AssetCell.swift in Sources */,
+				CE1899491FEAB7B700029D21 /* AssetCollectionsFetcher.swift in Sources */,
 				DFFFFD774AD3D67FD4F9C38EAF1079DF /* Pellicola-dummy.m in Sources */,
 				0523E03E67B01EAB768C48B39F367D7E /* PellicolaPresenter.swift in Sources */,
 			);
