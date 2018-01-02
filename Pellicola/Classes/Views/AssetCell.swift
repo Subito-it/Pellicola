@@ -30,6 +30,7 @@ class AssetCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.isSelected = false
+        imageView.applyThumbnailStyle()
     }
     
     override func prepareForReuse() {

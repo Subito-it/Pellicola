@@ -27,10 +27,17 @@ final class AssetCollectionsViewController: UIViewController {
     
     // View cycle
     
-    override public func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
         fetchAlbums()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        if let indexPathForSelectedRow = tableView.indexPathForSelectedRow {
+            tableView.deselectRow(at: indexPathForSelectedRow, animated: false)
+        }
     }
     
     // MARK: - UI
@@ -46,6 +53,57 @@ final class AssetCollectionsViewController: UIViewController {
         tableView.rowHeight = 85
         tableView.dataSource = self
         tableView.delegate = self
+    }
+    
+    private func createPlaceholderImage(withSize size: CGSize) -> UIImage? {
+        
+        UIGraphicsBeginImageContext(size)
+        let context = UIGraphicsGetCurrentContext()
+        let backgroundColor = UIColor(red: 239.0 / 255.0,
+                                      green: 239.0 / 255.0,
+                                      blue: 244.0 / 255.0,
+                                      alpha: 1.0)
+        let iconColor = UIColor(red: 179.0 / 255.0,
+                                green: 179.0 / 255.0,
+                                blue: 182.0 / 255.0,
+                                alpha: 1.0)
+        
+        // Background
+        context?.setFillColor(backgroundColor.cgColor)
+        context?.fill(CGRect(x: 0, y: 0, width: size.width, height: size.height))
+        
+        // Icon (back)
+        let backIconRect = CGRect(x: size.width * (16.0 / 68.0),
+                                  y: size.height * (20.0 / 68.0),
+                                  width: size.width * (32.0 / 68.0),
+                                  height: size.height * (24.0 / 68.0))
+        
+        context?.setFillColor(iconColor.cgColor)
+        context?.fill(backIconRect)
+        
+        context?.setFillColor(backgroundColor.cgColor)
+        context?.fill(backIconRect.insetBy(dx: 1.0, dy: 1.0))
+        
+        // Icon (front)
+        let frontIconRect = CGRect(x: size.width * (20.0 / 68.0),
+                                   y: size.height * (24.0 / 68.0),
+                                   width: size.width * (32.0 / 68.0),
+                                   height: size.height * (24.0 / 68.0))
+        
+        context?.setFillColor(backgroundColor.cgColor)
+        context?.fill(frontIconRect.insetBy(dx: -1.0, dy: -1.0))
+        
+        context?.setFillColor(iconColor.cgColor)
+        context?.fill(frontIconRect)
+        
+        context?.setFillColor(backgroundColor.cgColor)
+        context?.fill(frontIconRect.insetBy(dx: 1.0, dy: 1.0))
+        
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return image
+        
     }
     
     // MARK: - Albums fetching
@@ -77,6 +135,8 @@ extension AssetCollectionsViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         
+        albumCell.tag = indexPath.row
+        
         let album = albums[indexPath.row]
         albumCell.title = album.localizedTitle ?? ""
         
@@ -85,20 +145,57 @@ extension AssetCollectionsViewController: UITableViewDataSource {
         let numberOfImages = fetchedAssets.countOfAssets(with: .image)
         albumCell.subtitle = String(numberOfImages)
         
-        // Album thumbnail
-        let keyImageFetch = PHAsset.fetchKeyAssets(in: album, options: nil)
-        if let thumbAsset = keyImageFetch?.firstObject ?? (fetchedAssets.firstObject ?? nil) {
-            let imageManager = PHImageManager()
-            let requestOptions = PHImageRequestOptions()
-            requestOptions.deliveryMode = .fastFormat
-            requestOptions.isNetworkAccessAllowed = true
-            
-            imageManager.requestImage(for: thumbAsset, targetSize: albumCell.thumbnailSize, contentMode: .default, options: requestOptions, resultHandler: { (image, info) in
-                albumCell.thumbail = image
+        let scale = UIScreen.main.scale
+        let thumbnailSize = CGSize(width: albumCell.thumbnailSize.width * scale, height: albumCell.thumbnailSize.height * scale)
+        
+        // Album thumbnails
+        let imageManager = PHImageManager.default()
+        
+        if fetchedAssets.count >= 3 {
+            imageManager.requestImage(for: fetchedAssets[numberOfImages - 3],
+                                      targetSize: thumbnailSize,
+                                      contentMode: .aspectFill,
+                                      options: nil,
+                                      resultHandler: { (image, _) in
+                                        if albumCell.tag == indexPath.row {
+                                            albumCell.setThubnail(image, in: .back)
+                                        }
             })
-            
         } else {
-            assertionFailure("You should provide an album placeholder thumbnail")
+            albumCell.setThubnail(nil, in: .back)
+        }
+        
+        if fetchedAssets.count >= 2 {
+            imageManager.requestImage(for: fetchedAssets[numberOfImages - 2],
+                                      targetSize: thumbnailSize,
+                                      contentMode: .aspectFill,
+                                      options: nil,
+                                      resultHandler: { (image, _) in
+                                        if albumCell.tag == indexPath.row {
+                                            albumCell.setThubnail(image, in: .middle)
+                                        }
+            })
+        } else {
+            albumCell.setThubnail(nil, in: .middle)
+        }
+        
+        if fetchedAssets.count >= 1 {
+            imageManager.requestImage(for: fetchedAssets[numberOfImages - 1],
+                                      targetSize: thumbnailSize,
+                                      contentMode: .aspectFill,
+                                      options: nil,
+                                      resultHandler: { (image, _) in
+                                        if albumCell.tag == indexPath.row {
+                                            albumCell.setThubnail(image, in: .front)
+                                        }
+            })
+        }
+        
+        if fetchedAssets.count == 0 {
+            let placeholderImage = createPlaceholderImage(withSize: albumCell.thumbnailSize)
+            albumCell.setThubnail(placeholderImage, in: .back)
+            albumCell.setThubnail(placeholderImage, in: .middle)
+            albumCell.setThubnail(placeholderImage, in: .front)
         }
         
         return albumCell
