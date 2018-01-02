@@ -25,8 +25,19 @@ class AssetsViewController: UIViewController {
     private var previousPreheatRect = CGRect.zero
     private var thumbnailSize: CGSize!
     
+    private var numberOfImagesToSelect: Int
+    
     var fetchResult: PHFetchResult<PHAsset>!
     var assetCollection: PHAssetCollection!
+    
+    init(numberOfImagesToSelect: Int) {
+        self.numberOfImagesToSelect = numberOfImagesToSelect
+        super.init(nibName: nil, bundle: Bundle.framework)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,6 +45,21 @@ class AssetsViewController: UIViewController {
         resetCachedAssets()
         setupNavigationBar()
         setupCollectionView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        let numberOfImages = self.fetchResult.countOfAssets(with: .image)
+        
+        if numberOfImages > 0, isMovingToParentViewController {
+            // when presenting as a .FormSheet on iPad, the frame is not correct until just after viewWillAppear:
+            // dispatching to the main thread waits one run loop until the frame is update and the layout is complete
+            DispatchQueue.main.async {
+                let lastItemIndex = IndexPath(item: numberOfImages - 1, section: 0)
+                self.collectionView.scrollToItem(at: lastItemIndex, at: .top, animated: false)
+            }
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -71,6 +97,9 @@ class AssetsViewController: UIViewController {
         // Determine the size of the thumbnails to request from the PHCachingImageManager
         let scale = UIScreen.main.scale
         thumbnailSize = CGSize(width: cellSize.width * scale, height: cellSize.height * scale)
+        
+        collectionView.allowsSelection = true
+        collectionView.allowsMultipleSelection = numberOfImagesToSelect > 1
         
         collectionView.register(UINib(nibName: AssetCell.identifier, bundle: Bundle.framework),
                                 forCellWithReuseIdentifier: AssetCell.identifier)

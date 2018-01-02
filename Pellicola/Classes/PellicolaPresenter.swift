@@ -11,8 +11,10 @@ public final class PellicolaPresenter: NSObject {
     
     private weak var presenterViewController: UIViewController?
     
+    public var numberOfImagesToSelect = 1
+    
     @objc public func presentPellicola(on presenterViewController: UIViewController) {
-        let assetCollectionsVC = AssetCollectionsViewController(nibName: nil, bundle: Bundle.framework)
+        let assetCollectionsVC = AssetCollectionsViewController(numberOfImagesToSelect: numberOfImagesToSelect)
         let navigationController = UINavigationController(rootViewController: assetCollectionsVC)
         presenterViewController.present(navigationController, animated: true, completion: nil)
         self.presenterViewController = presenterViewController

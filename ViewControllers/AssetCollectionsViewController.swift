@@ -25,6 +25,17 @@ final class AssetCollectionsViewController: UIViewController {
     
     private var albums: [PHAssetCollection] = []
     
+    private var numberOfImagesToSelect: Int
+    
+    init(numberOfImagesToSelect: Int) {
+        self.numberOfImagesToSelect = numberOfImagesToSelect
+        super.init(nibName: nil, bundle: Bundle.framework)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     // View cycle
     
     override func viewDidLoad() {
@@ -208,7 +219,7 @@ extension AssetCollectionsViewController: UITableViewDataSource {
 extension AssetCollectionsViewController: UITableViewDelegate {
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let imagePickerViewController = AssetsViewController(nibName: nil, bundle: Bundle.framework)
+        let imagePickerViewController = AssetsViewController(numberOfImagesToSelect: numberOfImagesToSelect)
         let assetCollection = albums[indexPath.row]
         imagePickerViewController.assetCollection = assetCollection
         imagePickerViewController.fetchResult = PHAsset.fetchAssets(in: assetCollection, options: nil)
