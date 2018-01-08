@@ -11,8 +11,6 @@ import Photos
 
 final class AssetCollectionsViewController: UIViewController {
     
-    // Private properties
-    
     @IBOutlet private var tableView: UITableView!
     
     private let assetCollectionType: PHAssetCollectionType = .smartAlbum
@@ -25,10 +23,11 @@ final class AssetCollectionsViewController: UIViewController {
     
     private var albums: [PHAssetCollection] = []
     
-    private var numberOfImagesToSelect: Int
+    var doneBarButtonAction: (() -> Void)?
+    var cancelBarButtonAction: (() -> Void)?
+    var didSelectAssetCollection: ((PHAssetCollection) -> Void)?
     
-    init(numberOfImagesToSelect: Int) {
-        self.numberOfImagesToSelect = numberOfImagesToSelect
+    init() {
         super.init(nibName: nil, bundle: Bundle.framework)
     }
     
@@ -54,9 +53,14 @@ final class AssetCollectionsViewController: UIViewController {
     // MARK: - UI
     
     private func configureUI() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel,
-                                                            target: self,
-                                                            action: #selector(actionDismiss))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel,
+                                                           target: self,
+                                                           action: #selector(cancelButtonTapped))
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done,
+                                                           target: self,
+                                                           action: #selector(doneButtonTapped))
+        
         title = NSLocalizedString("albums.title", bundle:  Bundle.framework, comment: "")
         
         tableView.register(UINib(nibName: AssetCollectionCell.identifier, bundle: Bundle(for: AssetCollectionCell.self)),
@@ -117,6 +121,16 @@ final class AssetCollectionsViewController: UIViewController {
         
     }
     
+    // MARK: - Navigation
+    
+    @objc func doneButtonTapped() {
+        doneBarButtonAction?()
+    }
+    
+    @objc func cancelButtonTapped() {
+        cancelBarButtonAction?()
+    }
+    
     // MARK: - Albums fetching
     
     private func fetchAlbums() {
@@ -124,11 +138,7 @@ final class AssetCollectionsViewController: UIViewController {
                                           sortedBy: smartAlbumSubtypes)
     }
     
-    // MARK: - Action
     
-    @objc func actionDismiss() {
-        dismiss(animated: true, completion: nil)
-    }
 }
 
 // MARK: - UITableViewDataSource
@@ -219,11 +229,8 @@ extension AssetCollectionsViewController: UITableViewDataSource {
 extension AssetCollectionsViewController: UITableViewDelegate {
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let imagePickerViewController = AssetsViewController(numberOfImagesToSelect: numberOfImagesToSelect)
         let assetCollection = albums[indexPath.row]
-        imagePickerViewController.assetCollection = assetCollection
-        imagePickerViewController.fetchResult = PHAsset.fetchAssets(in: assetCollection, options: nil)
-        self.navigationController?.show(imagePickerViewController, sender: nil)
+        didSelectAssetCollection?(assetCollection)
     }
     
 }

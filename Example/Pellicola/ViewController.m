@@ -20,7 +20,8 @@
 
 - (IBAction)presentPellicola:(id)sender {
     self.pellicolaPresenter = [[PellicolaPresenter alloc] init];
-    [self.pellicolaPresenter presentPellicolaOn:self];
+    _pellicolaPresenter.maxNumberOfSelections = UINT64_C(3);
+    [self.pellicolaPresenter presentPellicolaOn: self];
 }
 
 @end

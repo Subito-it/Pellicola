@@ -23,15 +23,21 @@ class AssetsViewController: UIViewController {
     private let spaceBetweenPhotosInRow: CGFloat = 1.0
     private let imageManager = PHCachingImageManager()
     private var previousPreheatRect = CGRect.zero
+    private var assetCollection: PHAssetCollection
     private var thumbnailSize: CGSize!
     
-    private var numberOfImagesToSelect: Int
+    private var fetchResult: PHFetchResult<PHAsset>
+    private var dataStorage: DataStorage
     
-    var fetchResult: PHFetchResult<PHAsset>!
-    var assetCollection: PHAssetCollection!
+    var doneBarButtonAction: (() -> Void)?
+    var shouldTapOnAsset: (() -> Bool)?
+    var didTapOnAsset: ((PHAsset) -> Void)?
     
-    init(numberOfImagesToSelect: Int) {
-        self.numberOfImagesToSelect = numberOfImagesToSelect
+    init(assetCollection: PHAssetCollection,
+         dataStorage: DataStorage) {
+        self.assetCollection = assetCollection
+        self.fetchResult = PHAsset.fetchAssets(in: assetCollection, options: nil)
+        self.dataStorage = dataStorage
         super.init(nibName: nil, bundle: Bundle.framework)
     }
     
@@ -75,11 +81,11 @@ class AssetsViewController: UIViewController {
     // MARK: - Setup
     
     private func setupNavigationBar() {
-        title = NSLocalizedString("image_picker.title", bundle: Bundle.framework, comment: "")
+        title = assetCollection.localizedTitle
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel,
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done,
                                                             target: self,
-                                                            action: #selector(actionDismiss))
+                                                            action: #selector(doneButtonTapped))
     }
     
     private func setupCollectionView() {
@@ -99,12 +105,23 @@ class AssetsViewController: UIViewController {
         thumbnailSize = CGSize(width: cellSize.width * scale, height: cellSize.height * scale)
         
         collectionView.allowsSelection = true
-        collectionView.allowsMultipleSelection = numberOfImagesToSelect > 1
+        
+        if let maxNumberOfSelections = dataStorage.limit, maxNumberOfSelections > 1 {
+            collectionView.allowsMultipleSelection = true
+        } else {
+            collectionView.allowsMultipleSelection = false
+        }
         
         collectionView.register(UINib(nibName: AssetCell.identifier, bundle: Bundle.framework),
                                 forCellWithReuseIdentifier: AssetCell.identifier)
         collectionView.dataSource = self
         collectionView.delegate = self
+    }
+    
+    // MARK: - Navigation
+    
+    @objc func doneButtonTapped() {
+        doneBarButtonAction?()
     }
     
     // MARK: Asset Caching
@@ -213,6 +230,20 @@ extension AssetsViewController: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegate
 
 extension AssetsViewController: UICollectionViewDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        return dataStorage.isAvailableSpace
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let selectedAsset = fetchResult.object(at: indexPath.item)
+        dataStorage.add(selectedAsset)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        let deselectedAsset = fetchResult.object(at: indexPath.item)
+        dataStorage.remove(deselectedAsset)
+    }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         updateCachedAssets()

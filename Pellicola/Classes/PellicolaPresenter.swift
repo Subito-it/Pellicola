@@ -6,17 +6,66 @@
 //
 
 import Foundation
+import Photos
 
 public final class PellicolaPresenter: NSObject {
     
-    private weak var presenterViewController: UIViewController?
+    @objc public var didSelectImages: (([PHAsset]) -> Void)?
+    @objc public var userDidCancel: (() -> Void)?
     
-    public var numberOfImagesToSelect = 1
+    /*
+     - ==0 Unlimited
+     - ==1 Single selection
+     - >1  Limited selection
+     */
+    @objc public var maxNumberOfSelections: UInt = 1
     
-    @objc public func presentPellicola(on presenterViewController: UIViewController) {
-        let assetCollectionsVC = AssetCollectionsViewController(numberOfImagesToSelect: numberOfImagesToSelect)
-        let navigationController = UINavigationController(rootViewController: assetCollectionsVC)
-        presenterViewController.present(navigationController, animated: true, completion: nil)
-        self.presenterViewController = presenterViewController
+    private lazy var navigationController: UINavigationController = {
+        return UINavigationController()
+    }()
+    
+    private var dataStorage = DataStorage(limit: 1)
+    
+    @objc public func presentPellicola(on presentingViewController: UIViewController) {
+        dataStorage = DataStorage(limit: maxNumberOfSelections != 0 ? maxNumberOfSelections : nil)
+        
+        let assetCollectionsVC = createAssetsCollectionViewController()
+        navigationController.setViewControllers([assetCollectionsVC], animated: false)
+        presentingViewController.present(navigationController, animated: true, completion: nil)
+    }
+    
+    // MARK: - Action
+    
+    private func cancelButtonTapped() {
+        navigationController.dismiss(animated: true) {
+            self.userDidCancel?()
+        }
+    }
+    
+    private func doneButtonTapped() {
+        navigationController.dismiss(animated: true) {
+            self.didSelectImages?(self.dataStorage.assets)
+        }
+    }
+    
+    // MARK: - View Controller creation
+    
+    private func createAssetsCollectionViewController() -> AssetCollectionsViewController {
+        let assetCollectionsVC = AssetCollectionsViewController()
+        assetCollectionsVC.cancelBarButtonAction = cancelButtonTapped
+        assetCollectionsVC.doneBarButtonAction = doneButtonTapped
+        assetCollectionsVC.didSelectAssetCollection = { assetCollection in
+            let assetsViewController = self.createAssetsViewController(assetCollection: assetCollection)
+            self.navigationController.pushViewController(assetsViewController, animated: true)
+        }
+        return assetCollectionsVC
+    }
+    
+    private func createAssetsViewController(assetCollection: PHAssetCollection) -> AssetsViewController {
+        let assetsViewController = AssetsViewController(assetCollection: assetCollection,
+                                                        dataStorage: dataStorage)
+        assetsViewController.doneBarButtonAction = doneButtonTapped
+        return assetsViewController
+        
     }
 }
