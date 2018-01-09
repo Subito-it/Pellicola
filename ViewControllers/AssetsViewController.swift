@@ -246,7 +246,9 @@ extension AssetsViewController: UICollectionViewDelegate {
             dataStorage.add(tappedAsset)
         }
         
-        collectionView.reloadItems(at: [indexPath])
+        UIView.performWithoutAnimation {
+            collectionView.reloadItems(at: [indexPath])
+        }
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
