@@ -222,6 +222,11 @@ extension AssetsViewController: UICollectionViewDataSource {
             }
         })
         
+        let result = dataStorage.assets.contains(where: {
+            return $0.localIdentifier == cell.assetIdentifier
+        })
+        cell.setSelection(result)
+        
         return cell
     }
     
@@ -231,18 +236,17 @@ extension AssetsViewController: UICollectionViewDataSource {
 
 extension AssetsViewController: UICollectionViewDelegate {
     
-    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        return dataStorage.isAvailableSpace
-    }
-    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let selectedAsset = fetchResult.object(at: indexPath.item)
-        dataStorage.add(selectedAsset)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        let deselectedAsset = fetchResult.object(at: indexPath.item)
-        dataStorage.remove(deselectedAsset)
+        
+        let tappedAsset = fetchResult.object(at: indexPath.item)
+        
+        if dataStorage.assets.contains(tappedAsset) {
+            dataStorage.remove(tappedAsset)
+        } else if dataStorage.isAvailableSpace {
+            dataStorage.add(tappedAsset)
+        }
+        
+        collectionView.reloadItems(at: [indexPath])
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

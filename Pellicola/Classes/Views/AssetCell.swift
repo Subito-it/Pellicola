@@ -15,13 +15,6 @@ class AssetCell: UICollectionViewCell {
     
     var assetIdentifier: String!
     
-    override var isSelected: Bool {
-        didSet {
-            overlayView.isHidden = !isSelected
-            checkmarkView.isHidden = !isSelected
-        }
-    }
-    
     var thumbnailImage: UIImage? {
         set { imageView.image = newValue }
         get { return imageView.image }
@@ -29,14 +22,19 @@ class AssetCell: UICollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.isSelected = false
+        setSelection(false)
         imageView.applyThumbnailStyle()
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
         imageView.image = nil
-        self.isSelected = false
+        setSelection(false)
+    }
+    
+    func setSelection(_ value: Bool) {
+        overlayView.isHidden = !value
+        checkmarkView.isHidden = !value
     }
 
 }

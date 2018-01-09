@@ -25,9 +25,16 @@ public final class PellicolaPresenter: NSObject {
     }()
     
     private var dataStorage = DataStorage(limit: 1)
+    private var dataStorageObservation: NSKeyValueObservation?
     
     @objc public func presentPellicola(on presentingViewController: UIViewController) {
         dataStorage = DataStorage(limit: maxNumberOfSelections != 0 ? maxNumberOfSelections : nil)
+        
+        if maxNumberOfSelections == 1 {
+            dataStorageObservation = dataStorage.observe(\.assets) { [weak self] _, _ in
+                self?.doneButtonTapped()
+            }
+        }
         
         let assetCollectionsVC = createAssetsCollectionViewController()
         navigationController.setViewControllers([assetCollectionsVC], animated: false)
@@ -37,14 +44,15 @@ public final class PellicolaPresenter: NSObject {
     // MARK: - Action
     
     private func cancelButtonTapped() {
-        navigationController.dismiss(animated: true) {
-            self.userDidCancel?()
+        navigationController.dismiss(animated: true) { [weak self] in
+            self?.userDidCancel?()
         }
     }
     
     private func doneButtonTapped() {
-        navigationController.dismiss(animated: true) {
-            self.didSelectImages?(self.dataStorage.assets)
+        navigationController.dismiss(animated: true) { [weak self] in
+            guard let sSelf = self else { return }
+            sSelf.didSelectImages?(sSelf.dataStorage.assets)
         }
     }
     

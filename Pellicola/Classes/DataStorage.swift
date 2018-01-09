@@ -8,13 +8,14 @@
 import Foundation
 import Photos
 
-class DataStorage {
+class DataStorage: NSObject {
     
-    private(set) var assets: [PHAsset] = []
+    @objc dynamic private(set) var assets: [PHAsset] = []
+    
     let limit: UInt?
     
     var isAvailableSpace: Bool {
-        guard let limit = limit else { return true }
+        guard let limit = limit else { return true}
         return assets.count < limit
     }
     
@@ -22,14 +23,12 @@ class DataStorage {
         self.limit = limit
     }
     
-    @discardableResult
-    func add(_ asset: PHAsset) -> Bool {
+    func add(_ asset: PHAsset) {
         
         // TODO: - Verificare che l'oggetto non sia già presente
         
-        guard let limit = limit, assets.count < limit else { return false }
+        guard let limit = limit, assets.count < limit else { return }
         assets.append(asset)
-        return true
     }
     
     func remove(_ asset: PHAsset) {
@@ -43,7 +42,5 @@ class DataStorage {
         }
         
     }
-    
-    
     
 }
