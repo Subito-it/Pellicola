@@ -25,6 +25,7 @@ class AssetsViewController: UIViewController {
     private var previousPreheatRect = CGRect.zero
     private var assetCollection: PHAssetCollection
     private var thumbnailSize: CGSize!
+    private weak var centerBarButtonToolbar: UIBarButtonItem?
     
     private var fetchResult: PHFetchResult<PHAsset>
     private var dataStorage: DataStorage
@@ -36,7 +37,7 @@ class AssetsViewController: UIViewController {
     init(assetCollection: PHAssetCollection,
          dataStorage: DataStorage) {
         self.assetCollection = assetCollection
-        self.fetchResult = PHAsset.fetchAssets(in: assetCollection, options: nil)
+        fetchResult = PHAsset.fetchAssets(in: assetCollection, options: nil)
         self.dataStorage = dataStorage
         super.init(nibName: nil, bundle: Bundle.framework)
     }
@@ -51,6 +52,7 @@ class AssetsViewController: UIViewController {
         resetCachedAssets()
         setupNavigationBar()
         setupCollectionView()
+        setupToolbar()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -116,6 +118,44 @@ class AssetsViewController: UIViewController {
                                 forCellWithReuseIdentifier: AssetCell.identifier)
         collectionView.dataSource = self
         collectionView.delegate = self
+    }
+    
+    private func setupToolbar() {
+        
+        let infoBarButton = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        infoBarButton.isEnabled = false
+        let attributes = [ NSAttributedStringKey.foregroundColor: UIColor.black ]
+        infoBarButton.setTitleTextAttributes(attributes, for: .normal)
+        infoBarButton.setTitleTextAttributes(attributes, for: .disabled)
+        
+        let items = [
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            infoBarButton,
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        ]
+        
+        setToolbarItems(items, animated: false)
+        
+        centerBarButtonToolbar = infoBarButton
+        
+        updateToolbar()
+        
+    }
+    
+    private func updateToolbar() {
+        
+        guard let limit = dataStorage.limit, limit > 0 else { return }
+        
+        guard dataStorage.assets.count > 0 else {
+            navigationController?.setToolbarHidden(true, animated: true)
+            return
+        }
+        
+        centerBarButtonToolbar?.title = String(format: NSLocalizedString("selected_assets", bundle:  Bundle.framework, comment: ""),
+                                               dataStorage.assets.count,
+                                               limit)
+        navigationController?.setToolbarHidden(false, animated: true)
+        
     }
     
     // MARK: - Navigation
@@ -242,9 +282,11 @@ extension AssetsViewController: UICollectionViewDelegate {
         
         if dataStorage.assets.contains(tappedAsset) {
             dataStorage.remove(tappedAsset)
-        } else if dataStorage.isAvailableSpace {
+        } else if dataStorage.isLimitReached {
             dataStorage.add(tappedAsset)
         }
+        
+        updateToolbar()
         
         UIView.performWithoutAnimation {
             collectionView.reloadItems(at: [indexPath])

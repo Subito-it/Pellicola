@@ -14,7 +14,7 @@ class DataStorage: NSObject {
     
     let limit: UInt?
     
-    var isAvailableSpace: Bool {
+    var isLimitReached: Bool {
         guard let limit = limit else { return true}
         return assets.count < limit
     }
