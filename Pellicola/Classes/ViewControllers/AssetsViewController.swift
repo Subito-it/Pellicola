@@ -50,9 +50,7 @@ class AssetsViewController: UIViewController {
         super.viewDidLoad()
         
         resetCachedAssets()
-        setupNavigationBar()
-        setupCollectionView()
-        setupToolbar()
+        configureUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -80,7 +78,13 @@ class AssetsViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    // MARK: - Setup
+    // MARK: - UI
+    
+    private func configureUI() {
+        setupNavigationBar()
+        setupCollectionView()
+        setupToolbar()
+    }
     
     private func setupNavigationBar() {
         title = assetCollection.localizedTitle

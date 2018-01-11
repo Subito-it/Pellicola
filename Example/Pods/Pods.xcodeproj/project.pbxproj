@@ -55,11 +55,11 @@
 		272424915FCDBDBCA892DB162032B00D /* Pellicola-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pellicola-prefix.pch"; sourceTree = "<group>"; };
 		2FD612BAD45318080FC5327E2D9E001D /* Pods-Pellicola_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Pellicola_Example-acknowledgements.plist"; sourceTree = "<group>"; };
 		364EA2D91B6043A6DCB6E9FED8AD7909 /* Pods-Pellicola_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Pellicola_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
-		37890095B7BFB765B21BCEFABE51D2A5 /* Pods-Pellicola_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = "Pods-Pellicola_Tests.modulemap"; sourceTree = "<group>"; };
+		37890095B7BFB765B21BCEFABE51D2A5 /* Pods-Pellicola_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-Pellicola_Tests.modulemap"; sourceTree = "<group>"; };
 		38CE5E177C380911166ACBA1671DC7F6 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4579F99F90208D44C76889AD017F9F15 /* Pods_Pellicola_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_Pellicola_Tests.framework; path = "Pods-Pellicola_Tests.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4579F99F90208D44C76889AD017F9F15 /* Pods_Pellicola_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Pellicola_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5BFE188FC09FA1EA00B04235F9D1713C /* Pods-Pellicola_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Pellicola_Example-frameworks.sh"; sourceTree = "<group>"; };
-		629C9BB843C7AC840037CD983B3F23B8 /* Pellicola.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pellicola.framework; path = Pellicola.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		629C9BB843C7AC840037CD983B3F23B8 /* Pellicola.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pellicola.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		62C7616C9B6F23EE921636C9200EE5BB /* UIView+Extension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		658D5F8A2AA253E1511271DC19C48904 /* Pods-Pellicola_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Pellicola_Example-dummy.m"; sourceTree = "<group>"; };
 		6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
@@ -67,19 +67,19 @@
 		6EFAA1066BCA19362EB3D33AD52C560F /* Pods-Pellicola_Example-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Pellicola_Example-resources.sh"; sourceTree = "<group>"; };
 		6F63067347AB3688EF42B1E30D957239 /* Pods-Pellicola_Tests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Pellicola_Tests-resources.sh"; sourceTree = "<group>"; };
 		755F29BBC96B13F44EAD3D4037C432C7 /* AssetCollectionsViewController.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; path = AssetCollectionsViewController.xib; sourceTree = "<group>"; };
-		851250D309F001828AD3A1BB16D3F13E /* Pellicola.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = Pellicola.modulemap; sourceTree = "<group>"; };
+		851250D309F001828AD3A1BB16D3F13E /* Pellicola.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = Pellicola.modulemap; sourceTree = "<group>"; };
 		8DA9ED7349185379A4D8B5C8935532C7 /* Pods-Pellicola_Tests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-Pellicola_Tests-umbrella.h"; sourceTree = "<group>"; };
-		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9599D3B6434AA850B84731C89660F140 /* Pods-Pellicola_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Pellicola_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		9F7C2B8971C484FBCD0BE24472578385 /* Pellicola-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pellicola-dummy.m"; sourceTree = "<group>"; };
 		A5D8374C038B3D42CF87723EDEFCB9B8 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B18F6B953618F0CFC68664D6F6AA6175 /* AssetCell.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; path = AssetCell.xib; sourceTree = "<group>"; };
-		B1D0F7153951CAE1935A8B08C3C00745 /* Pods-Pellicola_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = "Pods-Pellicola_Example.modulemap"; sourceTree = "<group>"; };
-		B896FAD9405DFA098A8F012964B3D419 /* Pods_Pellicola_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_Pellicola_Example.framework; path = "Pods-Pellicola_Example.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B1D0F7153951CAE1935A8B08C3C00745 /* Pods-Pellicola_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-Pellicola_Example.modulemap"; sourceTree = "<group>"; };
+		B896FAD9405DFA098A8F012964B3D419 /* Pods_Pellicola_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Pellicola_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BA7645345423D80991C13E9452F7259A /* AssetCollectionsViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AssetCollectionsViewController.swift; sourceTree = "<group>"; };
 		BFFC4CB4E973087C9080159ACD7E53BF /* Bundle+Extension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "Bundle+Extension.swift"; sourceTree = "<group>"; };
 		C0D9E78655577C94157DD710EB0DB000 /* Pods-Pellicola_Example-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-Pellicola_Example-umbrella.h"; sourceTree = "<group>"; };
-		C2CB2E6E17292685FBF30DF58BE7EBDB /* it.lproj */ = {isa = PBXFileReference; includeInIndex = 1; name = it.lproj; path = Pellicola/Resources/it.lproj; sourceTree = "<group>"; };
+		C2CB2E6E17292685FBF30DF58BE7EBDB /* it.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = it.lproj; path = Pellicola/Resources/it.lproj; sourceTree = "<group>"; };
 		C4D13E39FFAF5E3CEB3FE59DE0713A88 /* Pods-Pellicola_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Pellicola_Example.release.xcconfig"; sourceTree = "<group>"; };
 		C66912E02B9167368D7E54D4BCDF2E6C /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C6810AA285602A9F6F595ACE3EA6F9A2 /* Pellicola-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pellicola-umbrella.h"; sourceTree = "<group>"; };
@@ -92,7 +92,7 @@
 		E65F1A5F41FDC6D9FB59B6DE249558C3 /* Pods-Pellicola_Tests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Pellicola_Tests-frameworks.sh"; sourceTree = "<group>"; };
 		EC42BE92ADDE6D3DA8A8DD367EE065DF /* Pods-Pellicola_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Pellicola_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
 		F096615306A94BA3F3CAD535482DAE60 /* CheckmarkView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CheckmarkView.swift; sourceTree = "<group>"; };
-		F375D95A2CD627DB497A632FF2B795F2 /* en.lproj */ = {isa = PBXFileReference; includeInIndex = 1; name = en.lproj; path = Pellicola/Resources/en.lproj; sourceTree = "<group>"; };
+		F375D95A2CD627DB497A632FF2B795F2 /* en.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = en.lproj; path = Pellicola/Resources/en.lproj; sourceTree = "<group>"; };
 		FD8D6BD3D1152646E2554F111FBD4626 /* PellicolaPresenter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PellicolaPresenter.swift; path = Pellicola/Classes/PellicolaPresenter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -387,6 +387,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				it,
 			);
 			mainGroup = 7DB346D0F39D3F0E887471402A8071AB;
 			productRefGroup = FD55B9A651B7FC46680A6C640DD2599F /* Products */;
@@ -499,6 +500,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -554,6 +556,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";

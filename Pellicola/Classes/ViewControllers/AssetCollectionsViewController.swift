@@ -27,6 +27,8 @@ final class AssetCollectionsViewController: UIViewController {
     var cancelBarButtonAction: (() -> Void)?
     var didSelectAssetCollection: ((PHAssetCollection) -> Void)?
     
+    private weak var doneBarButton: UIBarButtonItem?
+    
     init() {
         super.init(nibName: nil, bundle: Bundle.framework)
     }
@@ -35,7 +37,7 @@ final class AssetCollectionsViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // View cycle
+    // MARK: - View cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,16 +55,25 @@ final class AssetCollectionsViewController: UIViewController {
     // MARK: - UI
     
     private func configureUI() {
+        setupNavigationBar()
+        setupTableView()
+    }
+    
+    private func setupNavigationBar() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel,
                                                            target: self,
                                                            action: #selector(cancelButtonTapped))
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done,
-                                                           target: self,
-                                                           action: #selector(doneButtonTapped))
+        doneBarButton = UIBarButtonItem(barButtonSystemItem: .done,
+                                        target: self,
+                                        action: #selector(doneButtonTapped))
+        
+        navigationItem.rightBarButtonItem = doneBarButton
         
         title = NSLocalizedString("albums.title", bundle:  Bundle.framework, comment: "")
-        
+    }
+    
+    private func setupTableView() {
         tableView.register(UINib(nibName: AssetCollectionCell.identifier, bundle: Bundle(for: AssetCollectionCell.self)),
                            forCellReuseIdentifier: AssetCollectionCell.identifier)
         tableView.rowHeight = 85
