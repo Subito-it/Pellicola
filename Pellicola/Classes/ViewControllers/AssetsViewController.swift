@@ -109,6 +109,7 @@ class AssetsViewController: UIViewController {
         let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
         layout.minimumInteritemSpacing = 1
         layout.minimumLineSpacing = 1
+        layout.sectionInset.bottom = 44
         
         // Calculate the size of the cells
         let spaceBetweenCells = spaceBetweenPhotosInRow * CGFloat(numberOfPhotosForRow)
