@@ -30,6 +30,9 @@ class AssetsViewController: UIViewController {
     private var fetchResult: PHFetchResult<PHAsset>
     private var dataStorage: DataStorage
     
+    private var doneBarButton: UIBarButtonItem?
+    private var dataStorageObservation: NSKeyValueObservation?
+    
     var doneBarButtonAction: (() -> Void)?
     var shouldTapOnAsset: (() -> Bool)?
     var didTapOnAsset: ((PHAsset) -> Void)?
@@ -89,9 +92,16 @@ class AssetsViewController: UIViewController {
     private func setupNavigationBar() {
         title = assetCollection.localizedTitle
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done,
-                                                            target: self,
-                                                            action: #selector(doneButtonTapped))
+        doneBarButton = UIBarButtonItem(barButtonSystemItem: .done,
+                                        target: self,
+                                        action: #selector(doneButtonTapped))
+        
+        dataStorageObservation = dataStorage.observe(\.assets) { [weak self] dataStorage, _ in
+            self?.doneBarButton?.isEnabled = dataStorage.assets.count > 0
+        }
+        doneBarButton?.isEnabled = dataStorage.assets.count > 0
+        
+        navigationItem.rightBarButtonItem = doneBarButton
     }
     
     private func setupCollectionView() {

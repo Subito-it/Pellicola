@@ -22,14 +22,17 @@ final class AssetCollectionsViewController: UIViewController {
                                                                    .smartAlbumPanoramas]
     
     private var albums: [PHAssetCollection] = []
+    private var dataStorage: DataStorage
     
     var doneBarButtonAction: (() -> Void)?
     var cancelBarButtonAction: (() -> Void)?
     var didSelectAssetCollection: ((PHAssetCollection) -> Void)?
     
-    private weak var doneBarButton: UIBarButtonItem?
+    private var doneBarButton: UIBarButtonItem?
+    private var dataStorageObservation: NSKeyValueObservation?
     
-    init() {
+    init(dataStorage: DataStorage) {
+        self.dataStorage = dataStorage
         super.init(nibName: nil, bundle: Bundle.framework)
     }
     
@@ -67,6 +70,11 @@ final class AssetCollectionsViewController: UIViewController {
         doneBarButton = UIBarButtonItem(barButtonSystemItem: .done,
                                         target: self,
                                         action: #selector(doneButtonTapped))
+        
+        dataStorageObservation = dataStorage.observe(\.assets) { [weak self] dataStorage, _ in
+            self?.doneBarButton?.isEnabled = dataStorage.assets.count > 0
+        }
+        doneBarButton?.isEnabled = dataStorage.assets.count > 0
         
         navigationItem.rightBarButtonItem = doneBarButton
         

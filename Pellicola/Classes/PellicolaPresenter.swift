@@ -59,7 +59,7 @@ public final class PellicolaPresenter: NSObject {
     // MARK: - View Controller creation
     
     private func createAssetsCollectionViewController() -> AssetCollectionsViewController {
-        let assetCollectionsVC = AssetCollectionsViewController()
+        let assetCollectionsVC = AssetCollectionsViewController(dataStorage: dataStorage)
         assetCollectionsVC.cancelBarButtonAction = cancelButtonTapped
         assetCollectionsVC.doneBarButtonAction = doneButtonTapped
         assetCollectionsVC.didSelectAssetCollection = { assetCollection in
