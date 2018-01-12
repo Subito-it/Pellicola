@@ -9,15 +9,15 @@ import UIKit
 
 class CheckmarkView: UIView {
     
-    let borderWidth: CGFloat = 1.0
-    let checkmarkLineWidth: CGFloat = 1.2
+    private let borderWidth: CGFloat = 1.0
+    private let checkmarkLineWidth: CGFloat = 1.2
     
-    let borderColor: UIColor = .white
-    let bodyColor: UIColor = #colorLiteral(red: 0.07843137255, green: 0.4352941176, blue: 0.8745098039, alpha: 1)
-    let checkmarkColor: UIColor = .white
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    private let borderColor: UIColor = .white
+    private let bodyColor: UIColor = #colorLiteral(red: 0.07843137255, green: 0.4352941176, blue: 0.8745098039, alpha: 1)
+    private let checkmarkColor: UIColor = .white
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         
         self.backgroundColor = .clear
         
@@ -25,6 +25,10 @@ class CheckmarkView: UIView {
         self.layer.shadowOffset = CGSize.zero
         self.layer.shadowOpacity = 0.6
         self.layer.shadowRadius = 2.0
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func draw(_ rect: CGRect) {

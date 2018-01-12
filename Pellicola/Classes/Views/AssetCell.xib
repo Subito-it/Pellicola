@@ -6,7 +6,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -23,37 +22,36 @@
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="SLs-PK-leT">
                         <rect key="frame" x="0.0" y="0.0" width="165" height="163"/>
                     </imageView>
-                    <view alpha="0.40000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dD5-gg-yGc">
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dD5-gg-yGc" customClass="SelectionView" customModule="Pellicola">
                         <rect key="frame" x="0.0" y="0.0" width="165" height="163"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JNN-3j-cSV" customClass="CheckmarkView" customModule="Pellicola" customModuleProvider="target">
-                        <rect key="frame" x="137" y="135" width="24" height="24"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="24" id="hgw-we-xcR"/>
-                            <constraint firstAttribute="width" secondItem="JNN-3j-cSV" secondAttribute="height" multiplier="1:1" id="hoG-WC-Y8V"/>
-                        </constraints>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YFK-Ju-zyq" customClass="LoadingView" customModule="Pellicola" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="0.0" width="165" height="163"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
                 </subviews>
             </view>
             <constraints>
+                <constraint firstItem="YFK-Ju-zyq" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="4NQ-ea-cdk"/>
                 <constraint firstItem="dD5-gg-yGc" firstAttribute="leading" secondItem="SLs-PK-leT" secondAttribute="leading" id="8eK-Gh-kxw"/>
-                <constraint firstAttribute="bottom" secondItem="JNN-3j-cSV" secondAttribute="bottom" constant="4" id="AVM-Nq-VxL"/>
                 <constraint firstAttribute="trailing" secondItem="SLs-PK-leT" secondAttribute="trailing" id="Avt-DT-BqS"/>
+                <constraint firstAttribute="bottom" secondItem="YFK-Ju-zyq" secondAttribute="bottom" id="ClY-7M-c2t"/>
+                <constraint firstAttribute="trailing" secondItem="YFK-Ju-zyq" secondAttribute="trailing" id="IRt-wG-aPi"/>
                 <constraint firstItem="SLs-PK-leT" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="JFp-bG-el0"/>
                 <constraint firstItem="dD5-gg-yGc" firstAttribute="bottom" secondItem="SLs-PK-leT" secondAttribute="bottom" id="Rnj-tD-UGI"/>
                 <constraint firstItem="dD5-gg-yGc" firstAttribute="top" secondItem="SLs-PK-leT" secondAttribute="top" id="TOI-zW-7tZ"/>
-                <constraint firstAttribute="trailing" secondItem="JNN-3j-cSV" secondAttribute="trailing" constant="4" id="Yoa-Uw-hbS"/>
                 <constraint firstItem="dD5-gg-yGc" firstAttribute="trailing" secondItem="SLs-PK-leT" secondAttribute="trailing" id="Yvl-B3-Gqw"/>
                 <constraint firstAttribute="bottom" secondItem="SLs-PK-leT" secondAttribute="bottom" id="gBg-Ul-sfu"/>
+                <constraint firstItem="YFK-Ju-zyq" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="gCu-SS-8uY"/>
                 <constraint firstItem="SLs-PK-leT" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="zSE-9l-Dai"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <size key="customSize" width="165" height="163"/>
             <connections>
-                <outlet property="checkmarkView" destination="JNN-3j-cSV" id="KnJ-SD-etz"/>
                 <outlet property="imageView" destination="SLs-PK-leT" id="AIV-Fs-Zpv"/>
-                <outlet property="overlayView" destination="dD5-gg-yGc" id="hDu-73-6JV"/>
+                <outlet property="loadingView" destination="YFK-Ju-zyq" id="bSV-Gf-gq1"/>
+                <outlet property="selectionView" destination="dD5-gg-yGc" id="Lh1-2y-OHY"/>
             </connections>
             <point key="canvasLocation" x="82.5" y="108.5"/>
         </collectionViewCell>

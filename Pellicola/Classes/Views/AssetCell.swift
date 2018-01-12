@@ -10,8 +10,18 @@ import UIKit
 class AssetCell: UICollectionViewCell {
 
     @IBOutlet weak private var imageView: UIImageView!
-    @IBOutlet weak private var overlayView: UIView!
-    @IBOutlet weak var checkmarkView: CheckmarkView!
+    @IBOutlet weak var selectionView: SelectionView!
+    @IBOutlet weak var loadingView: LoadingView!
+    
+    enum State {
+        case normal, selected, loading
+    }
+    
+    var state: State = .normal {
+        didSet {
+            updateStyle()
+        }
+    }
     
     var assetIdentifier: String!
     
@@ -22,19 +32,30 @@ class AssetCell: UICollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        setSelection(false)
         imageView.applyThumbnailStyle()
+        state = .normal
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
         imageView.image = nil
-        setSelection(false)
+        state = .normal
     }
     
-    func setSelection(_ value: Bool) {
-        overlayView.isHidden = !value
-        checkmarkView.isHidden = !value
+    private func updateStyle() {
+        switch state {
+            
+        case .normal:
+            selectionView.isHidden = true
+            loadingView.isHidden = true
+        case .selected:
+            selectionView.isHidden = false
+            loadingView.isHidden = true
+        case .loading:
+            selectionView.isHidden = true
+            loadingView.isHidden = false
+            
+        }
     }
 
 }

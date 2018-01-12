@@ -280,7 +280,7 @@ extension AssetsViewController: UICollectionViewDataSource {
         let result = dataStorage.assets.contains(where: {
             return $0.localIdentifier == cell.assetIdentifier
         })
-        cell.setSelection(result)
+        cell.state = result ? .selected : .normal
         
         return cell
     }
