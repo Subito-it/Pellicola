@@ -23,12 +23,8 @@ class AssetsViewController: UIViewController {
     private let spaceBetweenPhotosInRow: CGFloat = 1.0
     private let imageManager = PHCachingImageManager()
     private var previousPreheatRect = CGRect.zero
-    private var assetCollection: PHAssetCollection
     private var thumbnailSize: CGSize!
     private weak var centerBarButtonToolbar: UIBarButtonItem?
-    
-    private var fetchResult: PHFetchResult<PHAsset>
-    private var dataStorage: DataStorage
     
     private var doneBarButton: UIBarButtonItem?
     private var dataStorageObservation: NSKeyValueObservation?
@@ -37,11 +33,10 @@ class AssetsViewController: UIViewController {
     var shouldTapOnAsset: (() -> Bool)?
     var didTapOnAsset: ((PHAsset) -> Void)?
     
-    init(assetCollection: PHAssetCollection,
-         dataStorage: DataStorage) {
-        self.assetCollection = assetCollection
-        fetchResult = PHAsset.fetchAssets(in: assetCollection, options: nil)
-        self.dataStorage = dataStorage
+    private var viewModel: AssetsViewModel
+    
+    init(viewModel: AssetsViewModel) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: Bundle.framework)
     }
     
@@ -59,14 +54,13 @@ class AssetsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        let numberOfImages = self.fetchResult.countOfAssets(with: .image)
-        
-        if numberOfImages > 0, isMovingToParentViewController {
+        if viewModel.numberOfImages > 0, isMovingToParentViewController {
             // when presenting as a .FormSheet on iPad, the frame is not correct until just after viewWillAppear:
             // dispatching to the main thread waits one run loop until the frame is update and the layout is complete
-            DispatchQueue.main.async {
-                let lastItemIndex = IndexPath(item: numberOfImages - 1, section: 0)
-                self.collectionView.scrollToItem(at: lastItemIndex, at: .top, animated: false)
+            DispatchQueue.main.async { [weak self] in
+                guard let sSelf = self else { return }
+                let lastItemIndex = IndexPath(item: sSelf.viewModel.numberOfImages - 1, section: 0)
+                sSelf.collectionView.scrollToItem(at: lastItemIndex, at: .top, animated: false)
             }
         }
     }
@@ -90,16 +84,16 @@ class AssetsViewController: UIViewController {
     }
     
     private func setupNavigationBar() {
-        title = assetCollection.localizedTitle
+        title = viewModel.assetCollectionName
         
         doneBarButton = UIBarButtonItem(barButtonSystemItem: .done,
                                         target: self,
                                         action: #selector(doneButtonTapped))
-        
-        dataStorageObservation = dataStorage.observe(\.assets) { [weak self] dataStorage, _ in
-            self?.doneBarButton?.isEnabled = dataStorage.assets.count > 0
+        dataStorageObservation = viewModel.dataStorage.observe(\DataStorage.images) { [weak self] _, _ in
+            guard let sSelf = self else { return }
+            sSelf.doneBarButton?.isEnabled = sSelf.viewModel.numberOfSelectedAssets > 0
         }
-        doneBarButton?.isEnabled = dataStorage.assets.count > 0
+        doneBarButton?.isEnabled = viewModel.numberOfSelectedAssets > 0
         
         navigationItem.rightBarButtonItem = doneBarButton
     }
@@ -122,12 +116,7 @@ class AssetsViewController: UIViewController {
         thumbnailSize = CGSize(width: cellSize.width * scale, height: cellSize.height * scale)
         
         collectionView.allowsSelection = true
-        
-        if let maxNumberOfSelections = dataStorage.limit, maxNumberOfSelections > 1 {
-            collectionView.allowsMultipleSelection = true
-        } else {
-            collectionView.allowsMultipleSelection = false
-        }
+        collectionView.allowsMultipleSelection = viewModel.allowMultipleSelection
         
         collectionView.register(UINib(nibName: AssetCell.identifier, bundle: Bundle.framework),
                                 forCellWithReuseIdentifier: AssetCell.identifier)
@@ -159,15 +148,15 @@ class AssetsViewController: UIViewController {
     
     private func updateToolbar() {
         
-        guard let limit = dataStorage.limit, limit > 0 else { return }
+        guard viewModel.allowMultipleSelection, let limit = viewModel.selectionLimit else { return }
         
-        guard dataStorage.assets.count > 0 else {
+        guard viewModel.numberOfSelectedAssets > 0 else {
             navigationController?.setToolbarHidden(true, animated: true)
             return
         }
         
         centerBarButtonToolbar?.title = String(format: NSLocalizedString("selected_assets", bundle:  Bundle.framework, comment: ""),
-                                               dataStorage.assets.count,
+                                               viewModel.numberOfSelectedAssets,
                                                limit)
         navigationController?.setToolbarHidden(false, animated: true)
         
@@ -202,10 +191,10 @@ class AssetsViewController: UIViewController {
         let (addedRects, removedRects) = differencesBetweenRects(previousPreheatRect, preheatRect)
         let addedAssets = addedRects
             .flatMap { rect in collectionView.indexPathsForElements(in: rect) }
-            .map { indexPath in fetchResult.object(at: indexPath.item) }
+            .map { indexPath in viewModel.assets.object(at: indexPath.item) }
         let removedAssets = removedRects
             .flatMap { rect in collectionView.indexPathsForElements(in: rect) }
-            .map { indexPath in fetchResult.object(at: indexPath.item) }
+            .map { indexPath in viewModel.assets.object(at: indexPath.item) }
         
         // Update the assets the PHCachingImageManager is caching.
         imageManager.startCachingImages(for: addedAssets,
@@ -256,7 +245,7 @@ class AssetsViewController: UIViewController {
 extension AssetsViewController: UICollectionViewDataSource {
     
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return fetchResult.countOfAssets(with: .image)
+        return viewModel.numberOfImages
     }
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -264,7 +253,7 @@ extension AssetsViewController: UICollectionViewDataSource {
             assertionFailure("Error dequeuing photo cell")
             return UICollectionViewCell()
         }
-        let asset = fetchResult.object(at: indexPath.item)
+        let asset = viewModel.assets.object(at: indexPath.item)
         
         // Request an image for the asset from the PHCachingImageManager.
         cell.assetIdentifier = asset.localIdentifier
@@ -277,10 +266,7 @@ extension AssetsViewController: UICollectionViewDataSource {
             }
         })
         
-        let result = dataStorage.assets.contains(where: {
-            return $0.localIdentifier == cell.assetIdentifier
-        })
-        cell.state = result ? .selected : .normal
+        cell.setState(viewModel.getState(for: asset))
         
         return cell
     }
@@ -293,19 +279,23 @@ extension AssetsViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        let tappedAsset = fetchResult.object(at: indexPath.item)
+        let selectedAsset = viewModel.assets.object(at: indexPath.item)
+        var oldAssetState = viewModel.getState(for: selectedAsset)
         
-        if dataStorage.assets.contains(tappedAsset) {
-            dataStorage.remove(tappedAsset)
-        } else if dataStorage.isLimitReached {
-            dataStorage.add(tappedAsset)
+        let updateUI = { [weak self] in
+            DispatchQueue.main.async { [weak self] in
+                guard let newAssetState = self?.viewModel.getState(for: selectedAsset), newAssetState != oldAssetState else { return }
+                oldAssetState = newAssetState
+                self?.updateToolbar()
+                UIView.performWithoutAnimation {
+                    self?.collectionView.reloadItems(at: [indexPath])
+                }
+            }
         }
         
-        updateToolbar()
+        viewModel.selectedAsset(selectedAsset,
+                                updateUI: updateUI)
         
-        UIView.performWithoutAnimation {
-            collectionView.reloadItems(at: [indexPath])
-        }
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

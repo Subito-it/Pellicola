@@ -10,7 +10,7 @@ import Photos
 
 public final class PellicolaPresenter: NSObject {
     
-    @objc public var didSelectImages: (([PHAsset]) -> Void)?
+    @objc public var didSelectImages: (([UIImage]) -> Void)?
     @objc public var userDidCancel: (() -> Void)?
     
     /*
@@ -25,13 +25,15 @@ public final class PellicolaPresenter: NSObject {
     }()
     
     private var dataStorage = DataStorage(limit: 1)
+    private var dataFetcher = DataFetcher()
     private var dataStorageObservation: NSKeyValueObservation?
     
     @objc public func presentPellicola(on presentingViewController: UIViewController) {
         dataStorage = DataStorage(limit: maxNumberOfSelections != 0 ? maxNumberOfSelections : nil)
         
         if maxNumberOfSelections == 1 {
-            dataStorageObservation = dataStorage.observe(\.assets) { [weak self] _, _ in
+            dataStorageObservation = dataStorage.observe(\.images) { [weak self] dataStorage, _ in
+                guard dataStorage.images.count > 0 else { return }
                 self?.doneButtonTapped()
             }
         }
@@ -52,7 +54,7 @@ public final class PellicolaPresenter: NSObject {
     private func doneButtonTapped() {
         navigationController.dismiss(animated: true) { [weak self] in
             guard let sSelf = self else { return }
-            sSelf.didSelectImages?(sSelf.dataStorage.assets)
+            sSelf.didSelectImages?(sSelf.dataStorage.getImagesOrderedBySelection())
         }
     }
     
@@ -70,8 +72,10 @@ public final class PellicolaPresenter: NSObject {
     }
     
     private func createAssetsViewController(assetCollection: PHAssetCollection) -> AssetsViewController {
-        let assetsViewController = AssetsViewController(assetCollection: assetCollection,
-                                                        dataStorage: dataStorage)
+        let viewModel = AssetsViewModel(dataStorage: dataStorage,
+                                        dataFetcher: dataFetcher,
+                                        assetCollection: assetCollection)
+        let assetsViewController = AssetsViewController(viewModel: viewModel)
         assetsViewController.doneBarButtonAction = doneButtonTapped
         return assetsViewController
         

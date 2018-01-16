@@ -71,10 +71,10 @@ final class AssetCollectionsViewController: UIViewController {
                                         target: self,
                                         action: #selector(doneButtonTapped))
         
-        dataStorageObservation = dataStorage.observe(\.assets) { [weak self] dataStorage, _ in
-            self?.doneBarButton?.isEnabled = dataStorage.assets.count > 0
+        dataStorageObservation = dataStorage.observe(\.images) { [weak self] dataStorage, _ in
+            self?.doneBarButton?.isEnabled = dataStorage.images.count > 0
         }
-        doneBarButton?.isEnabled = dataStorage.assets.count > 0
+        doneBarButton?.isEnabled = dataStorage.images.count > 0
         
         navigationItem.rightBarButtonItem = doneBarButton
         

@@ -8,39 +8,63 @@
 import Foundation
 import Photos
 
+class OrderedImage: NSObject, Comparable {
+    let image: UIImage
+    let index: Int
+    init(image: UIImage, index: Int) {
+        self.image = image
+        self.index = index
+    }
+    
+    static func <(lhs: OrderedImage, rhs: OrderedImage) -> Bool {
+        return lhs.index < rhs.index
+    }
+}
+
 class DataStorage: NSObject {
     
-    @objc dynamic private(set) var assets: [PHAsset] = []
+    @objc dynamic private(set) var images: [String: OrderedImage] = [String: OrderedImage]()
+    private var index = 0
     
     let limit: UInt?
     
-    var isLimitReached: Bool {
+    var isAvailableSpace: Bool {
         guard let limit = limit else { return true}
-        return assets.count < limit
+        return images.count < limit
     }
     
     init(limit: UInt? = nil) {
         self.limit = limit
     }
     
-    func add(_ asset: PHAsset) {
+    func addImage(_ image: UIImage, withIdentifier identifier: String) {
         
-        // TODO: - Verificare che l'oggetto non sia già presente
+        guard images[identifier] == nil else { return }
+        guard let limit = limit, images.count < limit else { return }
         
-        guard let limit = limit, assets.count < limit else { return }
-        assets.append(asset)
+        images[identifier] = OrderedImage(image: image, index: index)
+        index += 1
     }
     
-    func remove(_ asset: PHAsset) {
+    func removeImage(withIdentifier identifier: String) {
         
-        let indefOfAssetToRemove = assets.index {
-            return asset.localIdentifier == $0.localIdentifier
+        guard images[identifier] != nil else { return }
+        
+        images.removeValue(forKey: identifier)
+        index -= 1
+        
+    }
+    
+    func containsImage(withIdentifier identifier: String) -> Bool {
+        return images[identifier] != nil
+    }
+    
+    func getImagesOrderedBySelection() -> [UIImage] {
+        return images.values
+            .sorted(by: <)
+            .flatMap {
+            return $0.image
         }
-        
-        if let indefOfAssetToRemove = indefOfAssetToRemove {
-            assets.remove(at: indefOfAssetToRemove)
-        }
-        
     }
     
 }

@@ -17,11 +17,7 @@ class AssetCell: UICollectionViewCell {
         case normal, selected, loading
     }
     
-    var state: State = .normal {
-        didSet {
-            updateStyle()
-        }
-    }
+    private var state: State = .normal
     
     var assetIdentifier: String!
     
@@ -33,13 +29,7 @@ class AssetCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         imageView.applyThumbnailStyle()
-        state = .normal
-    }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        imageView.image = nil
-        state = .normal
+        updateStyle()
     }
     
     private func updateStyle() {
@@ -56,6 +46,12 @@ class AssetCell: UICollectionViewCell {
             loadingView.isHidden = false
             
         }
+    }
+    
+    func setState(_ state: State) {
+        guard self.state != state else { return }
+        self.state = state
+        self.updateStyle()
     }
 
 }

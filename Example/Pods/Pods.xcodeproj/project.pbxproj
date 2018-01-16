@@ -29,6 +29,8 @@
 		CDECE293F8A05590123BC4E30FF1ED40 /* it.lproj in Resources */ = {isa = PBXBuildFile; fileRef = C2CB2E6E17292685FBF30DF58BE7EBDB /* it.lproj */; };
 		CEDA801A2007C71D0031E857 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDA80192007C71D0031E857 /* LoadingView.swift */; };
 		CEDA801C2008FAC70031E857 /* SelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDA801B2008FAC70031E857 /* SelectionView.swift */; };
+		CEDA802E200CCAD70031E857 /* AssetsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDA802D200CCAD70031E857 /* AssetsViewModel.swift */; };
+		CEDA8030200CF82A0031E857 /* DataFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDA802F200CF82A0031E857 /* DataFetcher.swift */; };
 		D7252010A430C606B748F239688DA7FC /* Bundle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFC4CB4E973087C9080159ACD7E53BF /* Bundle+Extension.swift */; };
 		E0AA305D8AB8BDAD250E9DDCA89D22A2 /* AssetCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B717925BC6ADA40230021D2C04E925C /* AssetCollectionCell.swift */; };
 		E605784D6C37829AAF6C22E5C16D5D87 /* AssetCollectionsFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0AE22F90E3938DD3BE71F5887587C3D /* AssetCollectionsFetcher.swift */; };
@@ -89,6 +91,8 @@
 		CA7153B6305F66448840F6C7D1434E9D /* Pods-Pellicola_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Pellicola_Tests-dummy.m"; sourceTree = "<group>"; };
 		CEDA80192007C71D0031E857 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		CEDA801B2008FAC70031E857 /* SelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionView.swift; sourceTree = "<group>"; };
+		CEDA802D200CCAD70031E857 /* AssetsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetsViewModel.swift; sourceTree = "<group>"; };
+		CEDA802F200CF82A0031E857 /* DataFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DataFetcher.swift; path = Pellicola/Classes/DataFetcher.swift; sourceTree = "<group>"; };
 		D23431D9EFC8F07A67351E4728EA5D6A /* AssetsViewController.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; path = AssetsViewController.xib; sourceTree = "<group>"; };
 		D33AABB357D1D4B5B83EBB6E34EF18E9 /* Pods-Pellicola_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Pellicola_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		DD36DAC073533AD536FAB7DBECE41907 /* AssetCell.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AssetCell.swift; sourceTree = "<group>"; };
@@ -186,6 +190,7 @@
 				9D37AE7E0F9D8105BAEE85A4B428F0EB /* Support Files */,
 				501DD7618A755C39EC4FBB7A199373B0 /* ViewControllers */,
 				77046D19E9DB594AF41A5CB961592AD4 /* Views */,
+				CEDA802F200CF82A0031E857 /* DataFetcher.swift */,
 			);
 			name = Pellicola;
 			path = ../..;
@@ -198,6 +203,7 @@
 				755F29BBC96B13F44EAD3D4037C432C7 /* AssetCollectionsViewController.xib */,
 				1BEF1887BD2B60D5C5E719635F25368A /* AssetsViewController.swift */,
 				D23431D9EFC8F07A67351E4728EA5D6A /* AssetsViewController.xib */,
+				CEDA802D200CCAD70031E857 /* AssetsViewModel.swift */,
 			);
 			name = ViewControllers;
 			path = Pellicola/Classes/ViewControllers;
@@ -441,6 +447,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EBD8C609071662C52E3237ED486658F7 /* AssetCell.swift in Sources */,
+				CEDA802E200CCAD70031E857 /* AssetsViewModel.swift in Sources */,
 				3174FD27B82A0BD92265F47F39BC448C /* AssetCell.xib in Sources */,
 				E0AA305D8AB8BDAD250E9DDCA89D22A2 /* AssetCollectionCell.swift in Sources */,
 				708BFF03449576E02D34D29478D0898E /* AssetCollectionCell.xib in Sources */,
@@ -454,6 +461,7 @@
 				D7252010A430C606B748F239688DA7FC /* Bundle+Extension.swift in Sources */,
 				9DF8590F94CA7CEF54AC09D86E370D8B /* CheckmarkView.swift in Sources */,
 				AC157943B71FBFD637FB1B0A345168DB /* DataStorage.swift in Sources */,
+				CEDA8030200CF82A0031E857 /* DataFetcher.swift in Sources */,
 				A0EB3E21A2A2D8D86F29D58CCC386E35 /* Pellicola-dummy.m in Sources */,
 				EE0AAC570E0F973B039D8FA20EF8FA67 /* PellicolaPresenter.swift in Sources */,
 				204ECB4BDBC6E491E12C99D90EB7D0F6 /* UIImageView+Extension.swift in Sources */,
