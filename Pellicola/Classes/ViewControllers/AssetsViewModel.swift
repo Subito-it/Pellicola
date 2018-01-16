@@ -46,7 +46,11 @@ class AssetsViewModel {
         self.dataStorage = dataStorage
         self.dataFetcher = dataFetcher
         self.assetCollection = assetCollection
-        assets = PHAsset.fetchAssets(in: assetCollection, options: nil)
+        
+        let options = PHFetchOptions()
+        options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
+        options.predicate = NSPredicate(format: "mediaType = %d", PHAssetMediaType.image.rawValue)
+        assets = PHAsset.fetchAssets(in: assetCollection, options: options)
     }
     
     typealias CompletionHandler = (() -> Void)

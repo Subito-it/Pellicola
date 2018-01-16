@@ -181,7 +181,10 @@ extension AssetCollectionsViewController: UITableViewDataSource {
         albumCell.title = album.localizedTitle ?? ""
         
         // Photos Count
-        let fetchedAssets = PHAsset.fetchAssets(in: album, options: nil)
+        let options = PHFetchOptions()
+        options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
+        options.predicate = NSPredicate(format: "mediaType = %d", PHAssetMediaType.image.rawValue)
+        let fetchedAssets = PHAsset.fetchAssets(in: album, options: options)
         let numberOfImages = fetchedAssets.countOfAssets(with: .image)
         albumCell.subtitle = String(numberOfImages)
         
