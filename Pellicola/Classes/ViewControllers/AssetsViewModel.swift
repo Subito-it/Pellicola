@@ -58,13 +58,15 @@ class AssetsViewModel {
     func selectedAsset(_ asset: PHAsset,
                        updateUI: @escaping CompletionHandler) {
         
+        let count = Int(dataStorage.limit ?? 0) - dataStorage.images.count - dataFetcher.count
+        
         if dataStorage.containsImage(withIdentifier: asset.localIdentifier) {
             dataStorage.removeImage(withIdentifier: asset.localIdentifier)
             updateUI()
         } else if dataFetcher.containsRequest(withIdentifier: asset.localIdentifier) {
             dataFetcher.removeRequest(withIdentifier: asset.localIdentifier)
             updateUI()
-        } else if dataStorage.isAvailableSpace {
+        } else if count > 0 {
             
             dataFetcher.requestImage(for: asset, onProgress: updateUI, onComplete: { [weak self] image in
                 self?.dataStorage.addImage(image, withIdentifier: asset.localIdentifier)

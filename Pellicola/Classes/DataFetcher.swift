@@ -14,6 +14,10 @@ class DataFetcher {
     
     private var requestsID: [String: PHImageRequestID] = [String: PHImageRequestID]()
     
+    var count: Int {
+        return requestsID.count
+    }
+    
     func requestImage(for asset: PHAsset, onProgress: @escaping () -> Void, onComplete: ((UIImage) -> Void)?) {
         
         guard requestsID[asset.localIdentifier] == nil else { return }
