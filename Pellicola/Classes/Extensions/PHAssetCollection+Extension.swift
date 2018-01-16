@@ -1,19 +1,17 @@
 //
-//  AlbumFetcher.swift
+//  PHAssetCollection+Extension.swift
 //  Pellicola
 //
-//  Created by Andrea Antonioni on 20/12/2017.
+//  Created by Andrea Antonioni on 16/01/2018.
 //
 
 import Foundation
 import Photos
 
-final class AssetCollectionsFetcher {
+extension PHAssetCollection {
     
-    private init() { }
-    
-    static func fetch(assetCollectionType type: PHAssetCollectionType,
-                       sortedBy subtypes: [PHAssetCollectionSubtype]) -> [PHAssetCollection] {
+    class func fetch(assetCollectionType type: PHAssetCollectionType,
+                      sortedBy subtypes: [PHAssetCollectionSubtype]) -> [PHAssetCollection] {
         var albums: [PHAssetCollection] = []
         let fetchedAlbum = fetch(assetCollectionType: .smartAlbum, filteredBy: subtypes)
         subtypes.forEach {
@@ -23,7 +21,7 @@ final class AssetCollectionsFetcher {
         return albums
     }
     
-    private static func fetch(assetCollectionType type: PHAssetCollectionType,
+    private class func fetch(assetCollectionType type: PHAssetCollectionType,
                               filteredBy subtypes: [PHAssetCollectionSubtype]) -> [PHAssetCollectionSubtype: [PHAssetCollection]] {
         
         var filteredSmartAlbums: [PHAssetCollection] = []
@@ -39,4 +37,5 @@ final class AssetCollectionsFetcher {
         return Dictionary(grouping: filteredSmartAlbums,
                           by: { return $0.assetCollectionSubtype })
     }
+    
 }

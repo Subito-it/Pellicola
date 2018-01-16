@@ -13,17 +13,6 @@ final class AssetCollectionsViewController: UIViewController {
     
     @IBOutlet private var tableView: UITableView!
     
-    private let assetCollectionType: PHAssetCollectionType = .smartAlbum
-    
-    private let smartAlbumSubtypes: [PHAssetCollectionSubtype]  = [.smartAlbumUserLibrary,
-                                                                   .smartAlbumFavorites,
-                                                                   .smartAlbumSelfPortraits,
-                                                                   .smartAlbumScreenshots,
-                                                                   .smartAlbumPanoramas]
-    
-    private var albums: [PHAssetCollection] = []
-    private var dataStorage: DataStorage
-    
     var doneBarButtonAction: (() -> Void)?
     var cancelBarButtonAction: (() -> Void)?
     var didSelectAssetCollection: ((PHAssetCollection) -> Void)?
@@ -31,8 +20,10 @@ final class AssetCollectionsViewController: UIViewController {
     private var doneBarButton: UIBarButtonItem?
     private var dataStorageObservation: NSKeyValueObservation?
     
-    init(dataStorage: DataStorage) {
-        self.dataStorage = dataStorage
+    var viewModel: AssetCollectionsViewModel
+    
+    init(viewModel: AssetCollectionsViewModel) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: Bundle.framework)
     }
     
@@ -45,7 +36,9 @@ final class AssetCollectionsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
-        fetchAlbums()
+        viewModel.onChange = { [weak self] in
+            self?.tableView.reloadData()
+        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -71,10 +64,10 @@ final class AssetCollectionsViewController: UIViewController {
                                         target: self,
                                         action: #selector(doneButtonTapped))
         
-        dataStorageObservation = dataStorage.observe(\.images) { [weak self] dataStorage, _ in
+        dataStorageObservation = viewModel.dataStorage.observe(\DataStorage.images) { [weak self] dataStorage, _ in
             self?.doneBarButton?.isEnabled = dataStorage.images.count > 0
         }
-        doneBarButton?.isEnabled = dataStorage.images.count > 0
+        doneBarButton?.isEnabled = viewModel.dataStorage.images.count > 0
         
         navigationItem.rightBarButtonItem = doneBarButton
         
@@ -150,14 +143,6 @@ final class AssetCollectionsViewController: UIViewController {
         cancelBarButtonAction?()
     }
     
-    // MARK: - Albums fetching
-    
-    private func fetchAlbums() {
-        self.albums = AssetCollectionsFetcher.fetch(assetCollectionType: assetCollectionType,
-                                          sortedBy: smartAlbumSubtypes)
-    }
-    
-    
 }
 
 // MARK: - UITableViewDataSource
@@ -165,7 +150,7 @@ final class AssetCollectionsViewController: UIViewController {
 extension AssetCollectionsViewController: UITableViewDataSource {
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return albums.count
+        return viewModel.albums.count
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -177,7 +162,7 @@ extension AssetCollectionsViewController: UITableViewDataSource {
         
         albumCell.tag = indexPath.row
         
-        let album = albums[indexPath.row]
+        let album = viewModel.albums[indexPath.row]
         albumCell.title = album.localizedTitle ?? ""
         
         // Photos Count
@@ -251,7 +236,7 @@ extension AssetCollectionsViewController: UITableViewDataSource {
 extension AssetCollectionsViewController: UITableViewDelegate {
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let assetCollection = albums[indexPath.row]
+        let assetCollection = viewModel.albums[indexPath.row]
         didSelectAssetCollection?(assetCollection)
     }
     
