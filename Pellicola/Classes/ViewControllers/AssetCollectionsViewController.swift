@@ -13,8 +13,8 @@ final class AssetCollectionsViewController: UIViewController {
     
     @IBOutlet private var tableView: UITableView!
     
-    var doneBarButtonAction: (() -> Void)?
-    var cancelBarButtonAction: (() -> Void)?
+    var userDidCancel: (() -> Void)?
+    var didSelectImages: (([UIImage]) -> Void)?
     var didSelectAssetCollection: ((PHAssetCollection) -> Void)?
     
     private var doneBarButton: UIBarButtonItem?
@@ -60,16 +60,18 @@ final class AssetCollectionsViewController: UIViewController {
                                                            target: self,
                                                            action: #selector(cancelButtonTapped))
         
-        doneBarButton = UIBarButtonItem(barButtonSystemItem: .done,
-                                        target: self,
-                                        action: #selector(doneButtonTapped))
-        
-        dataStorageObservation = viewModel.dataStorage.observe(\DataStorage.images) { [weak self] dataStorage, _ in
-            self?.doneBarButton?.isEnabled = dataStorage.images.count > 0
+        if let limit = viewModel.dataStorage.limit, limit > 1 {
+            doneBarButton = UIBarButtonItem(barButtonSystemItem: .done,
+                                            target: self,
+                                            action: #selector(doneButtonTapped))
+            
+            dataStorageObservation = viewModel.dataStorage.observe(\DataStorage.images) { [weak self] dataStorage, _ in
+                self?.doneBarButton?.isEnabled = dataStorage.images.count > 0
+            }
+            doneBarButton?.isEnabled = viewModel.dataStorage.images.count > 0
+            
+            navigationItem.rightBarButtonItem = doneBarButton
         }
-        doneBarButton?.isEnabled = viewModel.dataStorage.images.count > 0
-        
-        navigationItem.rightBarButtonItem = doneBarButton
         
         title = NSLocalizedString("albums.title", bundle:  Bundle.framework, comment: "")
     }
@@ -133,14 +135,26 @@ final class AssetCollectionsViewController: UIViewController {
         
     }
     
-    // MARK: - Navigation
+    // MARK: - Action
     
     @objc func doneButtonTapped() {
-        doneBarButtonAction?()
+        guard viewModel.dataFetcher.count == 0 else {
+            viewModel.dataFetcher.clear()
+            let alert = UIAlertController(title: "Pippo", message: nil, preferredStyle: .alert)
+            navigationController?.presentingViewController?.present(alert, animated: true, completion: nil)
+            return
+        }
+        
+        navigationController?.dismiss(animated: true) { [weak self] in
+            guard let sSelf = self else { return }
+            sSelf.didSelectImages?(sSelf.viewModel.dataStorage.getImagesOrderedBySelection())
+        }
     }
     
     @objc func cancelButtonTapped() {
-        cancelBarButtonAction?()
+        navigationController?.dismiss(animated: true) { [weak self] in
+            self?.userDidCancel?()
+        }
     }
     
 }

@@ -17,7 +17,9 @@ class AssetCollectionsViewModel: NSObject {
                                                                    .smartAlbumScreenshots,
                                                                    .smartAlbumPanoramas]
     
-    var dataStorage: DataStorage
+    private(set) var dataStorage: DataStorage
+    
+    private(set) var dataFetcher: DataFetcher
     
     private(set) var albums: [PHAssetCollection]
     
@@ -25,8 +27,10 @@ class AssetCollectionsViewModel: NSObject {
     
     var onChange: (() -> Void)?
     
-    init(dataStorage: DataStorage) {
+    init(dataStorage: DataStorage,
+         dataFetcher: DataFetcher) {
         self.dataStorage = dataStorage
+        self.dataFetcher = dataFetcher
         fetchResult = PHAssetCollection.fetchAssetCollections(with: assetCollectionType, subtype: .albumRegular, options: nil)
         albums = PHAssetCollection.fetch(assetCollectionType: assetCollectionType, sortedBy: smartAlbumSubtypes)
         super.init()

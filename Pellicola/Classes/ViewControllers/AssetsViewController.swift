@@ -29,9 +29,7 @@ class AssetsViewController: UIViewController {
     private var doneBarButton: UIBarButtonItem?
     private var dataStorageObservation: NSKeyValueObservation?
     
-    var doneBarButtonAction: (() -> Void)?
-    var shouldTapOnAsset: (() -> Bool)?
-    var didTapOnAsset: ((PHAsset) -> Void)?
+    var didSelectImages: (([UIImage]) -> Void)?
     
     private var viewModel: AssetsViewModel
     
@@ -86,16 +84,19 @@ class AssetsViewController: UIViewController {
     private func setupNavigationBar() {
         title = viewModel.assetCollectionName
         
-        doneBarButton = UIBarButtonItem(barButtonSystemItem: .done,
-                                        target: self,
-                                        action: #selector(doneButtonTapped))
-        dataStorageObservation = viewModel.dataStorage.observe(\DataStorage.images) { [weak self] _, _ in
-            guard let sSelf = self else { return }
-            sSelf.doneBarButton?.isEnabled = sSelf.viewModel.numberOfSelectedAssets > 0
+        if let limit = viewModel.dataStorage.limit, limit > 1 {
+            doneBarButton = UIBarButtonItem(barButtonSystemItem: .done,
+                                            target: self,
+                                            action: #selector(doneButtonTapped))
+            dataStorageObservation = viewModel.dataStorage.observe(\DataStorage.images) { [weak self] _, _ in
+                guard let sSelf = self else { return }
+                sSelf.doneBarButton?.isEnabled = sSelf.viewModel.numberOfSelectedAssets > 0
+            }
+            doneBarButton?.isEnabled = viewModel.numberOfSelectedAssets > 0
+            
+            navigationItem.rightBarButtonItem = doneBarButton
         }
-        doneBarButton?.isEnabled = viewModel.numberOfSelectedAssets > 0
         
-        navigationItem.rightBarButtonItem = doneBarButton
     }
     
     private func setupCollectionView() {
@@ -162,10 +163,24 @@ class AssetsViewController: UIViewController {
         
     }
     
-    // MARK: - Navigation
+    // MARK: - Action
     
     @objc func doneButtonTapped() {
-        doneBarButtonAction?()
+        guard viewModel.dataFetcher.count == 0 else {
+            viewModel.dataFetcher.clear()
+            let alert = UIAlertController(title: "Pippo", message: nil, preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "Ok", style: .default) { [weak self] _ in
+                self?.collectionView.reloadData()
+            }
+            alert.addAction(okAction)
+            present(alert, animated: true)
+            return
+        }
+        
+        navigationController?.dismiss(animated: true) { [weak self] in
+            guard let sSelf = self else { return }
+            sSelf.didSelectImages?(sSelf.viewModel.dataStorage.getImagesOrderedBySelection())
+        }
     }
     
     // MARK: Asset Caching
@@ -284,11 +299,18 @@ extension AssetsViewController: UICollectionViewDelegate {
         
         let updateUI = { [weak self] in
             DispatchQueue.main.async { [weak self] in
-                guard let newAssetState = self?.viewModel.getState(for: selectedAsset), newAssetState != oldAssetState else { return }
+                guard let sSelf = self, let newAssetState = self?.viewModel.getState(for: selectedAsset), newAssetState != oldAssetState else { return }
                 oldAssetState = newAssetState
-                self?.updateToolbar()
-                UIView.performWithoutAnimation {
-                    self?.collectionView.reloadItems(at: [indexPath])
+                if let limit = sSelf.viewModel.dataStorage.limit, limit > 1, newAssetState == .selected {
+                    sSelf.navigationController?.dismiss(animated: true) { [weak self] in
+                        guard let sSelf = self else { return }
+                        sSelf.didSelectImages?(sSelf.viewModel.dataStorage.getImagesOrderedBySelection())
+                    }
+                } else {
+                    sSelf.updateToolbar()
+                    UIView.performWithoutAnimation {
+                        sSelf.collectionView.reloadItems(at: [indexPath])
+                    }
                 }
             }
         }
