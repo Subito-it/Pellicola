@@ -17,15 +17,26 @@ class AssetCollectionsViewModel: NSObject {
                                                                    .smartAlbumScreenshots,
                                                                    .smartAlbumPanoramas]
     
-    private(set) var dataStorage: DataStorage
-    
-    private(set) var dataFetcher: DataFetcher
-    
+    private var dataStorage: DataStorage
+    private var dataFetcher: DataFetcher
     private(set) var albums: [PHAssetCollection]
-    
     private var fetchResult: PHFetchResult<PHAssetCollection>
+    private var dataStorageObservation: NSKeyValueObservation?
     
-    var onChange: (() -> Void)?
+    var onChangeAssetCollections: (() -> Void)?
+    var onChangeSelectedAssets: ((Int) -> Void)?
+    
+    var maxNumberOfSelection: UInt {
+        return dataStorage.limit
+    }
+    
+    var numberOfSelectedAssets: Int {
+        return dataStorage.images.count
+    }
+    
+    var isDownloadingImages: Bool {
+        return dataFetcher.count != 0
+    }
     
     init(dataStorage: DataStorage,
          dataFetcher: DataFetcher) {
@@ -34,11 +45,24 @@ class AssetCollectionsViewModel: NSObject {
         fetchResult = PHAssetCollection.fetchAssetCollections(with: assetCollectionType, subtype: .albumRegular, options: nil)
         albums = PHAssetCollection.fetch(assetCollectionType: assetCollectionType, sortedBy: smartAlbumSubtypes)
         super.init()
+        
+        dataStorageObservation = dataStorage.observe(\DataStorage.images) { [weak self] _, _ in
+            guard let sSelf = self else { return }
+            sSelf.onChangeSelectedAssets?(sSelf.numberOfSelectedAssets)
+        }
         PHPhotoLibrary.shared().register(self)
     }
     
     deinit {
         PHPhotoLibrary.shared().unregisterChangeObserver(self)
+    }
+    
+    func getSelectedImages() -> [UIImage] {
+        return dataStorage.getImagesOrderedBySelection()
+    }
+    
+    func stopDownloadingImages() {
+        dataFetcher.clear()
     }
     
 }
@@ -55,7 +79,7 @@ extension AssetCollectionsViewModel: PHPhotoLibraryChangeObserver {
         }
         
         DispatchQueue.main.async { [weak self] in
-            self?.onChange?()
+            self?.onChangeAssetCollections?()
         }
         
     }

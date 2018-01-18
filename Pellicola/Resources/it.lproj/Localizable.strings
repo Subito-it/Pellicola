@@ -8,3 +8,5 @@
 "albums.title" = "Foto";
 
 "selected_assets" = "%d di %d foto";
+"alert_deselection.title" = "";
+"alert_deselection.ok" = "OK";

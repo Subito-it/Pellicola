@@ -11,7 +11,7 @@ import Photos
 extension PHAssetCollection {
     
     class func fetch(assetCollectionType type: PHAssetCollectionType,
-                      sortedBy subtypes: [PHAssetCollectionSubtype]) -> [PHAssetCollection] {
+                     sortedBy subtypes: [PHAssetCollectionSubtype]) -> [PHAssetCollection] {
         var albums: [PHAssetCollection] = []
         let fetchedAlbum = fetch(assetCollectionType: .smartAlbum, filteredBy: subtypes)
         subtypes.forEach {
@@ -22,7 +22,7 @@ extension PHAssetCollection {
     }
     
     private class func fetch(assetCollectionType type: PHAssetCollectionType,
-                              filteredBy subtypes: [PHAssetCollectionSubtype]) -> [PHAssetCollectionSubtype: [PHAssetCollection]] {
+                             filteredBy subtypes: [PHAssetCollectionSubtype]) -> [PHAssetCollectionSubtype: [PHAssetCollection]] {
         
         var filteredSmartAlbums: [PHAssetCollection] = []
         

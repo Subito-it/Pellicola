@@ -84,14 +84,14 @@ class AssetsViewController: UIViewController {
     private func setupNavigationBar() {
         title = viewModel.assetCollectionName
         
-        if let limit = viewModel.dataStorage.limit, limit > 1 {
+        if viewModel.maxNumberOfSelection > 1 {
             doneBarButton = UIBarButtonItem(barButtonSystemItem: .done,
                                             target: self,
                                             action: #selector(doneButtonTapped))
-            dataStorageObservation = viewModel.dataStorage.observe(\DataStorage.images) { [weak self] _, _ in
-                guard let sSelf = self else { return }
-                sSelf.doneBarButton?.isEnabled = sSelf.viewModel.numberOfSelectedAssets > 0
+            viewModel.onChangeSelectedAssets = { [weak self] numberOfSelectedAssets in
+                self?.doneBarButton?.isEnabled = numberOfSelectedAssets > 0
             }
+            
             doneBarButton?.isEnabled = viewModel.numberOfSelectedAssets > 0
             
             navigationItem.rightBarButtonItem = doneBarButton
@@ -117,7 +117,7 @@ class AssetsViewController: UIViewController {
         thumbnailSize = CGSize(width: cellSize.width * scale, height: cellSize.height * scale)
         
         collectionView.allowsSelection = true
-        collectionView.allowsMultipleSelection = viewModel.allowMultipleSelection
+        collectionView.allowsMultipleSelection = viewModel.maxNumberOfSelection > 1
         
         collectionView.register(UINib(nibName: AssetCell.identifier, bundle: Bundle.framework),
                                 forCellWithReuseIdentifier: AssetCell.identifier)
@@ -149,16 +149,12 @@ class AssetsViewController: UIViewController {
     
     private func updateToolbar() {
         
-        guard viewModel.allowMultipleSelection, let limit = viewModel.selectionLimit else { return }
-        
-        guard viewModel.numberOfSelectedAssets > 0 else {
+        guard viewModel.maxNumberOfSelection > 1,  viewModel.numberOfSelectedAssets > 0 else {
             navigationController?.setToolbarHidden(true, animated: true)
             return
         }
         
-        centerBarButtonToolbar?.title = String(format: NSLocalizedString("selected_assets", bundle:  Bundle.framework, comment: ""),
-                                               viewModel.numberOfSelectedAssets,
-                                               limit)
+        centerBarButtonToolbar?.title = viewModel.toolbarText
         navigationController?.setToolbarHidden(false, animated: true)
         
     }
@@ -166,10 +162,13 @@ class AssetsViewController: UIViewController {
     // MARK: - Action
     
     @objc func doneButtonTapped() {
-        guard viewModel.dataFetcher.count == 0 else {
-            viewModel.dataFetcher.clear()
-            let alert = UIAlertController(title: "Pippo", message: nil, preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "Ok", style: .default) { [weak self] _ in
+        guard !viewModel.isDownloadingImages else {
+            viewModel.stopDownloadingImages()
+            let alert = UIAlertController(title: NSLocalizedString("alert_deselection.title", bundle: Bundle.framework, comment: ""),
+                                          message: nil,
+                                          preferredStyle: .alert)
+            let okAction = UIAlertAction(title: NSLocalizedString("alert_deselection.ok", bundle: Bundle.framework, comment: ""),
+                                         style: .default) { [weak self] _ in
                 self?.collectionView.reloadData()
             }
             alert.addAction(okAction)
@@ -179,7 +178,7 @@ class AssetsViewController: UIViewController {
         
         navigationController?.dismiss(animated: true) { [weak self] in
             guard let sSelf = self else { return }
-            sSelf.didSelectImages?(sSelf.viewModel.dataStorage.getImagesOrderedBySelection())
+            sSelf.didSelectImages?(sSelf.viewModel.getSelectedImages())
         }
     }
     
@@ -297,14 +296,14 @@ extension AssetsViewController: UICollectionViewDelegate {
         let selectedAsset = viewModel.assets.object(at: indexPath.item)
         var oldAssetState = viewModel.getState(for: selectedAsset)
         
-        let updateUI = { [weak self] in
+        let updateUI = {
             DispatchQueue.main.async { [weak self] in
                 guard let sSelf = self, let newAssetState = self?.viewModel.getState(for: selectedAsset), newAssetState != oldAssetState else { return }
                 oldAssetState = newAssetState
-                if let limit = sSelf.viewModel.dataStorage.limit, limit > 1, newAssetState == .selected {
+                if sSelf.viewModel.maxNumberOfSelection == 1, newAssetState == .selected {
                     sSelf.navigationController?.dismiss(animated: true) { [weak self] in
                         guard let sSelf = self else { return }
-                        sSelf.didSelectImages?(sSelf.viewModel.dataStorage.getImagesOrderedBySelection())
+                        sSelf.didSelectImages?(sSelf.viewModel.getSelectedImages())
                     }
                 } else {
                     sSelf.updateToolbar()

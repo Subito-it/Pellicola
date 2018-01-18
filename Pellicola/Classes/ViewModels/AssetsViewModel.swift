@@ -10,35 +10,47 @@ import Photos
 
 class AssetsViewModel {
     
-    var dataStorage: DataStorage
-    var dataFetcher: DataFetcher
+    private var dataStorage: DataStorage
+    private var dataFetcher: DataFetcher
     
     private let assetCollection: PHAssetCollection
+    private var dataStorageObservation: NSKeyValueObservation?
+    private let imageManager = PHCachingImageManager()
+    
+    let assets: PHFetchResult<PHAsset>
+    
+    var onChangeSelectedAssets: ((Int) -> Void)?
     
     var assetCollectionName: String? {
         return assetCollection.localizedTitle
     }
     
-    let assets: PHFetchResult<PHAsset>
-    
     var numberOfImages: Int {
         return assets.countOfAssets(with: .image)
     }
     
-    var allowMultipleSelection: Bool {
-        guard let limit = dataStorage.limit else { return true }
-        return limit > 1
+    var maxNumberOfSelection: UInt {
+        return dataStorage.limit
     }
     
     var numberOfSelectedAssets: Int {
         return dataStorage.images.count
     }
     
-    var selectionLimit: UInt? {
-        return dataStorage.limit
+    var isDownloadingImages: Bool {
+        return dataFetcher.count != 0
     }
     
-    private let imageManager = PHCachingImageManager()
+    var toolbarText: String {
+        
+        guard maxNumberOfSelection != UInt.max else {
+            return ""
+        }
+        
+        return String(format: NSLocalizedString("selected_assets", bundle:  Bundle.framework, comment: ""),
+               numberOfSelectedAssets,
+               maxNumberOfSelection)
+    }
     
     init(dataStorage: DataStorage,
          dataFetcher: DataFetcher,
@@ -51,6 +63,11 @@ class AssetsViewModel {
         options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
         options.predicate = NSPredicate(format: "mediaType = %d", PHAssetMediaType.image.rawValue)
         assets = PHAsset.fetchAssets(in: assetCollection, options: options)
+        
+        dataStorageObservation = dataStorage.observe(\DataStorage.images) { [weak self] _, _ in
+            guard let sSelf = self else { return }
+            sSelf.onChangeSelectedAssets?(sSelf.numberOfSelectedAssets)
+        }
     }
     
     typealias CompletionHandler = (() -> Void)
@@ -58,7 +75,7 @@ class AssetsViewModel {
     func selectedAsset(_ asset: PHAsset,
                        updateUI: @escaping CompletionHandler) {
         
-        let count = Int(dataStorage.limit ?? 0) - dataStorage.images.count - dataFetcher.count
+        let numberOfSelectableAssets = Int(dataStorage.limit) - dataStorage.images.count - dataFetcher.count
         
         if dataStorage.containsImage(withIdentifier: asset.localIdentifier) {
             dataStorage.removeImage(withIdentifier: asset.localIdentifier)
@@ -66,7 +83,7 @@ class AssetsViewModel {
         } else if dataFetcher.containsRequest(withIdentifier: asset.localIdentifier) {
             dataFetcher.removeRequest(withIdentifier: asset.localIdentifier)
             updateUI()
-        } else if count > 0 {
+        } else if numberOfSelectableAssets > 0 {
             
             dataFetcher.requestImage(for: asset, onProgress: updateUI, onComplete: { [weak self] image in
                 self?.dataStorage.addImage(image, withIdentifier: asset.localIdentifier)
@@ -85,6 +102,14 @@ class AssetsViewModel {
         } else {
             return .normal
         }
+    }
+    
+    func getSelectedImages() -> [UIImage] {
+        return dataStorage.getImagesOrderedBySelection()
+    }
+    
+    func stopDownloadingImages() {
+        dataFetcher.clear()
     }
     
 }

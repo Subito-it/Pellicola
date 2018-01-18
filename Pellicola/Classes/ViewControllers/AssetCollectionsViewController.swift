@@ -36,7 +36,7 @@ final class AssetCollectionsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
-        viewModel.onChange = { [weak self] in
+        viewModel.onChangeAssetCollections = { [weak self] in
             self?.tableView.reloadData()
         }
     }
@@ -60,20 +60,21 @@ final class AssetCollectionsViewController: UIViewController {
                                                            target: self,
                                                            action: #selector(cancelButtonTapped))
         
-        if let limit = viewModel.dataStorage.limit, limit > 1 {
+        if viewModel.maxNumberOfSelection > 1 {
             doneBarButton = UIBarButtonItem(barButtonSystemItem: .done,
                                             target: self,
                                             action: #selector(doneButtonTapped))
             
-            dataStorageObservation = viewModel.dataStorage.observe(\DataStorage.images) { [weak self] dataStorage, _ in
-                self?.doneBarButton?.isEnabled = dataStorage.images.count > 0
+            viewModel.onChangeSelectedAssets = { [weak self] numberOfSelectedAssets in
+                self?.doneBarButton?.isEnabled = numberOfSelectedAssets > 0
             }
-            doneBarButton?.isEnabled = viewModel.dataStorage.images.count > 0
+            
+            doneBarButton?.isEnabled = viewModel.numberOfSelectedAssets > 0
             
             navigationItem.rightBarButtonItem = doneBarButton
         }
         
-        title = NSLocalizedString("albums.title", bundle:  Bundle.framework, comment: "")
+        title = NSLocalizedString("albums.title", bundle: Bundle.framework, comment: "")
     }
     
     private func setupTableView() {
@@ -138,16 +139,21 @@ final class AssetCollectionsViewController: UIViewController {
     // MARK: - Action
     
     @objc func doneButtonTapped() {
-        guard viewModel.dataFetcher.count == 0 else {
-            viewModel.dataFetcher.clear()
-            let alert = UIAlertController(title: "Pippo", message: nil, preferredStyle: .alert)
-            navigationController?.presentingViewController?.present(alert, animated: true, completion: nil)
+        guard !viewModel.isDownloadingImages else {
+            viewModel.stopDownloadingImages()
+            let alert = UIAlertController(title: NSLocalizedString("alert_deselection.title", bundle: Bundle.framework, comment: ""),
+                                          message: nil,
+                                          preferredStyle: .alert)
+            let okAction = UIAlertAction(title: NSLocalizedString("alert_deselection.ok", bundle: Bundle.framework, comment: ""),
+                                         style: .default)
+            alert.addAction(okAction)
+            present(alert, animated: true)
             return
         }
         
         navigationController?.dismiss(animated: true) { [weak self] in
             guard let sSelf = self else { return }
-            sSelf.didSelectImages?(sSelf.viewModel.dataStorage.getImagesOrderedBySelection())
+            sSelf.didSelectImages?(sSelf.viewModel.getSelectedImages())
         }
     }
     

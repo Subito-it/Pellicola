@@ -18,20 +18,23 @@ public final class PellicolaPresenter: NSObject {
      - ==1 Single selection
      - >1  Limited selection
      */
-    @objc public var maxNumberOfSelections: UInt = 1
+    let maxNumberOfSelections: UInt
     
     private lazy var navigationController: UINavigationController = {
         return UINavigationController()
     }()
     
-    private lazy var dataStorage: DataStorage = {
-        return DataStorage(limit: maxNumberOfSelections)
-    }()
-    private lazy var dataFetcher = DataFetcher()
+    let dataStorage: DataStorage
+    let dataFetcher: DataFetcher
     
-    @objc public func presentPellicola(on presentingViewController: UIViewController) {
-        dataStorage = DataStorage(limit: maxNumberOfSelections != 0 ? maxNumberOfSelections : nil)
-        
+    @objc public init(maxNumberOfSelections: UInt) {
+        self.maxNumberOfSelections = maxNumberOfSelections
+        dataStorage = DataStorage(limit: maxNumberOfSelections == 0 ? UInt.max : maxNumberOfSelections)
+        dataFetcher = DataFetcher()
+        super.init()
+    }
+    
+    @objc public func present(on presentingViewController: UIViewController) {
         let assetCollectionsVC = createAssetsCollectionViewController()
         navigationController.setViewControllers([assetCollectionsVC], animated: false)
         presentingViewController.present(navigationController, animated: true, completion: nil)
@@ -45,14 +48,15 @@ public final class PellicolaPresenter: NSObject {
         let assetCollectionsVC = AssetCollectionsViewController(viewModel: viewModel)
         assetCollectionsVC.userDidCancel = userDidCancel
         assetCollectionsVC.didSelectImages = didSelectImages
-        assetCollectionsVC.didSelectAssetCollection = { assetCollection in
-            let assetsViewController = self.createAssetsViewController(assetCollection: assetCollection)
-            self.navigationController.pushViewController(assetsViewController, animated: true)
+        assetCollectionsVC.didSelectAssetCollection = { [weak self] assetCollection in
+            guard let sSelf = self else { return }
+            let assetsViewController = sSelf.createAssetsViewController(with: assetCollection)
+            sSelf.navigationController.pushViewController(assetsViewController, animated: true)
         }
         return assetCollectionsVC
     }
     
-    private func createAssetsViewController(assetCollection: PHAssetCollection) -> AssetsViewController {
+    private func createAssetsViewController(with assetCollection: PHAssetCollection) -> AssetsViewController {
         let viewModel = AssetsViewModel(dataStorage: dataStorage,
                                         dataFetcher: dataFetcher,
                                         assetCollection: assetCollection)

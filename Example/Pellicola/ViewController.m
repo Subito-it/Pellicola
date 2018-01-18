@@ -19,9 +19,8 @@
 @implementation ViewController
 
 - (IBAction)presentPellicola:(id)sender {
-    self.pellicolaPresenter = [[PellicolaPresenter alloc] init];
-    _pellicolaPresenter.maxNumberOfSelections = UINT64_C(3);
-    [self.pellicolaPresenter presentPellicolaOn: self];
+    self.pellicolaPresenter = [[PellicolaPresenter alloc] initWithMaxNumberOfSelections:UINT64_C(1)];
+    [self.pellicolaPresenter presentOn: self];
 }
 
 @end
