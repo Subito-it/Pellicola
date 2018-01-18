@@ -24,8 +24,10 @@ public final class PellicolaPresenter: NSObject {
         return UINavigationController()
     }()
     
-    private var dataStorage = DataStorage(limit: 1)
-    private var dataFetcher = DataFetcher()
+    private lazy var dataStorage: DataStorage = {
+        return DataStorage(limit: maxNumberOfSelections)
+    }()
+    private lazy var dataFetcher = DataFetcher()
     
     @objc public func presentPellicola(on presentingViewController: UIViewController) {
         dataStorage = DataStorage(limit: maxNumberOfSelections != 0 ? maxNumberOfSelections : nil)
