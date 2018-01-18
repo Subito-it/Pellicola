@@ -25,6 +25,7 @@ class AssetsViewController: UIViewController {
     private var previousPreheatRect = CGRect.zero
     private var thumbnailSize: CGSize!
     private weak var centerBarButtonToolbar: UIBarButtonItem?
+    private var isFirstAppearance = true
     
     private var doneBarButton: UIBarButtonItem?
     private var dataStorageObservation: NSKeyValueObservation?
@@ -49,17 +50,12 @@ class AssetsViewController: UIViewController {
         configureUI()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        if viewModel.numberOfImages > 0, isMovingToParentViewController {
-            // when presenting as a .FormSheet on iPad, the frame is not correct until just after viewWillAppear:
-            // dispatching to the main thread waits one run loop until the frame is update and the layout is complete
-            DispatchQueue.main.async { [weak self] in
-                guard let sSelf = self else { return }
-                let lastItemIndex = IndexPath(item: sSelf.viewModel.numberOfImages - 1, section: 0)
-                sSelf.collectionView.scrollToItem(at: lastItemIndex, at: .top, animated: false)
-            }
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        if isFirstAppearance, viewModel.numberOfImages > 0 {
+            isFirstAppearance = false
+            let lastItemIndex = IndexPath(item: viewModel.numberOfImages - 1, section: 0)
+            collectionView.scrollToItem(at: lastItemIndex, at: .top, animated: false)
         }
     }
     
