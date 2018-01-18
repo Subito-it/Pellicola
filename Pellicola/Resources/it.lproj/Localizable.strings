@@ -8,5 +8,5 @@
 "albums.title" = "Foto";
 
 "selected_assets" = "%d di %d foto";
-"alert_deselection.title" = "";
+"alert_deselection.title" = "Uno o più foto non possono essere usati e sono stati deselezionati.";
 "alert_deselection.ok" = "OK";
