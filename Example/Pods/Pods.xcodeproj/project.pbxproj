@@ -57,17 +57,17 @@
 		25CE99B890B3AEFC23B9629098911E5C /* AssetsViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AssetsViewModel.swift; sourceTree = "<group>"; };
 		2FD612BAD45318080FC5327E2D9E001D /* Pods-Pellicola_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Pellicola_Example-acknowledgements.plist"; sourceTree = "<group>"; };
 		364EA2D91B6043A6DCB6E9FED8AD7909 /* Pods-Pellicola_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Pellicola_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
-		37890095B7BFB765B21BCEFABE51D2A5 /* Pods-Pellicola_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = "Pods-Pellicola_Tests.modulemap"; sourceTree = "<group>"; };
+		37890095B7BFB765B21BCEFABE51D2A5 /* Pods-Pellicola_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-Pellicola_Tests.modulemap"; sourceTree = "<group>"; };
 		38CE5E177C380911166ACBA1671DC7F6 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4579F99F90208D44C76889AD017F9F15 /* Pods_Pellicola_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_Pellicola_Tests.framework; path = "Pods-Pellicola_Tests.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4579F99F90208D44C76889AD017F9F15 /* Pods_Pellicola_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Pellicola_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D52A62AC9C8AD69D771C790FAD0E135 /* DataStorage.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DataStorage.swift; path = Pellicola/Classes/DataStorage.swift; sourceTree = "<group>"; };
 		5529ED5574E213123396BE122437FB31 /* AssetCell.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AssetCell.swift; sourceTree = "<group>"; };
 		5BFE188FC09FA1EA00B04235F9D1713C /* Pods-Pellicola_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Pellicola_Example-frameworks.sh"; sourceTree = "<group>"; };
 		5E88EAD6503EF3BC75BAD6D30741BD8F /* SelectionView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SelectionView.swift; sourceTree = "<group>"; };
 		5FB35DD7203870B25929C42DFB86ABD9 /* Bundle+Extension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "Bundle+Extension.swift"; sourceTree = "<group>"; };
 		60CA903EF91E706C45DA1B64882049D9 /* UIView+Extension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
-		615368B4E56B90136D1A5091FA2B7015 /* Pellicola.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = Pellicola.modulemap; sourceTree = "<group>"; };
-		629C9BB843C7AC840037CD983B3F23B8 /* Pellicola.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pellicola.framework; path = Pellicola.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		615368B4E56B90136D1A5091FA2B7015 /* Pellicola.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = Pellicola.modulemap; sourceTree = "<group>"; };
+		629C9BB843C7AC840037CD983B3F23B8 /* Pellicola.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pellicola.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		658D5F8A2AA253E1511271DC19C48904 /* Pods-Pellicola_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Pellicola_Example-dummy.m"; sourceTree = "<group>"; };
 		6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		6851CDD8F04AC9746C4A8FA137D27189 /* Pellicola.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Pellicola.xcconfig; sourceTree = "<group>"; };
@@ -77,25 +77,26 @@
 		7E13151C9419BD84A6206CE22D9E5EB0 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8DA9ED7349185379A4D8B5C8935532C7 /* Pods-Pellicola_Tests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-Pellicola_Tests-umbrella.h"; sourceTree = "<group>"; };
 		8F71C39410145C8480082AD257BE333C /* AssetsViewController.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; path = AssetsViewController.xib; sourceTree = "<group>"; };
-		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9599D3B6434AA850B84731C89660F140 /* Pods-Pellicola_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Pellicola_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		98D14C50112C339BD997A38EFD07C543 /* Pellicola-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pellicola-dummy.m"; sourceTree = "<group>"; };
 		A4011221EA9E171BF81DBEFDCC6D4C7D /* Pellicola-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pellicola-umbrella.h"; sourceTree = "<group>"; };
-		A478B89E6A53BE8C1E59164110073672 /* it.lproj */ = {isa = PBXFileReference; includeInIndex = 1; name = it.lproj; path = Pellicola/Resources/it.lproj; sourceTree = "<group>"; };
+		A478B89E6A53BE8C1E59164110073672 /* it.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = it.lproj; path = Pellicola/Resources/it.lproj; sourceTree = "<group>"; };
 		A499513C45553C872DB46D3CCE818A9A /* PellicolaPresenter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PellicolaPresenter.swift; path = Pellicola/Classes/PellicolaPresenter.swift; sourceTree = "<group>"; };
 		A5D8374C038B3D42CF87723EDEFCB9B8 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A690FB4EC57B62131CED84B8DF7C6336 /* AssetCollectionCell.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; path = AssetCollectionCell.xib; sourceTree = "<group>"; };
-		B1D0F7153951CAE1935A8B08C3C00745 /* Pods-Pellicola_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = "Pods-Pellicola_Example.modulemap"; sourceTree = "<group>"; };
+		B1D0F7153951CAE1935A8B08C3C00745 /* Pods-Pellicola_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-Pellicola_Example.modulemap"; sourceTree = "<group>"; };
 		B27301F83F2D0CDF1ACFFA7D1C383042 /* LoadingView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		B59D45167092A0BCD754528B66BE9046 /* UIImageView+Extension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extension.swift"; sourceTree = "<group>"; };
-		B896FAD9405DFA098A8F012964B3D419 /* Pods_Pellicola_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_Pellicola_Example.framework; path = "Pods-Pellicola_Example.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B896FAD9405DFA098A8F012964B3D419 /* Pods_Pellicola_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Pellicola_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0D9E78655577C94157DD710EB0DB000 /* Pods-Pellicola_Example-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-Pellicola_Example-umbrella.h"; sourceTree = "<group>"; };
 		C4D13E39FFAF5E3CEB3FE59DE0713A88 /* Pods-Pellicola_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Pellicola_Example.release.xcconfig"; sourceTree = "<group>"; };
 		C8FB05CD84DE0268A3CC3EDBCE0B3449 /* AssetCell.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; path = AssetCell.xib; sourceTree = "<group>"; };
 		CA7153B6305F66448840F6C7D1434E9D /* Pods-Pellicola_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Pellicola_Tests-dummy.m"; sourceTree = "<group>"; };
 		CCDBCCF9FAAA1BB4928EC469D1531CCF /* AssetsViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AssetsViewController.swift; sourceTree = "<group>"; };
+		CE33BCBD201201DE002EC65E /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		CFB3C1B04984D9B9B1EEB7E3ACA66602 /* CheckmarkView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CheckmarkView.swift; sourceTree = "<group>"; };
-		D00BE2BA6718D0309708E6000BEB489A /* en.lproj */ = {isa = PBXFileReference; includeInIndex = 1; name = en.lproj; path = Pellicola/Resources/en.lproj; sourceTree = "<group>"; };
+		D00BE2BA6718D0309708E6000BEB489A /* en.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = en.lproj; path = Pellicola/Resources/en.lproj; sourceTree = "<group>"; };
 		D33AABB357D1D4B5B83EBB6E34EF18E9 /* Pods-Pellicola_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Pellicola_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		DA702DB0356CCF7734D2E69286A34ADB /* AssetCollectionCell.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AssetCollectionCell.swift; sourceTree = "<group>"; };
 		DFD2168F3C79802F1145232CE62260E3 /* AssetCollectionsViewController.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; path = AssetCollectionsViewController.xib; sourceTree = "<group>"; };
@@ -247,6 +248,7 @@
 		BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CE33BCBD201201DE002EC65E /* XCTest.framework */,
 				D35AF013A5F0BAD4F32504907A52519E /* iOS */,
 			);
 			name = Frameworks;

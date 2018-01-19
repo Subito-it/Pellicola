@@ -13,8 +13,11 @@
 		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
-		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
 		6565377C28E24A5E590FBC54 /* Pods_Pellicola_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB1142B580B5DD8D92B9D98D /* Pods_Pellicola_Example.framework */; };
+		CE16BE592010E59A0084787C /* DataStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE16BE582010E59A0084787C /* DataStorageTests.swift */; };
+		CE16BE5B2010FAB20084787C /* OrderedImageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE16BE5A2010FAB20084787C /* OrderedImageTests.swift */; };
+		CE16BE5D2010FB660084787C /* UIImage+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE16BE5C2010FB660084787C /* UIImage+Color.swift */; };
+		CE16BE612011EE200084787C /* PellicolaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE16BE602011EE200084787C /* PellicolaTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,10 +46,13 @@
 		607FACDF1AFB9204008FA782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		607FACE51AFB9204008FA782 /* Pellicola_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Pellicola_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
 		AB1142B580B5DD8D92B9D98D /* Pods_Pellicola_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Pellicola_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B78BDB3492906F17059F2DA8 /* Pods-Pellicola_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pellicola_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Pellicola_Example/Pods-Pellicola_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		C8E21D946E22340AC654079A /* Pods-Pellicola_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pellicola_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-Pellicola_Example/Pods-Pellicola_Example.release.xcconfig"; sourceTree = "<group>"; };
+		CE16BE582010E59A0084787C /* DataStorageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStorageTests.swift; sourceTree = "<group>"; };
+		CE16BE5A2010FAB20084787C /* OrderedImageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderedImageTests.swift; sourceTree = "<group>"; };
+		CE16BE5C2010FB660084787C /* UIImage+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Color.swift"; sourceTree = "<group>"; };
+		CE16BE602011EE200084787C /* PellicolaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PellicolaTests.swift; sourceTree = "<group>"; };
 		D3E7B03941E6289E07651821 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		DFA48CD47B44D11DD0256FF6 /* Pods_Pellicola_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Pellicola_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -128,8 +134,11 @@
 		607FACE81AFB9204008FA782 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				607FACEB1AFB9204008FA782 /* Tests.swift */,
+				CE16BE602011EE200084787C /* PellicolaTests.swift */,
+				CE16BE582010E59A0084787C /* DataStorageTests.swift */,
+				CE16BE5A2010FAB20084787C /* OrderedImageTests.swift */,
 				607FACE91AFB9204008FA782 /* Supporting Files */,
+				CE16BE5C2010FB660084787C /* UIImage+Color.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -213,7 +222,7 @@
 		607FACC81AFB9204008FA782 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0830;
+				LastSwiftUpdateCheck = 0920;
 				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = CocoaPods;
 				TargetAttributes = {
@@ -385,7 +394,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				607FACEC1AFB9204008FA782 /* Tests.swift in Sources */,
+				CE16BE5D2010FB660084787C /* UIImage+Color.swift in Sources */,
+				CE16BE592010E59A0084787C /* DataStorageTests.swift in Sources */,
+				CE16BE612011EE200084787C /* PellicolaTests.swift in Sources */,
+				CE16BE5B2010FAB20084787C /* OrderedImageTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

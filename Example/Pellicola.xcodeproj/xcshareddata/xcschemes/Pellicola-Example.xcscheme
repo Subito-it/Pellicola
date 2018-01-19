@@ -53,6 +53,16 @@
                ReferencedContainer = "container:Pellicola.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "CE33BCB22011F05C002EC65E"
+               BuildableName = "ProvaTests.xctest"
+               BlueprintName = "ProvaTests"
+               ReferencedContainer = "container:Pellicola.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
