@@ -70,10 +70,8 @@ class AssetsViewModel {
         }
     }
     
-    typealias CompletionHandler = (() -> Void)
-    
     func selectedAsset(_ asset: PHAsset,
-                       updateUI: @escaping CompletionHandler) {
+                       updateUI: @escaping (() -> Void)) {
         
         let numberOfSelectableAssets = Int(dataStorage.limit) - dataStorage.images.count - dataFetcher.count
         

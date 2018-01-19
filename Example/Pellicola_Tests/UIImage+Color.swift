@@ -2,7 +2,7 @@
 //  UIImage+Color.swift
 //  Pellicola_Tests
 //
-//  Created by Andrea Antonioni on 18/01/2018.
+//  Created by Andrea Antonioni on 19/01/2018.
 //  Copyright © 2018 CocoaPods. All rights reserved.
 //
 
@@ -18,5 +18,4 @@ extension UIImage {
         UIGraphicsEndImageContext()
         return image!
     }
-    
 }
