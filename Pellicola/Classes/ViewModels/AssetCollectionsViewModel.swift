@@ -26,7 +26,7 @@ class AssetCollectionsViewModel: NSObject {
     var onChangeAssetCollections: (() -> Void)?
     var onChangeSelectedAssets: ((Int) -> Void)?
     
-    var maxNumberOfSelection: UInt {
+    var maxNumberOfSelection: Int {
         return dataStorage.limit
     }
     

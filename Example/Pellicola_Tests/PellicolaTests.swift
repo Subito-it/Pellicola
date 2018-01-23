@@ -11,9 +11,14 @@ import XCTest
 
 class PellicolaTests: XCTestCase {
     
-    func testInitWithUnlimitedLimit() {
+    func testInitWithNegativeNumberOfSelections() {
+        let pellicolaPresenter = PellicolaPresenter(maxNumberOfSelections: -1)
+        XCTAssertEqual(pellicolaPresenter.dataStorage.limit, Int.max)
+    }
+    
+    func testInitWithZeroNumberOfSelections() {
         let pellicolaPresenter = PellicolaPresenter(maxNumberOfSelections: 0)
-        XCTAssertEqual(pellicolaPresenter.dataStorage.limit, UInt.max)
+        XCTAssertEqual(pellicolaPresenter.dataStorage.limit, Int.max)
     }
     
     func testInitWithLimitedLimit() {

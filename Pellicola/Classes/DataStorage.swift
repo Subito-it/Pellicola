@@ -26,9 +26,9 @@ class DataStorage: NSObject {
     @objc dynamic private(set) var images: [String: OrderedImage] = [String: OrderedImage]()
     private var index = 0
     
-    let limit: UInt
+    let limit: Int
     
-    init(limit: UInt) {
+    init(limit: Int) {
         self.limit = limit
     }
     

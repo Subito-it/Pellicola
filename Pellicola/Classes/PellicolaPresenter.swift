@@ -14,11 +14,11 @@ public final class PellicolaPresenter: NSObject {
     @objc public var userDidCancel: (() -> Void)?
     
     /*
-     - ==0 Unlimited
+     - <0 Unlimited
      - ==1 Single selection
      - >1  Limited selection
      */
-    let maxNumberOfSelections: UInt
+    let maxNumberOfSelections: Int
     
     private lazy var navigationController: UINavigationController = {
         return UINavigationController()
@@ -27,9 +27,9 @@ public final class PellicolaPresenter: NSObject {
     let dataStorage: DataStorage
     let dataFetcher: DataFetcher
     
-    @objc public init(maxNumberOfSelections: UInt) {
+    @objc public init(maxNumberOfSelections: Int) {
         self.maxNumberOfSelections = maxNumberOfSelections
-        dataStorage = DataStorage(limit: maxNumberOfSelections == 0 ? UInt.max : maxNumberOfSelections)
+        dataStorage = DataStorage(limit: maxNumberOfSelections < 0 ? Int.max : Int(maxNumberOfSelections))
         dataFetcher = DataFetcher()
         super.init()
     }
