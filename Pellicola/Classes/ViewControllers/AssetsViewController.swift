@@ -22,7 +22,6 @@ class AssetsViewController: UIViewController {
     private let numberOfPhotosForRow: Int = 4
     private let spaceBetweenPhotosInRow: CGFloat = 1.0
     private let imageManager = PHCachingImageManager()
-    private var previousPreheatRect = CGRect.zero
     private var thumbnailSize: CGSize!
     private weak var centerBarButtonToolbar: UIBarButtonItem?
     private var isFirstAppearance = true
@@ -45,7 +44,6 @@ class AssetsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         resetCachedAssets()
         configureUI()
     }
@@ -59,11 +57,6 @@ class AssetsViewController: UIViewController {
         }
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        updateCachedAssets()
-    }
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -114,11 +107,12 @@ class AssetsViewController: UIViewController {
         
         collectionView.allowsSelection = true
         collectionView.allowsMultipleSelection = viewModel.maxNumberOfSelection > 1
-        
-        collectionView.register(UINib(nibName: AssetCell.identifier, bundle: Bundle.framework),
-                                forCellWithReuseIdentifier: AssetCell.identifier)
+        collectionView.register(AssetCell.self, forCellWithReuseIdentifier: AssetCell.identifier)
         collectionView.dataSource = self
         collectionView.delegate = self
+        if #available(iOS 10.0, *) {
+            collectionView.prefetchDataSource = self
+        }
     }
     
     private func setupToolbar() {
@@ -182,66 +176,8 @@ class AssetsViewController: UIViewController {
     
     fileprivate func resetCachedAssets() {
         imageManager.stopCachingImagesForAllAssets()
-        previousPreheatRect = .zero
     }
     
-    private func updateCachedAssets() {
-        // Update only if the view is visible.
-        guard isViewLoaded && view.window != nil else { return }
-        
-        // The preheat window is twice the height of the visible rect.
-        let visibleRect = CGRect(origin: collectionView!.contentOffset, size: collectionView!.bounds.size)
-        let preheatRect = visibleRect.insetBy(dx: 0, dy: -0.5 * visibleRect.height)
-        
-        // Update only if the visible area is significantly different from the last preheated area.
-        let delta = abs(preheatRect.midY - previousPreheatRect.midY)
-        guard delta > view.bounds.height / 3 else { return }
-        
-        // Compute the assets to start caching and to stop caching.
-        let (addedRects, removedRects) = differencesBetweenRects(previousPreheatRect, preheatRect)
-        let addedAssets = addedRects
-            .flatMap { rect in collectionView.indexPathsForElements(in: rect) }
-            .map { indexPath in viewModel.assets.object(at: indexPath.item) }
-        let removedAssets = removedRects
-            .flatMap { rect in collectionView.indexPathsForElements(in: rect) }
-            .map { indexPath in viewModel.assets.object(at: indexPath.item) }
-        
-        // Update the assets the PHCachingImageManager is caching.
-        imageManager.startCachingImages(for: addedAssets,
-                                        targetSize: thumbnailSize, contentMode: .aspectFill, options: nil)
-        imageManager.stopCachingImages(for: removedAssets,
-                                       targetSize: thumbnailSize, contentMode: .aspectFill, options: nil)
-        
-        // Store the preheat rect to compare against in the future.
-        previousPreheatRect = preheatRect
-    }
-    
-    private func differencesBetweenRects(_ old: CGRect, _ new: CGRect) -> (added: [CGRect], removed: [CGRect]) {
-        if old.intersects(new) {
-            var added = [CGRect]()
-            if new.maxY > old.maxY {
-                added += [CGRect(x: new.origin.x, y: old.maxY,
-                                 width: new.width, height: new.maxY - old.maxY)]
-            }
-            if old.minY > new.minY {
-                added += [CGRect(x: new.origin.x, y: new.minY,
-                                 width: new.width, height: old.minY - new.minY)]
-            }
-            var removed = [CGRect]()
-            if new.maxY < old.maxY {
-                removed += [CGRect(x: new.origin.x, y: new.maxY,
-                                   width: new.width, height: old.maxY - new.maxY)]
-            }
-            if old.minY < new.minY {
-                removed += [CGRect(x: new.origin.x, y: old.minY,
-                                   width: new.width, height: new.minY - old.minY)]
-            }
-            return (added, removed)
-        } else {
-            return ([new], [old])
-        }
-    }
-
     // MARK: - Action
     
     @objc func actionDismiss() {
@@ -260,21 +196,27 @@ extension AssetsViewController: UICollectionViewDataSource {
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AssetCell.identifier, for: indexPath) as? AssetCell else {
-            assertionFailure("Error dequeuing photo cell")
-            return UICollectionViewCell()
+            fatalError("Error dequeuing photo cell")
         }
+        
         let asset = viewModel.assets.object(at: indexPath.item)
         
         // Request an image for the asset from the PHCachingImageManager.
         cell.assetIdentifier = asset.localIdentifier
         
-        imageManager.requestImage(for: asset, targetSize: thumbnailSize, contentMode: .aspectFill, options: nil, resultHandler: { image, _ in
-            // The cell may have been recycled by the time this handler gets called;
-            // set the cell's thumbnail image only if it's still showing the same asset.
-            if cell.assetIdentifier == asset.localIdentifier {
-                cell.thumbnailImage = image
-            }
-        })
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            guard let sSelf = self else { return }
+            sSelf.imageManager.requestImage(for: asset, targetSize: sSelf.thumbnailSize, contentMode: .aspectFill, options: nil, resultHandler: { image, info in
+                
+                DispatchQueue.main.async { [weak cell] in
+                    // The cell may have been recycled by the time this handler gets called;
+                    // set the cell's thumbnail image only if it's still showing the same asset.
+                    if cell?.assetIdentifier == asset.localIdentifier {
+                        cell?.thumbnailImage = image
+                    }
+                }
+            })
+        }
         
         cell.setState(viewModel.getState(for: asset))
         
@@ -314,9 +256,22 @@ extension AssetsViewController: UICollectionViewDelegate {
                                 updateUI: updateUI)
         
     }
+
+}
+
+// MARK: - UICollectionViewDataSourcePrefetching
+
+@available(iOS 10.0, *)
+extension AssetsViewController: UICollectionViewDataSourcePrefetching {
     
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        updateCachedAssets()
+    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+        imageManager.startCachingImages(for: indexPaths.map { indexPath in viewModel.assets.object(at: indexPath.item) },
+                                        targetSize: thumbnailSize, contentMode: .aspectFill, options: nil)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cancelPrefetchingForItemsAt indexPaths: [IndexPath]) {
+        imageManager.stopCachingImages(for: indexPaths.map { indexPath in viewModel.assets.object(at: indexPath.item) },
+                                       targetSize: thumbnailSize, contentMode: .aspectFill, options: nil)
     }
     
 }
