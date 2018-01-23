@@ -25,7 +25,6 @@ class DataFetcher {
         let requestOptions = PHImageRequestOptions()
         requestOptions.isNetworkAccessAllowed = true
         requestOptions.progressHandler = { (progress, error, stop, info) in
-            print("Progress: \(progress)")
             onProgress()
         }
         
