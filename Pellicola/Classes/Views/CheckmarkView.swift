@@ -20,11 +20,6 @@ class CheckmarkView: UIView {
         super.init(frame: frame)
         
         self.backgroundColor = .clear
-        
-        self.layer.shadowColor = UIColor.gray.cgColor
-        self.layer.shadowOffset = CGSize.zero
-        self.layer.shadowOpacity = 0.6
-        self.layer.shadowRadius = 2.0
     }
     
     required init?(coder aDecoder: NSCoder) {
