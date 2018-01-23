@@ -16,17 +16,8 @@ class AssetCell: UICollectionViewCell {
         return imageView
     }()
     
-    var loadingView: LoadingView = {
-        let loadingView = LoadingView()
-        loadingView.translatesAutoresizingMaskIntoConstraints = false
-        return loadingView
-    }()
-
-    var selectionView: SelectionView = {
-        let selectionView = SelectionView()
-        selectionView.translatesAutoresizingMaskIntoConstraints = false
-        return selectionView
-    }()
+    var selectionView: SelectionView?
+    var loadingView: LoadingView?
     
     enum State {
         case normal, selected, loading
@@ -51,43 +42,46 @@ class AssetCell: UICollectionViewCell {
         commonInit()
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+    }
+    
     private func commonInit() {
         contentView.addSubview(imageView)
-        contentView.addSubview(loadingView)
-        contentView.addSubview(selectionView)
         
         imageView.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
         imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
         imageView.leftAnchor.constraint(equalTo: contentView.leftAnchor).isActive = true
         imageView.rightAnchor.constraint(equalTo: contentView.rightAnchor).isActive = true
 
-        loadingView.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
-        loadingView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
-        loadingView.leftAnchor.constraint(equalTo: contentView.leftAnchor).isActive = true
-        loadingView.rightAnchor.constraint(equalTo: contentView.rightAnchor).isActive = true
-
-        selectionView.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
-        selectionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
-        selectionView.leftAnchor.constraint(equalTo: contentView.leftAnchor).isActive = true
-        selectionView.rightAnchor.constraint(equalTo: contentView.rightAnchor).isActive = true
-        
         updateStyle()
     }
     
     private func updateStyle() {
+        
         switch state {
             
         case .normal:
-            selectionView.isHidden = true
-            loadingView.isHidden = true
+            selectionView?.removeFromSuperview()
+            loadingView?.removeFromSuperview()
+            selectionView = nil
+            loadingView = nil
         case .selected:
-            selectionView.isHidden = false
-            loadingView.isHidden = true
+            loadingView?.removeFromSuperview()
+            loadingView = nil
+            
+            selectionView = SelectionView(frame: bounds)
+            addSubview(selectionView!)
+            
         case .loading:
-            selectionView.isHidden = true
-            loadingView.isHidden = false
+            selectionView?.removeFromSuperview()
+            selectionView = nil
+            
+            loadingView = LoadingView(frame: bounds)
+            addSubview(loadingView!)
             
         }
+        
     }
     
     func setState(_ state: State) {
