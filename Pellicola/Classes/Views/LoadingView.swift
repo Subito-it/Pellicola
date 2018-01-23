@@ -29,8 +29,17 @@ class LoadingView: UIView {
         }
     }
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        commonInit()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        commonInit()
+    }
+    
+    private func commonInit() {
         backgroundColor = .clear
         
         addSubview(darkBackgroundView)
@@ -42,7 +51,6 @@ class LoadingView: UIView {
         addSubview(spinner)
         NSLayoutConstraint(item: spinner, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1.0, constant: -4.0).isActive = true
         NSLayoutConstraint(item: spinner, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1.0, constant: -4.0).isActive = true
-        spinner.startAnimating()
     }
     
     func startAnimating() {

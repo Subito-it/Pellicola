@@ -19,12 +19,22 @@ class SelectionView: UIView {
     
     private var checkmarkView: CheckmarkView = {
         let checkmarkView = CheckmarkView()
+        checkmarkView.layer.shouldRasterize = true
         checkmarkView.translatesAutoresizingMaskIntoConstraints = false
         return checkmarkView
     }()
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        commonInit()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        commonInit()
+    }
+    
+    private func commonInit() {
         backgroundColor = .clear
         
         addSubview(whiteBackgroundView)
