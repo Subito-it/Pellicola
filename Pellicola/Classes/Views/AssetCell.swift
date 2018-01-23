@@ -1,5 +1,5 @@
 //
-//  ImageCollectionViewCell.swift
+//  AssetCell.swift
 //  Pellicola
 //
 //  Created by Andrea Antonioni on 21/12/2017.
@@ -8,10 +8,25 @@
 import UIKit
 
 class AssetCell: UICollectionViewCell {
+    
+    var imageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.applyThumbnailStyle()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
+    var loadingView: LoadingView = {
+        let loadingView = LoadingView()
+        loadingView.translatesAutoresizingMaskIntoConstraints = false
+        return loadingView
+    }()
 
-    @IBOutlet weak private var imageView: UIImageView!
-    @IBOutlet weak var selectionView: SelectionView!
-    @IBOutlet weak var loadingView: LoadingView!
+    var selectionView: SelectionView = {
+        let selectionView = SelectionView()
+        selectionView.translatesAutoresizingMaskIntoConstraints = false
+        return selectionView
+    }()
     
     enum State {
         case normal, selected, loading
@@ -26,9 +41,36 @@ class AssetCell: UICollectionViewCell {
         get { return imageView.image }
     }
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        imageView.applyThumbnailStyle()
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        commonInit()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        commonInit()
+    }
+    
+    private func commonInit() {
+        contentView.addSubview(imageView)
+        contentView.addSubview(loadingView)
+        contentView.addSubview(selectionView)
+        
+        imageView.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
+        imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
+        imageView.leftAnchor.constraint(equalTo: contentView.leftAnchor).isActive = true
+        imageView.rightAnchor.constraint(equalTo: contentView.rightAnchor).isActive = true
+
+        loadingView.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
+        loadingView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
+        loadingView.leftAnchor.constraint(equalTo: contentView.leftAnchor).isActive = true
+        loadingView.rightAnchor.constraint(equalTo: contentView.rightAnchor).isActive = true
+
+        selectionView.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
+        selectionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
+        selectionView.leftAnchor.constraint(equalTo: contentView.leftAnchor).isActive = true
+        selectionView.rightAnchor.constraint(equalTo: contentView.rightAnchor).isActive = true
+        
         updateStyle()
     }
     
@@ -53,5 +95,5 @@ class AssetCell: UICollectionViewCell {
         self.state = state
         self.updateStyle()
     }
-
+    
 }
