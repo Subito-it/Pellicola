@@ -197,19 +197,16 @@ extension AssetsViewController: UICollectionViewDataSource {
         // Request an image for the asset from the PHCachingImageManager.
         cell.assetIdentifier = asset.localIdentifier
         
-        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-            guard let sSelf = self else { return }
-            sSelf.imageManager.requestImage(for: asset, targetSize: sSelf.thumbnailSize, contentMode: .aspectFill, options: nil, resultHandler: { image, info in
-                
-                DispatchQueue.main.async { [weak cell] in
-                    // The cell may have been recycled by the time this handler gets called;
-                    // set the cell's thumbnail image only if it's still showing the same asset.
-                    if cell?.assetIdentifier == asset.localIdentifier {
-                        cell?.thumbnailImage = image
-                    }
+        imageManager.requestImage(for: asset, targetSize: thumbnailSize, contentMode: .aspectFill, options: nil, resultHandler: { [weak cell] image, info in
+            
+            DispatchQueue.main.async { [weak cell] in
+                // The cell may have been recycled by the time this handler gets called;
+                // set the cell's thumbnail image only if it's still showing the same asset.
+                if cell?.assetIdentifier == asset.localIdentifier {
+                    cell?.thumbnailImage = image
                 }
-            })
-        }
+            }
+        })
         
         cell.setState(viewModel.getState(for: asset))
         
@@ -238,15 +235,14 @@ extension AssetsViewController: UICollectionViewDelegate {
                     }
                 } else {
                     sSelf.updateToolbar()
-                    UIView.performWithoutAnimation {
-                        sSelf.collectionView.reloadItems(at: [indexPath])
-                    }
+                    collectionView.performBatchUpdates({
+                        collectionView.reloadItems(at: [indexPath])
+                    }, completion: nil)
                 }
             }
         }
         
-        viewModel.selectedAsset(selectedAsset,
-                                updateUI: updateUI)
+        viewModel.selectedAsset(selectedAsset, updateUI: updateUI)
         
     }
 
