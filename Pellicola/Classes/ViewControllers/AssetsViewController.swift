@@ -132,7 +132,7 @@ class AssetsViewController: UIViewController {
     
     private func updateToolbar() {
         
-        guard !viewModel.isSingleSelection,  viewModel.numberOfSelectedAssets > 0 else {
+        guard viewModel.maxNumberOfSelection != nil, !viewModel.isSingleSelection, viewModel.numberOfSelectedAssets > 0 else {
             navigationController?.setToolbarHidden(true, animated: true)
             return
         }
