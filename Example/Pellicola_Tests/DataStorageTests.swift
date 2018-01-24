@@ -13,10 +13,12 @@ class DataStorageTests: XCTestCase {
     
     var dataStorage: DataStorage!
     
+    let limit = 5
+    
     override func setUp() {
         super.setUp()
         
-        dataStorage = DataStorage(limit: 5)
+        dataStorage = DataStorage(limit: limit)
     }
     
     override func tearDown() {
@@ -40,14 +42,12 @@ class DataStorageTests: XCTestCase {
     }
     
     func testAddImageWhenLimitReached() {
-        dataStorage.addImage(UIImage(), withIdentifier: UUID().uuidString)
-        dataStorage.addImage(UIImage(), withIdentifier: UUID().uuidString)
-        dataStorage.addImage(UIImage(), withIdentifier: UUID().uuidString)
-        dataStorage.addImage(UIImage(), withIdentifier: UUID().uuidString)
-        dataStorage.addImage(UIImage(), withIdentifier: UUID().uuidString)
-        dataStorage.addImage(UIImage(), withIdentifier: UUID().uuidString)
         
-        XCTAssertEqual(dataStorage.images.count, Int(dataStorage.limit))
+        for _ in 0..<limit+1 {
+            dataStorage.addImage(UIImage(), withIdentifier: UUID().uuidString)
+        }
+        
+        XCTAssertEqual(dataStorage.images.count, Int(dataStorage.limit!))
     }
     
     func testContainsImage() {

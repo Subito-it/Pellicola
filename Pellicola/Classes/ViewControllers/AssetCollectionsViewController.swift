@@ -60,7 +60,7 @@ final class AssetCollectionsViewController: UIViewController {
                                                            target: self,
                                                            action: #selector(cancelButtonTapped))
         
-        if viewModel.maxNumberOfSelection > 1 {
+        if !viewModel.isSingleSelection {
             doneBarButton = UIBarButtonItem(barButtonSystemItem: .done,
                                             target: self,
                                             action: #selector(doneButtonTapped))

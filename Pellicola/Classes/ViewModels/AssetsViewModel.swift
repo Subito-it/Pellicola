@@ -29,8 +29,13 @@ class AssetsViewModel {
         return assets.countOfAssets(with: .image)
     }
     
-    var maxNumberOfSelection: UInt {
+    var maxNumberOfSelection: Int? {
         return dataStorage.limit
+    }
+    
+    var isSingleSelection: Bool {
+        guard let maxNumberOfSelection = maxNumberOfSelection else { return false }
+        return maxNumberOfSelection == 1
     }
     
     var numberOfSelectedAssets: Int {
@@ -43,7 +48,7 @@ class AssetsViewModel {
     
     var toolbarText: String {
         
-        guard maxNumberOfSelection != UInt.max else {
+        guard let maxNumberOfSelection = maxNumberOfSelection else {
             return ""
         }
         
@@ -73,7 +78,8 @@ class AssetsViewModel {
     func selectedAsset(_ asset: PHAsset,
                        updateUI: @escaping (() -> Void)) {
         
-        let numberOfSelectableAssets = Int(dataStorage.limit) - dataStorage.images.count - dataFetcher.count
+        let limit = maxNumberOfSelection ?? Int.max
+        let numberOfSelectableAssets = limit - dataStorage.images.count - dataFetcher.count
         
         if dataStorage.containsImage(withIdentifier: asset.localIdentifier) {
             dataStorage.removeImage(withIdentifier: asset.localIdentifier)

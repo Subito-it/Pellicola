@@ -14,7 +14,7 @@ public final class PellicolaPresenter: NSObject {
     @objc public var userDidCancel: (() -> Void)?
     
     /*
-     - <0 Unlimited
+     - <=0 Unlimited
      - ==1 Single selection
      - >1  Limited selection
      */
@@ -29,7 +29,7 @@ public final class PellicolaPresenter: NSObject {
     
     @objc public init(maxNumberOfSelections: Int) {
         self.maxNumberOfSelections = maxNumberOfSelections
-        dataStorage = DataStorage(limit: maxNumberOfSelections < 0 ? Int.max : Int(maxNumberOfSelections))
+        dataStorage = DataStorage(limit: maxNumberOfSelections <= 0 ? nil : maxNumberOfSelections)
         dataFetcher = DataFetcher()
         super.init()
     }

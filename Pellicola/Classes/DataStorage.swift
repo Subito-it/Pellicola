@@ -26,16 +26,17 @@ class DataStorage: NSObject {
     @objc dynamic private(set) var images: [String: OrderedImage] = [String: OrderedImage]()
     private var index = 0
     
-    let limit: Int
+    let limit: Int?
     
-    init(limit: Int) {
+    init(limit: Int?) {
         self.limit = limit
     }
     
     func addImage(_ image: UIImage, withIdentifier identifier: String) {
         
         guard images[identifier] == nil else { return }
-        guard images.count < limit else { return }
+        
+        if let limit = limit, images.count >= limit { return }
         
         images[identifier] = OrderedImage(image: image, index: index)
         index += 1

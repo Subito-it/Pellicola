@@ -66,7 +66,7 @@ class AssetsViewController: UIViewController {
     private func setupNavigationBar() {
         title = viewModel.assetCollectionName
         
-        if viewModel.maxNumberOfSelection > 1 {
+        if !viewModel.isSingleSelection {
             doneBarButton = UIBarButtonItem(barButtonSystemItem: .done,
                                             target: self,
                                             action: #selector(doneButtonTapped))
@@ -99,7 +99,7 @@ class AssetsViewController: UIViewController {
         thumbnailSize = CGSize(width: cellSize.width * scale, height: cellSize.height * scale)
         
         collectionView.allowsSelection = true
-        collectionView.allowsMultipleSelection = viewModel.maxNumberOfSelection > 1
+        collectionView.allowsMultipleSelection = !viewModel.isSingleSelection
         collectionView.register(AssetCell.self, forCellWithReuseIdentifier: AssetCell.identifier)
         collectionView.dataSource = self
         collectionView.delegate = self
@@ -132,7 +132,7 @@ class AssetsViewController: UIViewController {
     
     private func updateToolbar() {
         
-        guard viewModel.maxNumberOfSelection > 1,  viewModel.numberOfSelectedAssets > 0 else {
+        guard !viewModel.isSingleSelection,  viewModel.numberOfSelectedAssets > 0 else {
             navigationController?.setToolbarHidden(true, animated: true)
             return
         }
