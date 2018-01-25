@@ -63,4 +63,8 @@ class DataStorage: NSObject {
         }
     }
     
+    func clearAll() {
+        images = [String: OrderedImage]()
+    }
+    
 }

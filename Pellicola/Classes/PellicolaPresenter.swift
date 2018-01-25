@@ -46,6 +46,7 @@ public final class PellicolaPresenter: NSObject {
         let viewModel = AssetCollectionsViewModel(dataStorage: dataStorage,
                                                   dataFetcher: dataFetcher)
         let assetCollectionsVC = AssetCollectionsViewController(viewModel: viewModel)
+        assetCollectionsVC.didDismiss = clearMemory
         assetCollectionsVC.userDidCancel = userDidCancel
         assetCollectionsVC.didSelectImages = didSelectImages
         assetCollectionsVC.didSelectAssetCollection = { [weak self] assetCollection in
@@ -61,6 +62,7 @@ public final class PellicolaPresenter: NSObject {
                                         dataFetcher: dataFetcher,
                                         assetCollection: assetCollection)
         let assetsViewController = AssetsViewController(viewModel: viewModel)
+        assetsViewController.didDismiss = clearMemory
         assetsViewController.didSelectImages = didSelectImages
         assetsViewController.didPeekOnAsset = createDetailAssetViewController
         return assetsViewController
@@ -72,5 +74,11 @@ public final class PellicolaPresenter: NSObject {
         let detailViewController = DetailAssetViewController(viewModel: viewModel)
         return detailViewController
         
+    }
+    
+    private func clearMemory() {
+        dataStorage.clearAll()
+        dataFetcher.clear()
+        navigationController.setViewControllers([], animated: false)
     }
 }

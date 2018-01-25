@@ -22,6 +22,7 @@ class AssetsViewController: UIViewController {
     private var doneBarButton: UIBarButtonItem?
     private var dataStorageObservation: NSKeyValueObservation?
     
+    var didDismiss: (() -> Void)?
     var didSelectImages: (([UIImage]) -> Void)?
     var didPeekOnAsset: ((PHAsset) -> UIViewController)?
     
@@ -172,6 +173,7 @@ class AssetsViewController: UIViewController {
         navigationController?.dismiss(animated: true) { [weak self] in
             guard let sSelf = self else { return }
             sSelf.didSelectImages?(sSelf.viewModel.getSelectedImages())
+            sSelf.didDismiss?()
         }
     }
     
@@ -179,12 +181,6 @@ class AssetsViewController: UIViewController {
     
     fileprivate func resetCachedAssets() {
         imageManager.stopCachingImagesForAllAssets()
-    }
-    
-    // MARK: - Action
-    
-    @objc func actionDismiss() {
-        dismiss(animated: true, completion: nil)
     }
 
 }
@@ -242,6 +238,7 @@ extension AssetsViewController: UICollectionViewDelegate {
                     sSelf.navigationController?.dismiss(animated: true) { [weak self] in
                         guard let sSelf = self else { return }
                         sSelf.didSelectImages?(sSelf.viewModel.getSelectedImages())
+                        sSelf.didDismiss?()
                     }
                 } else {
                     sSelf.updateToolbar()

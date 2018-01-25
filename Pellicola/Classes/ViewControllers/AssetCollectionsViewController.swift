@@ -13,6 +13,7 @@ final class AssetCollectionsViewController: UIViewController {
     
     @IBOutlet private var tableView: UITableView!
     
+    var didDismiss: (() -> Void)?
     var userDidCancel: (() -> Void)?
     var didSelectImages: (([UIImage]) -> Void)?
     var didSelectAssetCollection: ((PHAssetCollection) -> Void)?
@@ -154,12 +155,14 @@ final class AssetCollectionsViewController: UIViewController {
         navigationController?.dismiss(animated: true) { [weak self] in
             guard let sSelf = self else { return }
             sSelf.didSelectImages?(sSelf.viewModel.getSelectedImages())
+            sSelf.didDismiss?()
         }
     }
     
     @objc func cancelButtonTapped() {
         navigationController?.dismiss(animated: true) { [weak self] in
             self?.userDidCancel?()
+            self?.didDismiss?()
         }
     }
     
