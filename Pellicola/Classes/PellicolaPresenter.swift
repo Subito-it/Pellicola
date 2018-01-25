@@ -62,7 +62,15 @@ public final class PellicolaPresenter: NSObject {
                                         assetCollection: assetCollection)
         let assetsViewController = AssetsViewController(viewModel: viewModel)
         assetsViewController.didSelectImages = didSelectImages
+        assetsViewController.didPeekOnAsset = createDetailAssetViewController
         return assetsViewController
+        
+    }
+    
+    private func createDetailAssetViewController(with asset: PHAsset) -> DetailAssetViewController {
+        let viewModel = DetailAssetViewModel(asset: asset)
+        let detailViewController = DetailAssetViewController(viewModel: viewModel)
+        return detailViewController
         
     }
 }

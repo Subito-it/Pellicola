@@ -32,6 +32,9 @@
 		C706CC1C7C52BB644722956CFC8F1024 /* Pods-Pellicola_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = CA7153B6305F66448840F6C7D1434E9D /* Pods-Pellicola_Tests-dummy.m */; };
 		C91C3652A08776DF6E182D6DFD5DB203 /* Pods-Pellicola_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 8DA9ED7349185379A4D8B5C8935532C7 /* Pods-Pellicola_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CE0D3040201234D8006D7026 /* AssetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0D303F201234D8006D7026 /* AssetCell.swift */; };
+		CE8113462018A77700E1EFAB /* DetailAssetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8113442018A77700E1EFAB /* DetailAssetViewController.swift */; };
+		CE8113472018A77700E1EFAB /* DetailAssetViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE8113452018A77700E1EFAB /* DetailAssetViewController.xib */; };
+		CE8113492018A86200E1EFAB /* DetailAssetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8113482018A86200E1EFAB /* DetailAssetViewModel.swift */; };
 		D2185A15525D8983492256BA94B97D1B /* AssetCollectionCell.xib in Sources */ = {isa = PBXBuildFile; fileRef = A690FB4EC57B62131CED84B8DF7C6336 /* AssetCollectionCell.xib */; };
 		D78FB59969E02F9476A4F3D25B837D3A /* AssetsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CE99B890B3AEFC23B9629098911E5C /* AssetsViewModel.swift */; };
 		E4AC32A59008A1811F453E5F28ACE900 /* AssetCollectionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D38F1A07461E0732F344DC7E04A456 /* AssetCollectionsViewModel.swift */; };
@@ -92,6 +95,9 @@
 		CA7153B6305F66448840F6C7D1434E9D /* Pods-Pellicola_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Pellicola_Tests-dummy.m"; sourceTree = "<group>"; };
 		CCDBCCF9FAAA1BB4928EC469D1531CCF /* AssetsViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AssetsViewController.swift; sourceTree = "<group>"; };
 		CE0D303F201234D8006D7026 /* AssetCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetCell.swift; sourceTree = "<group>"; };
+		CE8113442018A77700E1EFAB /* DetailAssetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailAssetViewController.swift; sourceTree = "<group>"; };
+		CE8113452018A77700E1EFAB /* DetailAssetViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailAssetViewController.xib; sourceTree = "<group>"; };
+		CE8113482018A86200E1EFAB /* DetailAssetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailAssetViewModel.swift; sourceTree = "<group>"; };
 		CFB3C1B04984D9B9B1EEB7E3ACA66602 /* CheckmarkView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CheckmarkView.swift; sourceTree = "<group>"; };
 		D00BE2BA6718D0309708E6000BEB489A /* en.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = en.lproj; path = Pellicola/Resources/en.lproj; sourceTree = "<group>"; };
 		D33AABB357D1D4B5B83EBB6E34EF18E9 /* Pods-Pellicola_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Pellicola_Example.debug.xcconfig"; sourceTree = "<group>"; };
@@ -256,6 +262,8 @@
 				DFD2168F3C79802F1145232CE62260E3 /* AssetCollectionsViewController.xib */,
 				CCDBCCF9FAAA1BB4928EC469D1531CCF /* AssetsViewController.swift */,
 				8F71C39410145C8480082AD257BE333C /* AssetsViewController.xib */,
+				CE8113442018A77700E1EFAB /* DetailAssetViewController.swift */,
+				CE8113452018A77700E1EFAB /* DetailAssetViewController.xib */,
 			);
 			name = ViewControllers;
 			path = Pellicola/Classes/ViewControllers;
@@ -266,6 +274,7 @@
 			children = (
 				F4D38F1A07461E0732F344DC7E04A456 /* AssetCollectionsViewModel.swift */,
 				25CE99B890B3AEFC23B9629098911E5C /* AssetsViewModel.swift */,
+				CE8113482018A86200E1EFAB /* DetailAssetViewModel.swift */,
 			);
 			name = ViewModels;
 			path = Pellicola/Classes/ViewModels;
@@ -426,6 +435,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE8113472018A77700E1EFAB /* DetailAssetViewController.xib in Resources */,
 				742C63EE64E3A82325C9BC01F80E5D73 /* en.lproj in Resources */,
 				FD3955AE98E9B3E196C1D6F2D362854F /* it.lproj in Resources */,
 			);
@@ -456,11 +466,13 @@
 				D78FB59969E02F9476A4F3D25B837D3A /* AssetsViewModel.swift in Sources */,
 				AD2BA97F0AC28D1DF481811125BACAAF /* Bundle+Extension.swift in Sources */,
 				CE0D3040201234D8006D7026 /* AssetCell.swift in Sources */,
+				CE8113492018A86200E1EFAB /* DetailAssetViewModel.swift in Sources */,
 				2D41FF0266DCCD4F1DBCA11DA5DCE141 /* CheckmarkView.swift in Sources */,
 				4D755BC8D62CC6A3E86C9D0811029D84 /* DataFetcher.swift in Sources */,
 				2DA1A5758BCFB1A87F9271ECD9843153 /* DataStorage.swift in Sources */,
 				2B25E076FB3D3E0A18CDC69644053FA3 /* LoadingView.swift in Sources */,
 				1CF3B5C32E6135B2D26DF6D7C47F46E3 /* Pellicola-dummy.m in Sources */,
+				CE8113462018A77700E1EFAB /* DetailAssetViewController.swift in Sources */,
 				73223E1311BACA9EDB00205787799B73 /* PellicolaPresenter.swift in Sources */,
 				26F0B6A3A5E406766A1AEC5ECC09B3C9 /* PHAssetCollection+Extension.swift in Sources */,
 				9B951F87E11DF2E5C9455439D0B94BC7 /* SelectionView.swift in Sources */,

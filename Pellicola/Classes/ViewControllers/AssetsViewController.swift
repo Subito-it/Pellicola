@@ -23,6 +23,7 @@ class AssetsViewController: UIViewController {
     private var dataStorageObservation: NSKeyValueObservation?
     
     var didSelectImages: (([UIImage]) -> Void)?
+    var didPeekOnAsset: ((PHAsset) -> UIViewController)?
     
     private var viewModel: AssetsViewModel
     
@@ -39,6 +40,10 @@ class AssetsViewController: UIViewController {
         super.viewDidLoad()
         resetCachedAssets()
         configureUI()
+        
+        if traitCollection.forceTouchCapability == .available {
+            registerForPreviewing(with: self, sourceView: collectionView)
+        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -264,3 +269,25 @@ extension AssetsViewController: UICollectionViewDataSourcePrefetching {
     }
     
 }
+
+// MARK: - UIViewControllerPreviewingDelegate
+
+extension AssetsViewController: UIViewControllerPreviewingDelegate {
+    
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        guard let indexPath = collectionView?.indexPathForItem(at: location) else { return nil }
+        guard let cell = collectionView.cellForItem(at: indexPath) else { return nil }
+        previewingContext.sourceRect = cell.frame
+        let asset = viewModel.assets.object(at: indexPath.item)
+        let viewController = didPeekOnAsset?(asset)
+        viewController?.preferredContentSize = CGSize(width: asset.pixelWidth, height: asset.pixelHeight)
+        return viewController
+    }
+    
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
+        return
+    }
+    
+}
+
+
