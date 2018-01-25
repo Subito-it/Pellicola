@@ -67,6 +67,13 @@ class DataStorageTests: XCTestCase {
         XCTAssertEqual(dataStorage.images.count, 0)
     }
     
+    func testRemoveUnstoredImage() {
+        dataStorage.addImage(UIImage(), withIdentifier: UUID().uuidString)
+        dataStorage.removeImage(withIdentifier: UUID().uuidString)
+        
+        XCTAssertEqual(dataStorage.images.count, 1)
+    }
+    
     func testOrderedImagesStore() {
         let array = [UIImage.image(with: .yellow),
                      UIImage.image(with: .green)]

@@ -13,12 +13,12 @@ class PellicolaTests: XCTestCase {
     
     func testInitWithNegativeNumberOfSelections() {
         let pellicolaPresenter = PellicolaPresenter(maxNumberOfSelections: -1)
-        XCTAssertEqual(pellicolaPresenter.dataStorage.limit, Int.max)
+        XCTAssertNil(pellicolaPresenter.dataStorage.limit)
     }
     
     func testInitWithZeroNumberOfSelections() {
         let pellicolaPresenter = PellicolaPresenter(maxNumberOfSelections: 0)
-        XCTAssertEqual(pellicolaPresenter.dataStorage.limit, Int.max)
+        XCTAssertNil(pellicolaPresenter.dataStorage.limit)
     }
     
     func testInitWithLimitedLimit() {
