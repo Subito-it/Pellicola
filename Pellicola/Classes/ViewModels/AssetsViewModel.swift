@@ -64,10 +64,7 @@ class AssetsViewModel {
         self.dataFetcher = dataFetcher
         self.assetCollection = assetCollection
         
-        let options = PHFetchOptions()
-        options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
-        options.predicate = NSPredicate(format: "mediaType = %d", PHAssetMediaType.image.rawValue)
-        assets = PHAsset.fetchAssets(in: assetCollection, options: options)
+        assets = PHAsset.fetchAssets(in: assetCollection, options: nil)
         
         dataStorageObservation = dataStorage.observe(\DataStorage.images) { [weak self] _, _ in
             guard let sSelf = self else { return }
