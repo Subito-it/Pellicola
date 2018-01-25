@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vXZ-lx-hvc">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -21,9 +21,42 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="91N-TW-76l">
-                                <rect key="frame" x="131" y="318" width="113" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="zCx-l1-pZR">
+                                <rect key="frame" x="0.0" y="82" width="375" height="585"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="LXb-1D-gIp">
+                                    <size key="itemSize" width="100" height="97"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ImageCell" id="A6d-Yr-84t" customClass="ImageCell">
+                                        <rect key="frame" x="0.0" y="0.0" width="100" height="97"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                            <rect key="frame" x="0.0" y="0.0" width="100" height="97"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xEH-lC-loX">
+                                                    <rect key="frame" x="0.0" y="0.0" width="100" height="97"/>
+                                                </imageView>
+                                            </subviews>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstItem="xEH-lC-loX" firstAttribute="top" secondItem="A6d-Yr-84t" secondAttribute="top" id="0Yy-g2-rKU"/>
+                                            <constraint firstAttribute="bottom" secondItem="xEH-lC-loX" secondAttribute="bottom" id="aCF-f1-PcW"/>
+                                            <constraint firstAttribute="trailing" secondItem="xEH-lC-loX" secondAttribute="trailing" id="fpD-Qo-Hmf"/>
+                                            <constraint firstItem="xEH-lC-loX" firstAttribute="leading" secondItem="A6d-Yr-84t" secondAttribute="leading" id="k8Z-Su-nNM"/>
+                                        </constraints>
+                                        <connections>
+                                            <outlet property="imageView" destination="xEH-lC-loX" id="TFk-Ie-TVl"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="91N-TW-76l">
+                                <rect key="frame" x="131" y="36" width="113" height="30"/>
                                 <state key="normal" title="Present Pellicola"/>
                                 <connections>
                                     <action selector="presentPellicola:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="ycF-hU-gfz"/>
@@ -31,11 +64,22 @@
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="91N-TW-76l" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="0eJ-3q-xwa"/>
+                            <constraint firstItem="zCx-l1-pZR" firstAttribute="top" secondItem="91N-TW-76l" secondAttribute="bottom" constant="16" id="3Dy-RO-WZU"/>
+                            <constraint firstItem="91N-TW-76l" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="16" id="5Py-Vf-SQI"/>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="zCx-l1-pZR" secondAttribute="bottom" id="Hd8-zh-wPu"/>
+                            <constraint firstAttribute="trailing" secondItem="zCx-l1-pZR" secondAttribute="trailing" id="lRD-gn-jlG"/>
+                            <constraint firstItem="zCx-l1-pZR" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="mLD-oR-Mol"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="collectionView" destination="zCx-l1-pZR" id="obu-bV-pao"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-225" y="83"/>
+            <point key="canvasLocation" x="-226.40000000000001" y="82.3088455772114"/>
         </scene>
         <!--Root View Controller-->
         <scene sceneID="wdD-vl-qq3">

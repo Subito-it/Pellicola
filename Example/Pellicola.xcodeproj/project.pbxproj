@@ -14,6 +14,7 @@
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		6565377C28E24A5E590FBC54 /* Pods_Pellicola_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB1142B580B5DD8D92B9D98D /* Pods_Pellicola_Example.framework */; };
 		9C0F7B6C00AFFF74D2D2A3F1 /* Pods_Pellicola_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DFA48CD47B44D11DD0256FF6 /* Pods_Pellicola_Tests.framework */; };
+		CE11DD10201A2AE100A29992 /* ImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE11DD0F201A2AE100A29992 /* ImageCell.m */; };
 		CE33BCC620120BE2002EC65E /* DataStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE33BCC520120BE2002EC65E /* DataStorageTests.swift */; };
 		CE33BCCE20120D3B002EC65E /* OrderedImageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE33BCCD20120D3B002EC65E /* OrderedImageTests.swift */; };
 		CE33BCD020120D72002EC65E /* UIImage+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE33BCCF20120D72002EC65E /* UIImage+Color.swift */; };
@@ -48,6 +49,8 @@
 		AB1142B580B5DD8D92B9D98D /* Pods_Pellicola_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Pellicola_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B78BDB3492906F17059F2DA8 /* Pods-Pellicola_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pellicola_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Pellicola_Example/Pods-Pellicola_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		C8E21D946E22340AC654079A /* Pods-Pellicola_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pellicola_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-Pellicola_Example/Pods-Pellicola_Example.release.xcconfig"; sourceTree = "<group>"; };
+		CE11DD0E201A2AE100A29992 /* ImageCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageCell.h; sourceTree = "<group>"; };
+		CE11DD0F201A2AE100A29992 /* ImageCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImageCell.m; sourceTree = "<group>"; };
 		CE33BCC320120BE2002EC65E /* Pellicola_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Pellicola_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE33BCC520120BE2002EC65E /* DataStorageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStorageTests.swift; sourceTree = "<group>"; };
 		CE33BCC720120BE2002EC65E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -120,6 +123,8 @@
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
 				607FACD31AFB9204008FA782 /* Supporting Files */,
 				257D58221FB9F05C0046A33B /* Pellicola_Example-Bridging-Header.h */,
+				CE11DD0E201A2AE100A29992 /* ImageCell.h */,
+				CE11DD0F201A2AE100A29992 /* ImageCell.m */,
 			);
 			name = "Example for Pellicola";
 			path = Pellicola;
@@ -381,6 +386,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				257D58251FB9F05C0046A33B /* ViewController.m in Sources */,
+				CE11DD10201A2AE100A29992 /* ImageCell.m in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
