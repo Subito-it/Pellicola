@@ -78,10 +78,9 @@ extension AssetCollectionsViewModel: PHPhotoLibraryChangeObserver {
     
     func photoLibraryDidChange(_ changeInstance: PHChange) {
         
-        if let changeDetails = changeInstance.changeDetails(for: fetchResult) {
-            fetchResult = changeDetails.fetchResultAfterChanges
-            albums = PHAssetCollection.fetch(assetCollectionType: assetCollectionType, sortedBy: smartAlbumSubtypes)
-        }
+        guard let changeDetails = changeInstance.changeDetails(for: fetchResult) else { return }
+        fetchResult = changeDetails.fetchResultAfterChanges
+        albums = PHAssetCollection.fetch(assetCollectionType: assetCollectionType, sortedBy: smartAlbumSubtypes)
         
         DispatchQueue.main.async { [weak self] in
             self?.onChangeAssetCollections?()

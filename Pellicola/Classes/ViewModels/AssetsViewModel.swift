@@ -8,7 +8,7 @@
 import Foundation
 import Photos
 
-class AssetsViewModel {
+class AssetsViewModel: NSObject {
     
     private var dataStorage: DataStorage
     private var dataFetcher: DataFetcher
@@ -17,8 +17,9 @@ class AssetsViewModel {
     private var dataStorageObservation: NSKeyValueObservation?
     private let imageManager = PHCachingImageManager()
     
-    let assets: PHFetchResult<PHAsset>
+    var assets: PHFetchResult<PHAsset>
     
+    var onChangeAssets: (() -> Void)?
     var onChangeSelectedAssets: ((Int) -> Void)?
     
     var assetCollectionName: String? {
@@ -66,10 +67,17 @@ class AssetsViewModel {
         
         assets = PHAsset.fetchAssets(in: assetCollection, options: nil)
         
+        super.init()
+        
         dataStorageObservation = dataStorage.observe(\DataStorage.images) { [weak self] _, _ in
             guard let sSelf = self else { return }
             sSelf.onChangeSelectedAssets?(sSelf.numberOfSelectedAssets)
         }
+        PHPhotoLibrary.shared().register(self)
+    }
+    
+    deinit {
+        PHPhotoLibrary.shared().unregisterChangeObserver(self)
     }
     
     func selectedAsset(_ asset: PHAsset,
@@ -113,4 +121,26 @@ class AssetsViewModel {
         dataFetcher.clear()
     }
     
+}
+
+// MARK: - PHPhotoLibraryChangeObserver
+
+extension AssetsViewModel: PHPhotoLibraryChangeObserver {
+    
+    func photoLibraryDidChange(_ changeInstance: PHChange) {
+        
+        guard let changeDetails = changeInstance.changeDetails(for: assets) else { return }
+        
+        assets = changeDetails.fetchResultAfterChanges
+        
+        (changeDetails.removedObjects + changeDetails.changedObjects).forEach {
+            dataFetcher.removeRequest(withIdentifier: $0.localIdentifier)
+            dataStorage.removeImage(withIdentifier: $0.localIdentifier)
+        }
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.onChangeAssets?()
+        }
+        
+    }
 }

@@ -41,6 +41,11 @@ class AssetsViewController: UIViewController {
         resetCachedAssets()
         configureUI()
         
+        viewModel.onChangeAssets = { [weak self] in
+            self?.collectionView.reloadData()
+            self?.updateToolbar()
+        }
+        
         if traitCollection.forceTouchCapability == .available {
             registerForPreviewing(with: self, sourceView: collectionView)
         }
