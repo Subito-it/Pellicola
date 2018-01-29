@@ -11,13 +11,7 @@ class AssetCollectionCell: UITableViewCell {
 
     @IBOutlet weak private var albumTitle: UILabel!
     @IBOutlet weak private var photosCount: UILabel!
-    @IBOutlet weak private var imageView1: UIImageView!
-    @IBOutlet weak private var imageView2: UIImageView!
-    @IBOutlet weak private var imageView3: UIImageView!
-    
-    enum ThumbnailPosition {
-        case back, middle, front
-    }
+    @IBOutlet weak private var thumbnailView: UIImageView!
     
     var title: String? {
         set { albumTitle.text = newValue }
@@ -29,30 +23,23 @@ class AssetCollectionCell: UITableViewCell {
         get { return photosCount.text }
     }
     
+    var thumbnail: UIImage? {
+        set { thumbnailView.image = newValue }
+        get { return thumbnailView.image }
+    }
+    
     var thumbnailSize: CGSize {
-        return imageView1.frame.size
+        return thumbnailView.frame.size
     }
     
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        imageView1.applyThumbnailStyle()
-        imageView2.applyThumbnailStyle()
-        imageView3.applyThumbnailStyle()
+        thumbnailView.applyThumbnailStyle()
     }
     
     override func prepareForReuse() {
-        imageView1.image = nil
-        imageView2.image = nil
-        imageView3.image = nil
-    }
-    
-    func setThubnail(_ image: UIImage?, in position: ThumbnailPosition) {
-        switch position {
-        case .back: imageView3.image = image
-        case .middle: imageView2.image = image
-        case .front: imageView1.image = image
-        }
+        thumbnail = nil
     }
     
 }

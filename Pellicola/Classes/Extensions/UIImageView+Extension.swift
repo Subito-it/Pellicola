@@ -12,6 +12,7 @@ extension UIImageView {
     func applyThumbnailStyle() {
         self.contentMode = .scaleAspectFill
         self.clipsToBounds = true
+        self.layer.cornerRadius = 2
     }
     
 }

@@ -82,6 +82,7 @@ final class AssetCollectionsViewController: UIViewController {
         tableView.register(UINib(nibName: AssetCollectionCell.identifier, bundle: Bundle(for: AssetCollectionCell.self)),
                            forCellReuseIdentifier: AssetCollectionCell.identifier)
         tableView.rowHeight = 85
+        tableView.separatorStyle = .none
         tableView.dataSource = self
         tableView.delegate = self
     }
@@ -199,51 +200,19 @@ extension AssetCollectionsViewController: UITableViewDataSource {
         // Album thumbnails
         let imageManager = PHImageManager.default()
         
-        if fetchedAssets.count >= 3 {
-            imageManager.requestImage(for: fetchedAssets[numberOfImages - 3],
+        if let lastAsset = fetchedAssets.lastObject {
+            imageManager.requestImage(for: lastAsset,
                                       targetSize: thumbnailSize,
                                       contentMode: .aspectFill,
                                       options: nil,
                                       resultHandler: { (image, _) in
                                         if albumCell.tag == indexPath.row {
-                                            albumCell.setThubnail(image, in: .back)
+                                            albumCell.thumbnail = image
                                         }
             })
         } else {
-            albumCell.setThubnail(nil, in: .back)
-        }
-        
-        if fetchedAssets.count >= 2 {
-            imageManager.requestImage(for: fetchedAssets[numberOfImages - 2],
-                                      targetSize: thumbnailSize,
-                                      contentMode: .aspectFill,
-                                      options: nil,
-                                      resultHandler: { (image, _) in
-                                        if albumCell.tag == indexPath.row {
-                                            albumCell.setThubnail(image, in: .middle)
-                                        }
-            })
-        } else {
-            albumCell.setThubnail(nil, in: .middle)
-        }
-        
-        if fetchedAssets.count >= 1 {
-            imageManager.requestImage(for: fetchedAssets[numberOfImages - 1],
-                                      targetSize: thumbnailSize,
-                                      contentMode: .aspectFill,
-                                      options: nil,
-                                      resultHandler: { (image, _) in
-                                        if albumCell.tag == indexPath.row {
-                                            albumCell.setThubnail(image, in: .front)
-                                        }
-            })
-        }
-        
-        if fetchedAssets.count == 0 {
             let placeholderImage = createPlaceholderImage(withSize: albumCell.thumbnailSize)
-            albumCell.setThubnail(placeholderImage, in: .back)
-            albumCell.setThubnail(placeholderImage, in: .middle)
-            albumCell.setThubnail(placeholderImage, in: .front)
+            albumCell.thumbnail = placeholderImage
         }
         
         return albumCell
