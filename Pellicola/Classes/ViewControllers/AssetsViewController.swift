@@ -13,7 +13,6 @@ class AssetsViewController: UIViewController {
     @IBOutlet weak private var collectionView: UICollectionView!
     
     private let numberOfPhotosForRow: Int = 4
-    private let spaceBetweenPhotosInRow: CGFloat = 1.0
     private let imageManager = PHCachingImageManager()
     private var thumbnailSize: CGSize!
     private weak var centerBarButtonToolbar: UIBarButtonItem?
@@ -94,14 +93,17 @@ class AssetsViewController: UIViewController {
     
     private func setupCollectionView() {
         
+        let spaceBetweenPhotosInRow: CGFloat = 3
+        
         let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
-        layout.minimumInteritemSpacing = 1
-        layout.minimumLineSpacing = 1
-        layout.sectionInset.bottom = 44
+        layout.minimumInteritemSpacing = spaceBetweenPhotosInRow
+        layout.minimumLineSpacing = spaceBetweenPhotosInRow
+        layout.sectionInset = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
         
         // Calculate the size of the cells
-        let spaceBetweenCells = spaceBetweenPhotosInRow * CGFloat(numberOfPhotosForRow)
-        let cellWidth = (UIScreen.main.bounds.width - spaceBetweenCells) / CGFloat(numberOfPhotosForRow)
+        let spaceBetweenCells = spaceBetweenPhotosInRow * CGFloat(numberOfPhotosForRow - 1)
+        let totalSpaces = spaceBetweenCells + layout.sectionInset.left + layout.sectionInset.right
+        let cellWidth = (UIScreen.main.bounds.width - totalSpaces) / CGFloat(numberOfPhotosForRow)
         let cellSize = CGSize(width: cellWidth, height: cellWidth)
         layout.itemSize = cellSize
         
