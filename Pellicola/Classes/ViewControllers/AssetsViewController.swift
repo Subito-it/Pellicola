@@ -233,29 +233,42 @@ extension AssetsViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        let selectedAsset = viewModel.assets.object(at: indexPath.item)
-        var oldAssetState = viewModel.getState(for: selectedAsset)
+        func updateUI(at indexPath: IndexPath) {
+            updateToolbar()
+            collectionView.reloadItems(at: [indexPath])
+        }
         
-        let updateUI = {
-            DispatchQueue.main.async { [weak self] in
-                guard let sSelf = self, let newAssetState = self?.viewModel.getState(for: selectedAsset), newAssetState != oldAssetState else { return }
-                oldAssetState = newAssetState
-                if sSelf.viewModel.maxNumberOfSelection == 1, newAssetState == .selected {
-                    sSelf.navigationController?.dismiss(animated: true) { [weak self] in
-                        guard let sSelf = self else { return }
+        let selectedAsset = viewModel.assets.object(at: indexPath.item)
+        
+        viewModel.select(selectedAsset, onDownload: { [weak self] in
+            
+            guard let sSelf = self else { return }
+            if case .loading = sSelf.viewModel.getState(for: selectedAsset) { return }
+            updateUI(at: indexPath)
+            
+            }, onUpdate: { [weak self] in
+                
+                guard let sSelf = self else { return }
+                if sSelf.viewModel.maxNumberOfSelection == 1 {
+                    sSelf.navigationController?.dismiss(animated: true) {
                         sSelf.didSelectImages?(sSelf.viewModel.getSelectedImages())
                         sSelf.didDismiss?()
                     }
                 } else {
-                    sSelf.updateToolbar()
-                    collectionView.performBatchUpdates({
-                        collectionView.reloadItems(at: [indexPath])
-                    }, completion: nil)
+                    updateUI(at: indexPath)
                 }
-            }
-        }
-        
-        viewModel.selectedAsset(selectedAsset, updateUI: updateUI)
+                
+            }, onLimit: { [weak self] in
+                
+                let alert = UIAlertController(title: NSLocalizedString("alert_limit.title", bundle: Bundle.framework, comment: ""),
+                                              message: nil,
+                                              preferredStyle: .alert)
+                let okAction = UIAlertAction(title: NSLocalizedString("alert_deselection.ok", bundle: Bundle.framework, comment: ""),
+                                             style: .default)
+                alert.addAction(okAction)
+                self?.present(alert, animated: true)
+                
+        })
         
     }
 

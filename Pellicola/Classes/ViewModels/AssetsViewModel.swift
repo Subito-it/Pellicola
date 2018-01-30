@@ -80,27 +80,29 @@ class AssetsViewModel: NSObject {
         PHPhotoLibrary.shared().unregisterChangeObserver(self)
     }
     
-    func selectedAsset(_ asset: PHAsset,
-                       updateUI: @escaping (() -> Void)) {
-        
+    func select(_ asset: PHAsset,
+                     onDownload: @escaping () -> Void,
+                     onUpdate: @escaping () -> Void,
+                     onLimit: @escaping () -> Void) {
         let limit = maxNumberOfSelection ?? Int.max
         let numberOfSelectableAssets = limit - dataStorage.images.count - dataFetcher.count
         
         if dataStorage.containsImage(withIdentifier: asset.localIdentifier) {
             dataStorage.removeImage(withIdentifier: asset.localIdentifier)
-            updateUI()
+            onUpdate()
         } else if dataFetcher.containsRequest(withIdentifier: asset.localIdentifier) {
             dataFetcher.removeRequest(withIdentifier: asset.localIdentifier)
-            updateUI()
+            onUpdate()
         } else if numberOfSelectableAssets > 0 {
             
-            dataFetcher.requestImage(for: asset, onProgress: updateUI, onComplete: { [weak self] image in
+            dataFetcher.requestImage(for: asset, onProgress: onDownload, onComplete: { [weak self] image in
                 self?.dataStorage.addImage(image, withIdentifier: asset.localIdentifier)
-                updateUI()
+                onUpdate()
             })
-
+            
+        } else {
+            onLimit()
         }
-        
     }
     
     func getState(for asset: PHAsset) -> AssetCell.State {
