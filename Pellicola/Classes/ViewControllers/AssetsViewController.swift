@@ -26,9 +26,11 @@ class AssetsViewController: UIViewController {
     var didPeekOnAsset: ((PHAsset) -> UIViewController)?
     
     private var viewModel: AssetsViewModel
+    private var style: PellicolaStyle
     
-    init(viewModel: AssetsViewModel) {
+    init(viewModel: AssetsViewModel, style: PellicolaStyle) {
         self.viewModel = viewModel
+        self.style = style
         super.init(nibName: nil, bundle: Bundle.framework)
     }
     
@@ -125,7 +127,7 @@ class AssetsViewController: UIViewController {
         
         let infoBarButton = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         infoBarButton.isEnabled = false
-        let attributes = [ NSAttributedStringKey.foregroundColor: UIColor.black ]
+        let attributes = [ NSAttributedStringKey.foregroundColor: style.blackColor ]
         infoBarButton.setTitleTextAttributes(attributes, for: .normal)
         infoBarButton.setTitleTextAttributes(attributes, for: .disabled)
         
@@ -199,6 +201,8 @@ extension AssetsViewController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AssetCell.identifier, for: indexPath) as? AssetCell else {
             fatalError("Error dequeuing photo cell")
         }
+        
+        cell.configure(with: style)
         
         let asset = viewModel.assets.object(at: indexPath.item)
         

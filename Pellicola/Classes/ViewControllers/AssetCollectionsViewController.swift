@@ -21,10 +21,12 @@ final class AssetCollectionsViewController: UIViewController {
     private var doneBarButton: UIBarButtonItem?
     private var dataStorageObservation: NSKeyValueObservation?
     
-    var viewModel: AssetCollectionsViewModel
+    private var viewModel: AssetCollectionsViewModel
+    private var style: PellicolaStyle
     
-    init(viewModel: AssetCollectionsViewModel) {
+    init(viewModel: AssetCollectionsViewModel, style: PellicolaStyle) {
         self.viewModel = viewModel
+        self.style = style
         super.init(nibName: nil, bundle: Bundle.framework)
     }
     
@@ -57,12 +59,14 @@ final class AssetCollectionsViewController: UIViewController {
     }
     
     private func setupNavigationBar() {
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel,
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: style.cancelString,
+                                                           style: .plain,
                                                            target: self,
                                                            action: #selector(cancelButtonTapped))
         
         if !viewModel.isSingleSelection {
-            doneBarButton = UIBarButtonItem(barButtonSystemItem: .done,
+            doneBarButton = UIBarButtonItem(title: style.doneString,
+                                            style: .done,
                                             target: self,
                                             action: #selector(doneButtonTapped))
             
@@ -185,6 +189,7 @@ extension AssetCollectionsViewController: UITableViewDataSource {
         }
         
         albumCell.tag = indexPath.row
+        albumCell.configure(with: style)
         
         let album = viewModel.albums[indexPath.row]
         albumCell.title = album.localizedTitle ?? ""

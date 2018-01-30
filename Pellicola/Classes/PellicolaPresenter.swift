@@ -12,6 +12,7 @@ public final class PellicolaPresenter: NSObject {
     
     @objc public var didSelectImages: (([UIImage]) -> Void)?
     @objc public var userDidCancel: (() -> Void)?
+    @objc open var style: PellicolaStyle = PellicolaStyle()
     
     /*
      - <=0 Unlimited
@@ -36,6 +37,8 @@ public final class PellicolaPresenter: NSObject {
     
     @objc public func present(on presentingViewController: UIViewController) {
         let assetCollectionsVC = createAssetsCollectionViewController()
+        navigationController.toolbar.tintColor = style.blackColor
+        navigationController.toolbar.barTintColor = style.toolbarBackgroundColor
         navigationController.setViewControllers([assetCollectionsVC], animated: false)
         presentingViewController.present(navigationController, animated: true, completion: nil)
     }
@@ -45,7 +48,7 @@ public final class PellicolaPresenter: NSObject {
     private func createAssetsCollectionViewController() -> AssetCollectionsViewController {
         let viewModel = AssetCollectionsViewModel(dataStorage: dataStorage,
                                                   dataFetcher: dataFetcher)
-        let assetCollectionsVC = AssetCollectionsViewController(viewModel: viewModel)
+        let assetCollectionsVC = AssetCollectionsViewController(viewModel: viewModel, style: style)
         assetCollectionsVC.didDismiss = clearMemory
         assetCollectionsVC.userDidCancel = userDidCancel
         assetCollectionsVC.didSelectImages = didSelectImages
@@ -61,7 +64,7 @@ public final class PellicolaPresenter: NSObject {
         let viewModel = AssetsViewModel(dataStorage: dataStorage,
                                         dataFetcher: dataFetcher,
                                         assetCollection: assetCollection)
-        let assetsViewController = AssetsViewController(viewModel: viewModel)
+        let assetsViewController = AssetsViewController(viewModel: viewModel, style: style)
         assetsViewController.didDismiss = clearMemory
         assetsViewController.didSelectImages = didSelectImages
         assetsViewController.didPeekOnAsset = createDetailAssetViewController

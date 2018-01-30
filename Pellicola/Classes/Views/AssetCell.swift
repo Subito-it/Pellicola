@@ -16,7 +16,11 @@ class AssetCell: UICollectionViewCell {
         return imageView
     }()
     
-    var selectionView: SelectionView?
+    var checkmarkView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
     var loadingView: LoadingView?
     
     enum State {
@@ -42,10 +46,6 @@ class AssetCell: UICollectionViewCell {
         commonInit()
     }
     
-    override func prepareForReuse() {
-        super.prepareForReuse()
-    }
-    
     private func commonInit() {
         contentView.addSubview(imageView)
         
@@ -53,6 +53,13 @@ class AssetCell: UICollectionViewCell {
         imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
         imageView.leftAnchor.constraint(equalTo: contentView.leftAnchor).isActive = true
         imageView.rightAnchor.constraint(equalTo: contentView.rightAnchor).isActive = true
+        
+        contentView.addSubview(checkmarkView)
+        
+        NSLayoutConstraint(item: checkmarkView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1.0, constant: 24.0).isActive = true
+        NSLayoutConstraint(item: checkmarkView, attribute: .height, relatedBy: .equal, toItem: checkmarkView, attribute: .width, multiplier: 1.0, constant: 0.0).isActive = true
+        NSLayoutConstraint(item: checkmarkView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1.0, constant: 3.0).isActive = true
+        NSLayoutConstraint(item: checkmarkView, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1.0, constant: -3.0).isActive = true
 
         updateStyle()
     }
@@ -62,20 +69,18 @@ class AssetCell: UICollectionViewCell {
         switch state {
             
         case .normal:
-            selectionView?.removeFromSuperview()
+            checkmarkView.isHidden = true
+            
             loadingView?.removeFromSuperview()
-            selectionView = nil
             loadingView = nil
         case .selected:
             loadingView?.removeFromSuperview()
             loadingView = nil
             
-            selectionView = SelectionView(frame: bounds)
-            addSubview(selectionView!)
+            checkmarkView.isHidden = false
             
         case .loading:
-            selectionView?.removeFromSuperview()
-            selectionView = nil
+            checkmarkView.isHidden = true
             
             loadingView = LoadingView(frame: bounds)
             addSubview(loadingView!)
@@ -88,6 +93,10 @@ class AssetCell: UICollectionViewCell {
         guard self.state != state else { return }
         self.state = state
         self.updateStyle()
+    }
+    
+    func configure(with style: AssetCellStyle) {
+        checkmarkView.image = style.checkmarkImage
     }
     
 }

@@ -42,4 +42,11 @@ class AssetCollectionCell: UITableViewCell {
         thumbnail = nil
     }
     
+    func configure(with style: AssetCollectionCellStyle) {
+        albumTitle.font = style.titleFont
+        albumTitle.textColor = style.titleColor
+        photosCount.font = style.subtitleFont
+        photosCount.textColor = style.subtitleColor
+    }
+    
 }
