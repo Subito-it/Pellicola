@@ -40,6 +40,7 @@ public final class PellicolaPresenter: NSObject {
         navigationController.toolbar.tintColor = style.blackColor
         navigationController.toolbar.barTintColor = style.toolbarBackgroundColor
         navigationController.setViewControllers([assetCollectionsVC], animated: false)
+        navigationController.modalPresentationStyle = .formSheet
         presentingViewController.present(navigationController, animated: true, completion: nil)
     }
     
