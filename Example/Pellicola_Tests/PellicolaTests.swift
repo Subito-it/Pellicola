@@ -11,19 +11,31 @@ import XCTest
 
 class PellicolaTests: XCTestCase {
     
+    var pellicolaPresenter: PellicolaPresenter!
+    
+    override func setUp() {
+        super.setUp()
+        pellicolaPresenter = PellicolaPresenter()
+    }
+    
+    override func tearDown() {
+        pellicolaPresenter = nil
+        super.tearDown()
+    }
+    
     func testInitWithNegativeNumberOfSelections() {
-        let pellicolaPresenter = PellicolaPresenter(maxNumberOfSelections: -1)
-        XCTAssertNil(pellicolaPresenter.dataStorage.limit)
+        pellicolaPresenter.present(on: UIViewController(), maxNumberOfSelections: -1)
+        XCTAssertNil(pellicolaPresenter.dataStorage!.limit)
     }
     
     func testInitWithZeroNumberOfSelections() {
-        let pellicolaPresenter = PellicolaPresenter(maxNumberOfSelections: 0)
-        XCTAssertNil(pellicolaPresenter.dataStorage.limit)
+        pellicolaPresenter.present(on: UIViewController(), maxNumberOfSelections: 0)
+        XCTAssertNil(pellicolaPresenter.dataStorage!.limit)
     }
     
     func testInitWithLimitedLimit() {
-        let pellicolaPresenter = PellicolaPresenter(maxNumberOfSelections: 3)
-        XCTAssertEqual(pellicolaPresenter.dataStorage.limit, 3)
+        pellicolaPresenter.present(on: UIViewController(), maxNumberOfSelections: 3)
+        XCTAssertEqual(pellicolaPresenter.dataStorage!.limit, 3)
     }
     
 }

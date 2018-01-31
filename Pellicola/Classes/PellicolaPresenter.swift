@@ -14,29 +14,25 @@ public final class PellicolaPresenter: NSObject {
     @objc public var userDidCancel: (() -> Void)?
     @objc open var style: PellicolaStyle = PellicolaStyle()
     
-    /*
-     - <=0 Unlimited
-     - ==1 Single selection
-     - >1  Limited selection
-     */
-    let maxNumberOfSelections: Int
-    
     private lazy var navigationController: UINavigationController = {
         return UINavigationController()
     }()
     
-    let dataStorage: DataStorage
-    let dataFetcher: DataFetcher
+    var dataStorage: DataStorage?
+    var dataFetcher: DataFetcher?
     
-    @objc public init(maxNumberOfSelections: Int) {
-        self.maxNumberOfSelections = maxNumberOfSelections
-        dataStorage = DataStorage(limit: maxNumberOfSelections <= 0 ? nil : maxNumberOfSelections)
-        dataFetcher = DataFetcher()
-        super.init()
-    }
-    
-    @objc public func present(on presentingViewController: UIViewController) {
-        let assetCollectionsVC = createAssetsCollectionViewController()
+    /*
+     
+     Values for maxNumberOfSelections:
+     
+     - <=0 Unlimited
+     - ==1 Single selection
+     - >1  Limited selection
+     */
+    @objc public func present(on presentingViewController: UIViewController, maxNumberOfSelections: Int) {
+        setupPresenter(with: maxNumberOfSelections)
+        
+        guard let assetCollectionsVC = createAssetsCollectionViewController() else { return }
         navigationController.toolbar.tintColor = style.blackColor
         navigationController.toolbar.barTintColor = style.toolbarBackgroundColor
         navigationController.setViewControllers([assetCollectionsVC], animated: false)
@@ -44,9 +40,17 @@ public final class PellicolaPresenter: NSObject {
         presentingViewController.present(navigationController, animated: true, completion: nil)
     }
     
+    // MARK: - Helper method
+    
+    private func setupPresenter(with maxNumberOfSelections: Int) {
+        dataStorage = DataStorage(limit: maxNumberOfSelections <= 0 ? nil : maxNumberOfSelections)
+        dataFetcher = DataFetcher()
+    }
+    
     // MARK: - View Controller creation
     
-    private func createAssetsCollectionViewController() -> AssetCollectionsViewController {
+    private func createAssetsCollectionViewController() -> AssetCollectionsViewController? {
+        guard let dataStorage = dataStorage, let dataFetcher = dataFetcher else { return nil }
         let viewModel = AssetCollectionsViewModel(dataStorage: dataStorage,
                                                   dataFetcher: dataFetcher)
         let assetCollectionsVC = AssetCollectionsViewController(viewModel: viewModel, style: style)
@@ -54,14 +58,15 @@ public final class PellicolaPresenter: NSObject {
         assetCollectionsVC.userDidCancel = userDidCancel
         assetCollectionsVC.didSelectImages = didSelectImages
         assetCollectionsVC.didSelectAssetCollection = { [weak self] assetCollection in
-            guard let sSelf = self else { return }
-            let assetsViewController = sSelf.createAssetsViewController(with: assetCollection)
+            guard let sSelf = self,
+                let assetsViewController = sSelf.createAssetsViewController(with: assetCollection) else { return }
             sSelf.navigationController.pushViewController(assetsViewController, animated: true)
         }
         return assetCollectionsVC
     }
     
-    private func createAssetsViewController(with assetCollection: PHAssetCollection) -> AssetsViewController {
+    private func createAssetsViewController(with assetCollection: PHAssetCollection) -> AssetsViewController? {
+        guard let dataStorage = dataStorage, let dataFetcher = dataFetcher else { return nil }
         let viewModel = AssetsViewModel(dataStorage: dataStorage,
                                         dataFetcher: dataFetcher,
                                         assetCollection: assetCollection)
@@ -81,8 +86,8 @@ public final class PellicolaPresenter: NSObject {
     }
     
     private func clearMemory() {
-        dataStorage.clearAll()
-        dataFetcher.clear()
+        dataStorage = nil
+        dataFetcher = nil
         navigationController.setViewControllers([], animated: false)
     }
 }
