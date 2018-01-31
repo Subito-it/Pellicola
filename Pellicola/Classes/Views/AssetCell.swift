@@ -29,7 +29,7 @@ class AssetCell: UICollectionViewCell {
     
     private var state: State = .normal
     
-    var assetIdentifier: String!
+    var assetIdentifier: String?
     
     var thumbnailImage: UIImage? {
         set { imageView.image = newValue }
@@ -44,6 +44,13 @@ class AssetCell: UICollectionViewCell {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         commonInit()
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        imageView.image = nil
+        assetIdentifier = nil
+        loadingView = nil
     }
     
     private func commonInit() {

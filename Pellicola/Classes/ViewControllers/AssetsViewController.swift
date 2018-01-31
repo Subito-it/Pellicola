@@ -55,6 +55,26 @@ class AssetsViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        
+        let spaceBetweenPhotosInRow: CGFloat = 3
+        let toolbarBottomSpace: CGFloat = 44
+        
+        let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
+        layout.minimumInteritemSpacing = spaceBetweenPhotosInRow
+        layout.minimumLineSpacing = spaceBetweenPhotosInRow
+        layout.sectionInset = UIEdgeInsets(top: 5, left: 5, bottom: 5 + toolbarBottomSpace, right: 5)
+        
+        // Calculate the size of the cells
+        let spaceBetweenCells = spaceBetweenPhotosInRow * CGFloat(numberOfPhotosForRow - 1)
+        let totalSpaces = spaceBetweenCells + layout.sectionInset.left + layout.sectionInset.right
+        let cellWidth = (view.bounds.width - totalSpaces) / CGFloat(numberOfPhotosForRow)
+        let cellSize = CGSize(width: cellWidth, height: cellWidth)
+        layout.itemSize = cellSize
+        
+        // Determine the size of the thumbnails to request from the PHCachingImageManager
+        let scale = UIScreen.main.scale
+        thumbnailSize = CGSize(width: cellSize.width * scale, height: cellSize.height * scale)
+        
         if isFirstAppearance, viewModel.numberOfImages > 0 {
             isFirstAppearance = false
             let lastItemIndex = IndexPath(item: viewModel.numberOfImages - 1, section: 0)
@@ -94,24 +114,6 @@ class AssetsViewController: UIViewController {
     }
     
     private func setupCollectionView() {
-        
-        let spaceBetweenPhotosInRow: CGFloat = 3
-        
-        let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
-        layout.minimumInteritemSpacing = spaceBetweenPhotosInRow
-        layout.minimumLineSpacing = spaceBetweenPhotosInRow
-        layout.sectionInset = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
-        
-        // Calculate the size of the cells
-        let spaceBetweenCells = spaceBetweenPhotosInRow * CGFloat(numberOfPhotosForRow - 1)
-        let totalSpaces = spaceBetweenCells + layout.sectionInset.left + layout.sectionInset.right
-        let cellWidth = (UIScreen.main.bounds.width - totalSpaces) / CGFloat(numberOfPhotosForRow)
-        let cellSize = CGSize(width: cellWidth, height: cellWidth)
-        layout.itemSize = cellSize
-        
-        // Determine the size of the thumbnails to request from the PHCachingImageManager
-        let scale = UIScreen.main.scale
-        thumbnailSize = CGSize(width: cellSize.width * scale, height: cellSize.height * scale)
         
         collectionView.allowsSelection = true
         collectionView.allowsMultipleSelection = !viewModel.isSingleSelection
@@ -209,14 +211,13 @@ extension AssetsViewController: UICollectionViewDataSource {
         // Request an image for the asset from the PHCachingImageManager.
         cell.assetIdentifier = asset.localIdentifier
         
-        imageManager.requestImage(for: asset, targetSize: thumbnailSize, contentMode: .aspectFill, options: nil, resultHandler: { [weak cell] image, info in
-            
-            DispatchQueue.main.async { [weak cell] in
-                // The cell may have been recycled by the time this handler gets called;
-                // set the cell's thumbnail image only if it's still showing the same asset.
-                if cell?.assetIdentifier == asset.localIdentifier {
-                    cell?.thumbnailImage = image
-                }
+        let options = PHImageRequestOptions()
+        options.deliveryMode = .highQualityFormat
+        imageManager.requestImage(for: asset, targetSize: thumbnailSize, contentMode: .aspectFill, options: options, resultHandler: { image, info in
+            // The cell may have been recycled by the time this handler gets called;
+            // set the cell's thumbnail image only if it's still showing the same asset.
+            if let image = image, cell.assetIdentifier == asset.localIdentifier {
+                cell.thumbnailImage = image
             }
         })
         
@@ -233,10 +234,17 @@ extension AssetsViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        func updateUI(at indexPath: IndexPath) {
-            updateToolbar()
-            collectionView.reloadItems(at: [indexPath])
+        func updateUI(at indexPath: IndexPath, asset: PHAsset) {
+            guard let cell = collectionView.cellForItem(at: indexPath) as? AssetCell else { return }
+            DispatchQueue.main.async { [weak self] in
+                guard let sSelf = self else { return }
+                sSelf.updateToolbar()
+                cell.setState(sSelf.viewModel.getState(for: asset))
+                cell.setNeedsDisplay()
+            }
         }
+        
+        collectionView.deselectItem(at: indexPath, animated: false)
         
         let selectedAsset = viewModel.assets.object(at: indexPath.item)
         
@@ -244,7 +252,7 @@ extension AssetsViewController: UICollectionViewDelegate {
             
             guard let sSelf = self else { return }
             if case .loading = sSelf.viewModel.getState(for: selectedAsset) { return }
-            updateUI(at: indexPath)
+            updateUI(at: indexPath, asset: selectedAsset)
             
             }, onUpdate: { [weak self] in
                 
@@ -255,7 +263,7 @@ extension AssetsViewController: UICollectionViewDelegate {
                         sSelf.didDismiss?()
                     }
                 } else {
-                    updateUI(at: indexPath)
+                    updateUI(at: indexPath, asset: selectedAsset)
                 }
                 
             }, onLimit: { [weak self] in
@@ -271,7 +279,7 @@ extension AssetsViewController: UICollectionViewDelegate {
         })
         
     }
-
+    
 }
 
 // MARK: - UICollectionViewDataSourcePrefetching
@@ -280,8 +288,10 @@ extension AssetsViewController: UICollectionViewDelegate {
 extension AssetsViewController: UICollectionViewDataSourcePrefetching {
     
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+        let options = PHImageRequestOptions()
+        options.deliveryMode = .highQualityFormat
         imageManager.startCachingImages(for: indexPaths.map { indexPath in viewModel.assets.object(at: indexPath.item) },
-                                        targetSize: thumbnailSize, contentMode: .aspectFill, options: nil)
+                                        targetSize: thumbnailSize, contentMode: .aspectFill, options: options)
     }
     
     func collectionView(_ collectionView: UICollectionView, cancelPrefetchingForItemsAt indexPaths: [IndexPath]) {
