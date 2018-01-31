@@ -99,7 +99,8 @@ class AssetsViewController: UIViewController {
         title = viewModel.assetCollectionName
         
         if !viewModel.isSingleSelection {
-            doneBarButton = UIBarButtonItem(barButtonSystemItem: .done,
+            doneBarButton = UIBarButtonItem(title: style.doneString,
+                                            style: .done,
                                             target: self,
                                             action: #selector(doneButtonTapped))
             viewModel.onChangeSelectedAssets = { [weak self] numberOfSelectedAssets in
