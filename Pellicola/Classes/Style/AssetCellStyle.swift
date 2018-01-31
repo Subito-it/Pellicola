@@ -7,6 +7,12 @@
 
 import UIKit
 
-protocol AssetCellStyle {
-    var checkmarkImage: UIImage? { get }
+struct AssetCellStyle {
+    
+    var style: PellicolaStyleProtocol
+    
+    var checkmarkImage: UIImage? {
+        return style.checkmarkImage
+    }
+    
 }

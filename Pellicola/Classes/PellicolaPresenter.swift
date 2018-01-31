@@ -12,7 +12,6 @@ public final class PellicolaPresenter: NSObject {
     
     @objc public var didSelectImages: (([UIImage]) -> Void)?
     @objc public var userDidCancel: (() -> Void)?
-    @objc open var style: PellicolaStyle = PellicolaStyle()
     
     private lazy var navigationController: UINavigationController = {
         return UINavigationController()
@@ -20,6 +19,13 @@ public final class PellicolaPresenter: NSObject {
     
     var dataStorage: DataStorage?
     var dataFetcher: DataFetcher?
+    
+    let style: PellicolaStyleProtocol
+    
+    @objc public init(style: PellicolaStyleProtocol) {
+        self.style = style
+        super.init()
+    }
     
     /*
      

@@ -22,9 +22,9 @@ final class AssetCollectionsViewController: UIViewController {
     private var dataStorageObservation: NSKeyValueObservation?
     
     private var viewModel: AssetCollectionsViewModel
-    private var style: PellicolaStyle
+    private var style: PellicolaStyleProtocol
     
-    init(viewModel: AssetCollectionsViewModel, style: PellicolaStyle) {
+    init(viewModel: AssetCollectionsViewModel, style: PellicolaStyleProtocol) {
         self.viewModel = viewModel
         self.style = style
         super.init(nibName: nil, bundle: Bundle.framework)
@@ -189,7 +189,7 @@ extension AssetCollectionsViewController: UITableViewDataSource {
         }
         
         albumCell.tag = indexPath.row
-        albumCell.configure(with: style)
+        albumCell.configure(with: AssetCollectionCellStyle(style: style))
         
         let album = viewModel.albums[indexPath.row]
         albumCell.title = album.localizedTitle ?? ""

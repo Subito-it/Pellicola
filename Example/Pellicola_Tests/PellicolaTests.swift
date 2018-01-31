@@ -15,7 +15,7 @@ class PellicolaTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        pellicolaPresenter = PellicolaPresenter()
+        pellicolaPresenter = PellicolaPresenter(style: DefaultPellicolaStyle())
     }
     
     override func tearDown() {

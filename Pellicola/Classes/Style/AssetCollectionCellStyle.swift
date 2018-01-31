@@ -7,12 +7,32 @@
 
 import Foundation
 
-@objc protocol AssetCollectionCellStyle {
+struct AssetCollectionCellStyle {
     
-    var titleFont: UIFont { get }
-    var titleColor: UIColor { get }
+    var style: PellicolaStyleProtocol
     
-    var subtitleFont: UIFont { get }
-    var subtitleColor: UIColor { get }
+    var titleFont: UIFont {
+        guard let fontNameBold = style.fontNameBold, let font = UIFont(name: fontNameBold, size: 17) else {
+            return UIFont.boldSystemFont(ofSize: 17)
+        }
+        
+        return font
+    }
+    
+    var titleColor: UIColor {
+        return style.blackColor
+    }
+    
+    var subtitleFont: UIFont {
+        guard let fontNameNormal = style.fontNameNormal, let font = UIFont(name: fontNameNormal, size: 15) else {
+            return UIFont.systemFont(ofSize: 15)
+        }
+        
+        return font
+    }
+    
+    var subtitleColor: UIColor {
+        return style.grayColor
+    }
     
 }

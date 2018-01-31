@@ -26,9 +26,9 @@ class AssetsViewController: UIViewController {
     var didPeekOnAsset: ((PHAsset) -> UIViewController)?
     
     private var viewModel: AssetsViewModel
-    private var style: PellicolaStyle
+    private var style: PellicolaStyleProtocol
     
-    init(viewModel: AssetsViewModel, style: PellicolaStyle) {
+    init(viewModel: AssetsViewModel, style: PellicolaStyleProtocol) {
         self.viewModel = viewModel
         self.style = style
         super.init(nibName: nil, bundle: Bundle.framework)
@@ -204,7 +204,7 @@ extension AssetsViewController: UICollectionViewDataSource {
             fatalError("Error dequeuing photo cell")
         }
         
-        cell.configure(with: style)
+        cell.configure(with: AssetCellStyle(style: style))
         
         let asset = viewModel.assets.object(at: indexPath.item)
         
