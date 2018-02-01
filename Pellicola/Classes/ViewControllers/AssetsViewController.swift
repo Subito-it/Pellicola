@@ -117,7 +117,7 @@ class AssetsViewController: UIViewController {
     private func setupCollectionView() {
         
         collectionView.allowsSelection = true
-        collectionView.allowsMultipleSelection = !viewModel.isSingleSelection
+        collectionView.allowsMultipleSelection = false
         collectionView.register(AssetCell.self, forCellWithReuseIdentifier: AssetCell.identifier)
         collectionView.dataSource = self
         collectionView.delegate = self
@@ -321,5 +321,3 @@ extension AssetsViewController: UIViewControllerPreviewingDelegate {
     }
     
 }
-
-
