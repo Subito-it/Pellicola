@@ -21,7 +21,6 @@ class AssetsViewController: UIViewController {
     private var doneBarButton: UIBarButtonItem?
     private var dataStorageObservation: NSKeyValueObservation?
     
-    var didDismiss: (() -> Void)?
     var didSelectImages: (([UIImage]) -> Void)?
     var didPeekOnAsset: ((PHAsset) -> UIViewController)?
     
@@ -177,11 +176,8 @@ class AssetsViewController: UIViewController {
             return
         }
         
-        navigationController?.dismiss(animated: true) { [weak self] in
-            guard let sSelf = self else { return }
-            sSelf.didSelectImages?(sSelf.viewModel.getSelectedImages())
-            sSelf.didDismiss?()
-        }
+        didSelectImages?(viewModel.getSelectedImages())
+        
     }
     
     // MARK: Asset Caching
@@ -259,10 +255,7 @@ extension AssetsViewController: UICollectionViewDelegate {
                 
                 guard let sSelf = self else { return }
                 if sSelf.viewModel.maxNumberOfSelection == 1 {
-                    sSelf.navigationController?.dismiss(animated: true) {
-                        sSelf.didSelectImages?(sSelf.viewModel.getSelectedImages())
-                        sSelf.didDismiss?()
-                    }
+                    sSelf.didSelectImages?(sSelf.viewModel.getSelectedImages())
                 } else {
                     updateUI(at: indexPath, asset: selectedAsset)
                 }

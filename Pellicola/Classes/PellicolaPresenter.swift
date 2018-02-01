@@ -60,9 +60,8 @@ public final class PellicolaPresenter: NSObject {
         let viewModel = AssetCollectionsViewModel(dataStorage: dataStorage,
                                                   dataFetcher: dataFetcher)
         let assetCollectionsVC = AssetCollectionsViewController(viewModel: viewModel, style: style)
-        assetCollectionsVC.didDismiss = clearMemory
-        assetCollectionsVC.userDidCancel = userDidCancel
-        assetCollectionsVC.didSelectImages = didSelectImages
+        assetCollectionsVC.didSelectImages = dismissWithImages
+        assetCollectionsVC.didCancel = dismiss
         assetCollectionsVC.didSelectAssetCollection = { [weak self] assetCollection in
             guard let sSelf = self,
                 let assetsViewController = sSelf.createAssetsViewController(with: assetCollection) else { return }
@@ -77,8 +76,7 @@ public final class PellicolaPresenter: NSObject {
                                         dataFetcher: dataFetcher,
                                         assetCollection: assetCollection)
         let assetsViewController = AssetsViewController(viewModel: viewModel, style: style)
-        assetsViewController.didDismiss = clearMemory
-        assetsViewController.didSelectImages = didSelectImages
+        assetsViewController.didSelectImages = dismissWithImages
         assetsViewController.didPeekOnAsset = createDetailAssetViewController
         return assetsViewController
         
@@ -89,6 +87,20 @@ public final class PellicolaPresenter: NSObject {
         let detailViewController = DetailAssetViewController(viewModel: viewModel)
         return detailViewController
         
+    }
+    
+    private func dismissWithImages(_ images: [UIImage]) {
+        didSelectImages?(images)
+        navigationController.dismiss(animated: true) { [weak self] in
+            self?.clearMemory()
+        }
+    }
+    
+    private func dismiss() {
+        navigationController.dismiss(animated: true) { [weak self] in
+            self?.userDidCancel?()
+            self?.clearMemory()
+        }
     }
     
     private func clearMemory() {
