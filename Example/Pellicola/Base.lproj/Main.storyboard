@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="vXZ-lx-hvc">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -13,16 +14,53 @@
         <scene sceneID="ufC-wZ-h7g">
             <objects>
                 <viewController id="vXZ-lx-hvc" customClass="ViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="jyV-Pf-zRb"/>
-                        <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kQQ-xk-qd9">
+                                <rect key="frame" x="0.0" y="20" width="375" height="100"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ODf-G5-a7f">
+                                        <rect key="frame" x="16" y="60" width="343" height="32"/>
+                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="91N-TW-76l">
+                                        <rect key="frame" x="16" y="8" width="343" height="44"/>
+                                        <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="mFp-JY-OE7"/>
+                                        </constraints>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" title="Present Pellicola"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="4"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="presentPellicola:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="ycF-hU-gfz"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="91N-TW-76l" firstAttribute="centerX" secondItem="kQQ-xk-qd9" secondAttribute="centerX" id="15H-qg-cqI"/>
+                                    <constraint firstItem="91N-TW-76l" firstAttribute="leading" secondItem="kQQ-xk-qd9" secondAttribute="leading" constant="16" id="79Z-nS-2X6"/>
+                                    <constraint firstAttribute="bottom" secondItem="ODf-G5-a7f" secondAttribute="bottom" constant="8" id="CqP-b5-mHa"/>
+                                    <constraint firstAttribute="height" constant="100" id="Ngh-X7-XiM"/>
+                                    <constraint firstItem="91N-TW-76l" firstAttribute="top" secondItem="kQQ-xk-qd9" secondAttribute="top" constant="8" id="gbs-LK-Gp4"/>
+                                    <constraint firstItem="ODf-G5-a7f" firstAttribute="top" secondItem="91N-TW-76l" secondAttribute="bottom" constant="8" id="hhg-DS-jVu"/>
+                                    <constraint firstItem="ODf-G5-a7f" firstAttribute="trailing" secondItem="91N-TW-76l" secondAttribute="trailing" id="iOd-0Q-nai"/>
+                                    <constraint firstAttribute="trailing" secondItem="91N-TW-76l" secondAttribute="trailing" constant="16" id="u3T-Oc-Wcr"/>
+                                    <constraint firstItem="ODf-G5-a7f" firstAttribute="leading" secondItem="91N-TW-76l" secondAttribute="leading" id="wGG-7X-McJ"/>
+                                </constraints>
+                            </view>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="zCx-l1-pZR">
-                                <rect key="frame" x="0.0" y="82" width="375" height="585"/>
+                                <rect key="frame" x="0.0" y="120" width="375" height="547"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="LXb-1D-gIp">
                                     <size key="itemSize" width="100" height="97"/>
@@ -55,26 +93,22 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="91N-TW-76l">
-                                <rect key="frame" x="131" y="36" width="113" height="30"/>
-                                <state key="normal" title="Present Pellicola"/>
-                                <connections>
-                                    <action selector="presentPellicola:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="ycF-hU-gfz"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="91N-TW-76l" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="0eJ-3q-xwa"/>
-                            <constraint firstItem="zCx-l1-pZR" firstAttribute="top" secondItem="91N-TW-76l" secondAttribute="bottom" constant="16" id="3Dy-RO-WZU"/>
-                            <constraint firstItem="91N-TW-76l" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="16" id="5Py-Vf-SQI"/>
-                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="zCx-l1-pZR" secondAttribute="bottom" id="Hd8-zh-wPu"/>
-                            <constraint firstAttribute="trailing" secondItem="zCx-l1-pZR" secondAttribute="trailing" id="lRD-gn-jlG"/>
-                            <constraint firstItem="zCx-l1-pZR" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="mLD-oR-Mol"/>
+                            <constraint firstItem="kQQ-xk-qd9" firstAttribute="top" secondItem="fSF-43-G8W" secondAttribute="top" id="Bpl-g4-dq3"/>
+                            <constraint firstItem="fSF-43-G8W" firstAttribute="bottom" secondItem="zCx-l1-pZR" secondAttribute="bottom" id="Hd8-zh-wPu"/>
+                            <constraint firstItem="fSF-43-G8W" firstAttribute="trailing" secondItem="kQQ-xk-qd9" secondAttribute="trailing" id="X9H-Ua-BIb"/>
+                            <constraint firstItem="kQQ-xk-qd9" firstAttribute="leading" secondItem="fSF-43-G8W" secondAttribute="leading" id="eon-3D-1IL"/>
+                            <constraint firstItem="fSF-43-G8W" firstAttribute="trailing" secondItem="zCx-l1-pZR" secondAttribute="trailing" id="lRD-gn-jlG"/>
+                            <constraint firstItem="zCx-l1-pZR" firstAttribute="leading" secondItem="fSF-43-G8W" secondAttribute="leading" id="mLD-oR-Mol"/>
+                            <constraint firstItem="zCx-l1-pZR" firstAttribute="top" secondItem="kQQ-xk-qd9" secondAttribute="bottom" id="vEt-lH-BRb"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="fSF-43-G8W"/>
                     </view>
                     <connections>
                         <outlet property="collectionView" destination="zCx-l1-pZR" id="obu-bV-pao"/>
+                        <outlet property="messageLabel" destination="ODf-G5-a7f" id="sax-WE-Fnh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
