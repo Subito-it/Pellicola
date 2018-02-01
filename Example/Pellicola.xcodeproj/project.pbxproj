@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		257D58251FB9F05C0046A33B /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 257D58241FB9F05C0046A33B /* ViewController.m */; };
+		257D58251FB9F05C0046A33B /* PhotoStarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 257D58241FB9F05C0046A33B /* PhotoStarViewController.m */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
@@ -20,6 +20,9 @@
 		CE33BCD020120D72002EC65E /* UIImage+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE33BCCF20120D72002EC65E /* UIImage+Color.swift */; };
 		CE33BCD220120E02002EC65E /* PellicolaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE33BCD120120E02002EC65E /* PellicolaTests.swift */; };
 		CE33BCD620121080002EC65E /* AssetCollectionsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE33BCD520121080002EC65E /* AssetCollectionsViewModelTests.swift */; };
+		CEDAA8D32023601D004A5940 /* PhotoStarStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = CEDAA8D22023601D004A5940 /* PhotoStarStyle.m */; };
+		CEDAA8D520236418004A5940 /* ShonenPunk-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CEDAA8D420236418004A5940 /* ShonenPunk-Regular.ttf */; };
+		CEDAA8D720236426004A5940 /* ShonenPunk-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CEDAA8D620236426004A5940 /* ShonenPunk-Bold.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,8 +38,8 @@
 /* Begin PBXFileReference section */
 		1CB7C215286B95224939B4E8 /* Pods-Pellicola_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pellicola_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Pellicola_Tests/Pods-Pellicola_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		257D58221FB9F05C0046A33B /* Pellicola_Example-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Pellicola_Example-Bridging-Header.h"; sourceTree = "<group>"; };
-		257D58231FB9F05C0046A33B /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		257D58241FB9F05C0046A33B /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		257D58231FB9F05C0046A33B /* PhotoStarViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhotoStarViewController.h; sourceTree = "<group>"; };
+		257D58241FB9F05C0046A33B /* PhotoStarViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PhotoStarViewController.m; sourceTree = "<group>"; };
 		2DD402A6077C72640241B367 /* Pellicola.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Pellicola.podspec; path = ../Pellicola.podspec; sourceTree = "<group>"; };
 		334F17206746259F6BED01E7 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		5167D7D47B06A769550A0655 /* Pods-Pellicola_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pellicola_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Pellicola_Tests/Pods-Pellicola_Tests.release.xcconfig"; sourceTree = "<group>"; };
@@ -58,6 +61,10 @@
 		CE33BCCF20120D72002EC65E /* UIImage+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Color.swift"; sourceTree = "<group>"; };
 		CE33BCD120120E02002EC65E /* PellicolaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PellicolaTests.swift; sourceTree = "<group>"; };
 		CE33BCD520121080002EC65E /* AssetCollectionsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetCollectionsViewModelTests.swift; sourceTree = "<group>"; };
+		CEDAA8D120236009004A5940 /* PhotoStarStyle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhotoStarStyle.h; sourceTree = "<group>"; };
+		CEDAA8D22023601D004A5940 /* PhotoStarStyle.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PhotoStarStyle.m; sourceTree = "<group>"; };
+		CEDAA8D420236418004A5940 /* ShonenPunk-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ShonenPunk-Regular.ttf"; sourceTree = "<group>"; };
+		CEDAA8D620236426004A5940 /* ShonenPunk-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ShonenPunk-Bold.ttf"; sourceTree = "<group>"; };
 		D3E7B03941E6289E07651821 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		DFA48CD47B44D11DD0256FF6 /* Pods_Pellicola_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Pellicola_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -115,8 +122,8 @@
 		607FACD21AFB9204008FA782 /* Example for Pellicola */ = {
 			isa = PBXGroup;
 			children = (
-				257D58231FB9F05C0046A33B /* ViewController.h */,
-				257D58241FB9F05C0046A33B /* ViewController.m */,
+				257D58231FB9F05C0046A33B /* PhotoStarViewController.h */,
+				257D58241FB9F05C0046A33B /* PhotoStarViewController.m */,
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
 				607FACD91AFB9204008FA782 /* Main.storyboard */,
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
@@ -125,6 +132,10 @@
 				257D58221FB9F05C0046A33B /* Pellicola_Example-Bridging-Header.h */,
 				CE11DD0E201A2AE100A29992 /* ImageCell.h */,
 				CE11DD0F201A2AE100A29992 /* ImageCell.m */,
+				CEDAA8D120236009004A5940 /* PhotoStarStyle.h */,
+				CEDAA8D22023601D004A5940 /* PhotoStarStyle.m */,
+				CEDAA8D420236418004A5940 /* ShonenPunk-Regular.ttf */,
+				CEDAA8D620236426004A5940 /* ShonenPunk-Bold.ttf */,
 			);
 			name = "Example for Pellicola";
 			path = Pellicola;
@@ -264,7 +275,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */,
+				CEDAA8D720236426004A5940 /* ShonenPunk-Bold.ttf in Resources */,
 				607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */,
+				CEDAA8D520236418004A5940 /* ShonenPunk-Regular.ttf in Resources */,
 				607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -385,7 +398,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				257D58251FB9F05C0046A33B /* ViewController.m in Sources */,
+				257D58251FB9F05C0046A33B /* PhotoStarViewController.m in Sources */,
+				CEDAA8D32023601D004A5940 /* PhotoStarStyle.m in Sources */,
 				CE11DD10201A2AE100A29992 /* ImageCell.m in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 			);
