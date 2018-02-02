@@ -67,16 +67,16 @@
 		2FD612BAD45318080FC5327E2D9E001D /* Pods-Pellicola_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Pellicola_Example-acknowledgements.plist"; sourceTree = "<group>"; };
 		3545F80CC290CF3B3D1FB9116F9958E7 /* PHAssetCollection+Extension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "PHAssetCollection+Extension.swift"; sourceTree = "<group>"; };
 		364EA2D91B6043A6DCB6E9FED8AD7909 /* Pods-Pellicola_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Pellicola_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
-		37890095B7BFB765B21BCEFABE51D2A5 /* Pods-Pellicola_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = "Pods-Pellicola_Tests.modulemap"; sourceTree = "<group>"; };
+		37890095B7BFB765B21BCEFABE51D2A5 /* Pods-Pellicola_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-Pellicola_Tests.modulemap"; sourceTree = "<group>"; };
 		38CE5E177C380911166ACBA1671DC7F6 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4579F99F90208D44C76889AD017F9F15 /* Pods_Pellicola_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_Pellicola_Tests.framework; path = "Pods-Pellicola_Tests.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4579F99F90208D44C76889AD017F9F15 /* Pods_Pellicola_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Pellicola_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		457E2833FC00FBCEC950B55DE3CA703F /* AssetCollectionsViewController.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; path = AssetCollectionsViewController.xib; sourceTree = "<group>"; };
 		48F418340B0C7FC8909EF7D4B11F1E3E /* AssetCollectionCell.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AssetCollectionCell.swift; sourceTree = "<group>"; };
 		4A6D9DE3A172E4CB18EBFD341292AAA8 /* DataStorage.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DataStorage.swift; path = Pellicola/Classes/DataStorage.swift; sourceTree = "<group>"; };
 		4CA5BAF9F4E5A8FEE0001AB359FCCE63 /* Pellicola-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pellicola-dummy.m"; sourceTree = "<group>"; };
 		4EE5D73FDFB7C8AB80B83AF05DF025F8 /* AssetsViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AssetsViewController.swift; sourceTree = "<group>"; };
 		5BFE188FC09FA1EA00B04235F9D1713C /* Pods-Pellicola_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Pellicola_Example-frameworks.sh"; sourceTree = "<group>"; };
-		629C9BB843C7AC840037CD983B3F23B8 /* Pellicola.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pellicola.framework; path = Pellicola.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		629C9BB843C7AC840037CD983B3F23B8 /* Pellicola.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pellicola.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		641DBEEB6BBEDDD238ACE55C5A51B7AF /* CheckmarkView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CheckmarkView.swift; sourceTree = "<group>"; };
 		648EB191D687E4EA5C63DA702F7E9CCD /* Pellicola-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pellicola-umbrella.h"; sourceTree = "<group>"; };
 		658D5F8A2AA253E1511271DC19C48904 /* Pods-Pellicola_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Pellicola_Example-dummy.m"; sourceTree = "<group>"; };
@@ -90,13 +90,13 @@
 		8DA9ED7349185379A4D8B5C8935532C7 /* Pods-Pellicola_Tests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-Pellicola_Tests-umbrella.h"; sourceTree = "<group>"; };
 		904ABAA9E4107668594A43F0C0A1E9D2 /* AssetCell.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AssetCell.swift; sourceTree = "<group>"; };
 		918C234383C9119E2A6CA0BD37630BEE /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9599D3B6434AA850B84731C89660F140 /* Pods-Pellicola_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Pellicola_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		A5D8374C038B3D42CF87723EDEFCB9B8 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B1D0F7153951CAE1935A8B08C3C00745 /* Pods-Pellicola_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = "Pods-Pellicola_Example.modulemap"; sourceTree = "<group>"; };
+		B1D0F7153951CAE1935A8B08C3C00745 /* Pods-Pellicola_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-Pellicola_Example.modulemap"; sourceTree = "<group>"; };
 		B7283AA0A36ED0F0E9A1AA76B45AB517 /* DetailAssetViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DetailAssetViewModel.swift; sourceTree = "<group>"; };
-		B7691ABE0CC3B806826853D134B17C3E /* Pellicola.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = Pellicola.modulemap; sourceTree = "<group>"; };
-		B896FAD9405DFA098A8F012964B3D419 /* Pods_Pellicola_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_Pellicola_Example.framework; path = "Pods-Pellicola_Example.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B7691ABE0CC3B806826853D134B17C3E /* Pellicola.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = Pellicola.modulemap; sourceTree = "<group>"; };
+		B896FAD9405DFA098A8F012964B3D419 /* Pods_Pellicola_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Pellicola_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB29EB54A149CF5D80EC0315AD4632AC /* DataFetcher.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DataFetcher.swift; path = Pellicola/Classes/DataFetcher.swift; sourceTree = "<group>"; };
 		BD68BB30EF64E24560CB82CA17700110 /* AssetCollectionCell.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; path = AssetCollectionCell.xib; sourceTree = "<group>"; };
 		C0D9E78655577C94157DD710EB0DB000 /* Pods-Pellicola_Example-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-Pellicola_Example-umbrella.h"; sourceTree = "<group>"; };
@@ -108,10 +108,10 @@
 		E65F1A5F41FDC6D9FB59B6DE249558C3 /* Pods-Pellicola_Tests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Pellicola_Tests-frameworks.sh"; sourceTree = "<group>"; };
 		E8F66FA319582FA7AE8ED1219A1CB4BA /* PellicolaStyleProtocol.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PellicolaStyleProtocol.swift; sourceTree = "<group>"; };
 		EC42BE92ADDE6D3DA8A8DD367EE065DF /* Pods-Pellicola_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Pellicola_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
-		F0189153E2214F32379105190C63F85D /* en.lproj */ = {isa = PBXFileReference; includeInIndex = 1; name = en.lproj; path = Pellicola/Resources/en.lproj; sourceTree = "<group>"; };
+		F0189153E2214F32379105190C63F85D /* en.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = en.lproj; path = Pellicola/Resources/en.lproj; sourceTree = "<group>"; };
 		F7F08CC3C20BD4B5A827D40AFB9EDE59 /* AssetCollectionCellStyle.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AssetCollectionCellStyle.swift; sourceTree = "<group>"; };
 		FDA68F761F0D7377715AA6F49B68C949 /* Bundle+Extension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "Bundle+Extension.swift"; sourceTree = "<group>"; };
-		FFD4B03BB542D8C111695D85E4D3AE4D /* it.lproj */ = {isa = PBXFileReference; includeInIndex = 1; name = it.lproj; path = Pellicola/Resources/it.lproj; sourceTree = "<group>"; };
+		FFD4B03BB542D8C111695D85E4D3AE4D /* it.lproj */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = it.lproj; path = Pellicola/Resources/it.lproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -687,7 +687,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = NO_SIGNING/;
 				STRIP_INSTALLED_PRODUCT = NO;

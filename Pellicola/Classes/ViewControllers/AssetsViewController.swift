@@ -208,9 +208,7 @@ extension AssetsViewController: UICollectionViewDataSource {
         // Request an image for the asset from the PHCachingImageManager.
         cell.assetIdentifier = asset.localIdentifier
         
-        let options = PHImageRequestOptions()
-        options.deliveryMode = .highQualityFormat
-        imageManager.requestImage(for: asset, targetSize: thumbnailSize, contentMode: .aspectFill, options: options, resultHandler: { image, info in
+        imageManager.requestImage(for: asset, targetSize: thumbnailSize, contentMode: .aspectFill, options: nil, resultHandler: { image, info in
             // The cell may have been recycled by the time this handler gets called;
             // set the cell's thumbnail image only if it's still showing the same asset.
             if let image = image, cell.assetIdentifier == asset.localIdentifier {
@@ -282,10 +280,8 @@ extension AssetsViewController: UICollectionViewDelegate {
 extension AssetsViewController: UICollectionViewDataSourcePrefetching {
     
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-        let options = PHImageRequestOptions()
-        options.deliveryMode = .highQualityFormat
         imageManager.startCachingImages(for: indexPaths.map { indexPath in viewModel.assets.object(at: indexPath.item) },
-                                        targetSize: thumbnailSize, contentMode: .aspectFill, options: options)
+                                        targetSize: thumbnailSize, contentMode: .aspectFill, options: nil)
     }
     
     func collectionView(_ collectionView: UICollectionView, cancelPrefetchingForItemsAt indexPaths: [IndexPath]) {
