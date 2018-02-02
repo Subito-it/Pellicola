@@ -38,6 +38,43 @@ pod 'Pellicola'
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
+## Getting started
+
+Create a `PellicolaPresenter` object with a style. We provide a `DefaultPellicolaStyle` object which uses a default style for Pellicola. The `didSelectImages` closure provides an array of selected images ordered by the user selection. The `userDidCancel` closure let you know if the user exits from the flow.
+
+Use the method `present(on: UIViewController, maxNumberOfSelections: Int)` to show Pellicolsa and specify the maximum number of selectable images.
+
+and `userDidCancel` closures to get 
+
+```swift
+
+import UIKit
+import Pellicola
+
+class ViewController: UIViewController {
+    
+    var pellicolaPresenter: PellicolaPresenter!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        pellicolaPresenter = PellicolaPresenter(style: DefaultPellicolaStyle())
+        
+        pellicolaPresenter.didSelectImages = { images in
+            print("User selected \(images.count) images")
+        }
+        
+        pellicolaPresenter.userDidCancel = {
+            print("User did cancel the flow")
+        }
+        
+        pellicolaPresenter.present(on: self, maxNumberOfSelections: 10)
+    }
+}
+
+
+```
+
 ## Authors
 
 * [Francesco Bigagnoli](https://github.com/francybiga) ([@francybiga](https://twitter.com/francybiga))
