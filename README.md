@@ -1,4 +1,8 @@
-# Pellicola
+
+<p align="center">
+  <img src="Resources/logo.png" width=80%/>
+</p>
+
 
 [![Version](https://img.shields.io/cocoapods/v/Pellicola.svg?style=flat)](http://cocoapods.org/pods/Pellicola)
 [![License](https://img.shields.io/cocoapods/l/Pellicola.svg?style=flat)](http://cocoapods.org/pods/Pellicola)
