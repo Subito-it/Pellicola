@@ -203,6 +203,9 @@ extension AssetsViewController: UICollectionViewDataSource {
         
         cell.configure(with: AssetCellStyle(style: style))
         
+        //Last photo has accessibilityId index 0
+        cell.accessibilityIdentifier = "photo_\(viewModel.numberOfImages - (indexPath.row + 1))"
+        
         let asset = viewModel.assets.object(at: indexPath.item)
         
         // Request an image for the asset from the PHCachingImageManager.

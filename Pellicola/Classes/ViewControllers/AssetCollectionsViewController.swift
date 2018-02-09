@@ -181,6 +181,7 @@ extension AssetCollectionsViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         
+        albumCell.accessibilityIdentifier = "album_\(indexPath.row)"
         albumCell.tag = indexPath.row
         albumCell.configure(with: AssetCollectionCellStyle(style: style))
         
