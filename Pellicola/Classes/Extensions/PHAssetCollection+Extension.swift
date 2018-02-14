@@ -30,7 +30,7 @@ extension PHAssetCollection {
             .fetchAssetCollections(with: type, subtype: .any, options: nil)
             .enumerateObjects { (album, _, _) in
                 guard subtypes.contains(album.assetCollectionSubtype) else { return }
-                guard PHAsset.fetchAssets(in: album, options: nil).countOfAssets(with: .image) > 0 else { return }
+                guard PHAsset.fetchImageAssets(in: album).count > 0 else { return }
                 filteredSmartAlbums.append(album)
         }
         

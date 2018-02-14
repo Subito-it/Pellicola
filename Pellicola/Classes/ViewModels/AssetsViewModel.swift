@@ -27,7 +27,7 @@ class AssetsViewModel: NSObject {
     }
     
     var numberOfImages: Int {
-        return assets.countOfAssets(with: .image)
+        return assets.count
     }
     
     var maxNumberOfSelection: Int? {
@@ -65,8 +65,8 @@ class AssetsViewModel: NSObject {
         self.dataFetcher = dataFetcher
         self.assetCollection = assetCollection
         
-        assets = PHAsset.fetchAssets(in: assetCollection, options: nil)
-        
+        assets = PHAsset.fetchImageAssets(in: assetCollection)
+    
         super.init()
         
         dataStorageObservation = dataStorage.observe(\DataStorage.images) { [weak self] _, _ in
@@ -143,6 +143,5 @@ extension AssetsViewModel: PHPhotoLibraryChangeObserver {
         DispatchQueue.main.async { [weak self] in
             self?.onChangeAssets?()
         }
-        
     }
 }
