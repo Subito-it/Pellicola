@@ -245,11 +245,13 @@ extension AssetsViewController: UICollectionViewDelegate {
         collectionView.deselectItem(at: indexPath, animated: false)
         
         let selectedAsset = viewModel.assets.object(at: indexPath.item)
+        var oldState = viewModel.getState(for: selectedAsset)
         
         viewModel.select(selectedAsset, onDownload: { [weak self] in
-            
             guard let sSelf = self else { return }
-            if case .loading = sSelf.viewModel.getState(for: selectedAsset) { return }
+            let newState = sSelf.viewModel.getState(for: selectedAsset)
+            guard oldState != newState else { return }
+            oldState = newState
             updateUI(at: indexPath, asset: selectedAsset)
             
             }, onUpdate: { [weak self] in
@@ -270,11 +272,8 @@ extension AssetsViewController: UICollectionViewDelegate {
                                              style: .default)
                 alert.addAction(okAction)
                 self?.present(alert, animated: true)
-                
         })
-        
     }
-    
 }
 
 // MARK: - UICollectionViewDataSourcePrefetching
