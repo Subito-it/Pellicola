@@ -10,6 +10,7 @@
 		0609798F2DBE075E9E202487937562DC /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 697315344BD1EE119BBFEEDBCB6D50FE /* UIView+Extension.swift */; };
 		0A230584D4B36F5DAF61D6EB0F3AC05D /* DetailAssetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F3B1953CBCF5A45CE60A201F221BEAA /* DetailAssetViewController.swift */; };
 		1A28DEB63F794AAC092DFF4E4F79BFEC /* PHAssetCollection+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545F80CC290CF3B3D1FB9116F9958E7 /* PHAssetCollection+Extension.swift */; };
+		25801193203456BD003E9280 /* PHAsset+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25801192203456BD003E9280 /* PHAsset+Extension.swift */; };
 		338368FAB1F9EB4DBACF0B7186A4BC42 /* PellicolaPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A92A1DEBE01BA972313B67A760E076 /* PellicolaPresenter.swift */; };
 		3C0D988F15EFC7E844806BE68DE671E0 /* AssetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 904ABAA9E4107668594A43F0C0A1E9D2 /* AssetCell.swift */; };
 		42715301E35C58C006EBC002064505F1 /* AssetCellStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DA3631922BF1E958EA0475098555782 /* AssetCellStyle.swift */; };
@@ -63,6 +64,7 @@
 		1ACE9664718EE5CF5C61146DE3A2DEF3 /* Pellicola-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pellicola-prefix.pch"; sourceTree = "<group>"; };
 		1CFCA5FF9A742BA2DC81930431389734 /* AssetsViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AssetsViewModel.swift; sourceTree = "<group>"; };
 		1DA3631922BF1E958EA0475098555782 /* AssetCellStyle.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AssetCellStyle.swift; sourceTree = "<group>"; };
+		25801192203456BD003E9280 /* PHAsset+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PHAsset+Extension.swift"; sourceTree = "<group>"; };
 		2E6A437DA8EAFB619B716EE66AE91741 /* DetailAssetViewController.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; path = DetailAssetViewController.xib; sourceTree = "<group>"; };
 		2FD612BAD45318080FC5327E2D9E001D /* Pods-Pellicola_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Pellicola_Example-acknowledgements.plist"; sourceTree = "<group>"; };
 		3545F80CC290CF3B3D1FB9116F9958E7 /* PHAssetCollection+Extension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "PHAssetCollection+Extension.swift"; sourceTree = "<group>"; };
@@ -310,6 +312,7 @@
 				3545F80CC290CF3B3D1FB9116F9958E7 /* PHAssetCollection+Extension.swift */,
 				DDB4B61E67F7967F9E5E9E36DF998535 /* UIImageView+Extension.swift */,
 				697315344BD1EE119BBFEEDBCB6D50FE /* UIView+Extension.swift */,
+				25801192203456BD003E9280 /* PHAsset+Extension.swift */,
 			);
 			name = Extensions;
 			path = Pellicola/Classes/Extensions;
@@ -498,6 +501,7 @@
 				52CD08EE611988106007539D0042E1CB /* DetailAssetViewModel.swift in Sources */,
 				5CFD8693298BE246FCE558DA7F8CD83E /* LoadingView.swift in Sources */,
 				AA9C67B4CD2D1CF3C3696454D666C7B2 /* Pellicola-dummy.m in Sources */,
+				25801193203456BD003E9280 /* PHAsset+Extension.swift in Sources */,
 				338368FAB1F9EB4DBACF0B7186A4BC42 /* PellicolaPresenter.swift in Sources */,
 				58011B04B54285B7E3FC5EB174A66BDD /* PellicolaStyleProtocol.swift in Sources */,
 				1A28DEB63F794AAC092DFF4E4F79BFEC /* PHAssetCollection+Extension.swift in Sources */,
