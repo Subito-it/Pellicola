@@ -22,13 +22,7 @@ class LoadingView: UIView {
         spinner.translatesAutoresizingMaskIntoConstraints = false
         return spinner
     }()
-    
-    override var isHidden: Bool {
-        didSet {
-            isHidden ? stopAnimating() : startAnimating()
-        }
-    }
-    
+        
     override init(frame: CGRect) {
         super.init(frame: frame)
         commonInit()
@@ -51,15 +45,7 @@ class LoadingView: UIView {
         addSubview(spinner)
         NSLayoutConstraint(item: spinner, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1.0, constant: -4.0).isActive = true
         NSLayoutConstraint(item: spinner, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1.0, constant: -4.0).isActive = true
-    }
-    
-    func startAnimating() {
         spinner.startAnimating()
     }
-    
-    func stopAnimating() {
-        spinner.stopAnimating()
-    }
-    
 }
 
