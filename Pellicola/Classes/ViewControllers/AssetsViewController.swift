@@ -233,8 +233,8 @@ extension AssetsViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         func updateUI(at indexPath: IndexPath, asset: PHAsset) {
-            guard let cell = collectionView.cellForItem(at: indexPath) as? AssetCell else { return }
             DispatchQueue.main.async { [weak self] in
+                guard let cell = collectionView.cellForItem(at: indexPath) as? AssetCell else { return }
                 guard let sSelf = self else { return }
                 sSelf.updateToolbar()
                 cell.setState(sSelf.viewModel.getState(for: asset))
