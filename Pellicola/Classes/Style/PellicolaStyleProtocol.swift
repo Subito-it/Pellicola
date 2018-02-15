@@ -19,7 +19,7 @@ import Foundation
     var grayColor: UIColor { get }
     var alertAccessDeniedTitle: String? { get }
     var alertAccessDeniedMessage: String? { get }
-    
+    var statusBarStyle: UIStatusBarStyle { get }
 }
 
 @objcMembers
@@ -44,6 +44,7 @@ public class DefaultPellicolaStyle: NSObject, PellicolaStyleProtocol {
     public var alertAccessDeniedTitle: String?
     
     public var alertAccessDeniedMessage: String?
-
+    
+    public var statusBarStyle: UIStatusBarStyle = UIStatusBarStyle.default
 }
 

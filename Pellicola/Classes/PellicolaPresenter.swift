@@ -13,8 +13,8 @@ public final class PellicolaPresenter: NSObject {
     @objc public var didSelectImages: (([UIImage]) -> Void)?
     @objc public var userDidCancel: (() -> Void)?
     
-    private lazy var navigationController: UINavigationController = {
-        return UINavigationController()
+    private lazy var navigationController: PellicolaNavigationController = {
+        return PellicolaNavigationController()
     }()
     
     var dataStorage: DataStorage?
@@ -58,6 +58,7 @@ public final class PellicolaPresenter: NSObject {
     private func configureNavigationController(with viewControllers:[UIViewController]) {
         navigationController.toolbar.tintColor = style.blackColor
         navigationController.toolbar.barTintColor = style.toolbarBackgroundColor
+        navigationController.statusBarStyle = style.statusBarStyle
         navigationController.modalPresentationStyle = .formSheet
         navigationController.setViewControllers(viewControllers, animated: false)
     }
@@ -140,4 +141,9 @@ public final class PellicolaPresenter: NSObject {
         dataFetcher = nil
         navigationController.setViewControllers([], animated: false)
     }
+}
+
+private class PellicolaNavigationController: UINavigationController {
+    var statusBarStyle: UIStatusBarStyle?
+    override var preferredStatusBarStyle: UIStatusBarStyle { return self.statusBarStyle ?? .default }
 }

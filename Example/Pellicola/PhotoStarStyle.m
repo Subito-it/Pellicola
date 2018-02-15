@@ -55,4 +55,8 @@
     return @"We have not the authorization to access your Photo Library";
 }
 
+- (UIStatusBarStyle)statusBarStyle {
+    return UIStatusBarStyleLightContent;
+}
+
 @end
