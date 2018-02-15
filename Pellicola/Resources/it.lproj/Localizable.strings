@@ -17,5 +17,5 @@
 
 "alert_access_denied.title" = "Consenti l'accesso";
 "alert_access_denied.message" = "Acconsenti l'accesso alla tua libreria fotografica.";
-"alert_access_denied.ok" = "OK";
+"alert_access_denied.later" = "Più tardi";
 "alert_access_denied.settings" = "Impostazioni";
