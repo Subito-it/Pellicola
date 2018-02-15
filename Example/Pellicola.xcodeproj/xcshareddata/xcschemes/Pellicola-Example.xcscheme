@@ -28,7 +28,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "607FACE41AFB9204008FA782"
+               BlueprintIdentifier = "CE33BCC220120BE2002EC65E"
                BuildableName = "Pellicola_Tests.xctest"
                BlueprintName = "Pellicola_Tests"
                ReferencedContainer = "container:Pellicola.xcodeproj">
@@ -47,7 +47,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "607FACE41AFB9204008FA782"
+               BlueprintIdentifier = "CE33BCC220120BE2002EC65E"
                BuildableName = "Pellicola_Tests.xctest"
                BlueprintName = "Pellicola_Tests"
                ReferencedContainer = "container:Pellicola.xcodeproj">
