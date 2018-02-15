@@ -17,6 +17,8 @@ import Foundation
     var cancelString: String { get }
     var blackColor: UIColor { get }
     var grayColor: UIColor { get }
+    var alertAccessDeniedTitle: String? { get }
+    var alertAccessDeniedMessage: String? { get }
     
 }
 
@@ -38,6 +40,10 @@ public class DefaultPellicolaStyle: NSObject, PellicolaStyleProtocol {
     public var blackColor: UIColor = .black
 
     public var grayColor: UIColor = .lightGray
+    
+    public var alertAccessDeniedTitle: String?
+    
+    public var alertAccessDeniedMessage: String?
 
 }
 

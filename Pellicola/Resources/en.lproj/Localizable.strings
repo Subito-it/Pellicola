@@ -15,3 +15,8 @@
 
 "navigation_bar.done" = "Done";
 "navigation_bar.cancel" = "Cancel";
+
+"alert_access_denied.title" = "Allow access";
+"alert_access_denied.message" = "Grant access to the Photo Library";
+"alert_access_denied.ok" = "OK";
+"alert_access_denied.settings" = "Settings";

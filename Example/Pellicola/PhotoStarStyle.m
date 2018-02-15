@@ -47,4 +47,12 @@
     return [UIColor lightGrayColor];
 }
 
+- (NSString *)alertAccessDeniedTitle {
+    return @"Allow access";
+}
+
+- (NSString *)alertAccessDeniedMessage {
+    return @"We have not the authorization to access your Photo Library";
+}
+
 @end

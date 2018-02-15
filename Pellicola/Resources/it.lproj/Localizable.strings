@@ -14,3 +14,8 @@
 
 "navigation_bar.done" = "Fine";
 "navigation_bar.cancel" = "Annulla";
+
+"alert_access_denied.title" = "Consenti l'accesso";
+"alert_access_denied.message" = "Acconsenti l'accesso alla tua libreria fotografica.";
+"alert_access_denied.ok" = "OK";
+"alert_access_denied.settings" = "Impostazioni";
