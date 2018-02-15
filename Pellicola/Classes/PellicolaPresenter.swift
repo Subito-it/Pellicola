@@ -66,8 +66,10 @@ public final class PellicolaPresenter: NSObject {
     // MARK: - Helper method
     
     private func openSettingsAlert() -> UIAlertController {
-        let alert = UIAlertController(title: NSLocalizedString("alert_access_denied.title", bundle: Bundle.framework, comment: ""),
-                                      message: NSLocalizedString("alert_access_denied.message", bundle: Bundle.framework, comment: ""),
+        let title = style.alertAccessDeniedTitle ?? NSLocalizedString("alert_access_denied.title", bundle: Bundle.framework, comment: "")
+        let message = style.alertAccessDeniedMessage ?? NSLocalizedString("alert_access_denied.message", bundle: Bundle.framework, comment: "")
+        let alert = UIAlertController(title: title,
+                                      message: message,
                                       preferredStyle: .alert)
         let okAction = UIAlertAction(title: NSLocalizedString("alert_access_denied.later", bundle: Bundle.framework, comment: ""), style: .default, handler: { [weak self] _ in
             self?.userDidCancel?()
