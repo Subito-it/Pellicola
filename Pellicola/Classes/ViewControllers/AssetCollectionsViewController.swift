@@ -57,7 +57,13 @@ final class AssetCollectionsViewController: UIViewController {
                 alert.addAction(okAction)
                 
                 let settingsAction = UIAlertAction(title: NSLocalizedString("alert_access_denied.settings", bundle: Bundle.framework, comment: ""), style: .default, handler: { _ in
-                    UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
+                    
+                    if let url = URL(string: "App-Prefs:root=Privacy&path=Photos"), UIApplication.shared.canOpenURL(url) {
+                        UIApplication.shared.openURL(url)
+                    } else {
+                        UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
+                    }
+                    
                 })
                 alert.addAction(settingsAction)
                 
