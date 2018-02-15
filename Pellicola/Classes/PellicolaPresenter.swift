@@ -36,14 +36,38 @@ public final class PellicolaPresenter: NSObject {
      - >1  Limited selection
      */
     @objc public func present(on presentingViewController: UIViewController, maxNumberOfSelections: Int) {
-        setupPresenter(with: maxNumberOfSelections)
         
-        guard let assetCollectionsVC = createAssetsCollectionViewController() else { return }
-        navigationController.toolbar.tintColor = style.blackColor
-        navigationController.toolbar.barTintColor = style.toolbarBackgroundColor
-        navigationController.setViewControllers([assetCollectionsVC], animated: false)
-        navigationController.modalPresentationStyle = .formSheet
-        presentingViewController.present(navigationController, animated: true, completion: nil)
+        PHPhotoLibrary.requestAuthorization { [weak self] (status) in
+            guard case .authorized = status else {
+                let alert = UIAlertController(title: NSLocalizedString("alert_access_denied.title", bundle: Bundle.framework, comment: ""),
+                                              message: NSLocalizedString("alert_access_denied.message", bundle: Bundle.framework, comment: ""),
+                                              preferredStyle: .alert)
+                let okAction = UIAlertAction(title: NSLocalizedString("alert_access_denied.later", bundle: Bundle.framework, comment: ""), style: .default, handler: { [weak self] _ in
+                    self?.userDidCancel?()
+                })
+                alert.addAction(okAction)
+                
+                let settingsAction = UIAlertAction(title: NSLocalizedString("alert_access_denied.settings", bundle: Bundle.framework, comment: ""), style: .cancel, handler: { _ in
+                   UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
+                })
+                alert.addAction(settingsAction)
+                
+                presentingViewController.present(alert, animated: true)
+                return
+            }
+            
+            guard let sSelf = self else { return }
+            
+            sSelf.setupPresenter(with: maxNumberOfSelections)
+            
+            guard let assetCollectionsVC = sSelf.createAssetsCollectionViewController() else { return }
+            sSelf.navigationController.toolbar.tintColor = sSelf.style.blackColor
+            sSelf.navigationController.toolbar.barTintColor = sSelf.style.toolbarBackgroundColor
+            sSelf.navigationController.setViewControllers([assetCollectionsVC], animated: false)
+            sSelf.navigationController.modalPresentationStyle = .formSheet
+            presentingViewController.present(sSelf.navigationController, animated: true, completion: nil)
+        }
+        
     }
     
     // MARK: - Helper method

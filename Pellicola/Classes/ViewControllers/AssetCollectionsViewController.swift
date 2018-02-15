@@ -43,35 +43,6 @@ final class AssetCollectionsViewController: UIViewController {
         }
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        PHPhotoLibrary.requestAuthorization { [weak self] (status) in
-            if case .denied = status {
-                let alert = UIAlertController(title: NSLocalizedString("alert_access_denied.title", bundle: Bundle.framework, comment: ""),
-                                              message: NSLocalizedString("alert_access_denied.message", bundle: Bundle.framework, comment: ""),
-                                              preferredStyle: .alert)
-                let okAction = UIAlertAction(title: NSLocalizedString("alert_access_denied.ok", bundle: Bundle.framework, comment: ""), style: .default, handler: { [weak self] _ in
-                    self?.didCancel?()
-                })
-                alert.addAction(okAction)
-                
-                let settingsAction = UIAlertAction(title: NSLocalizedString("alert_access_denied.settings", bundle: Bundle.framework, comment: ""), style: .default, handler: { _ in
-                    
-                    if let url = URL(string: "App-Prefs:root=Privacy&path=Photos"), UIApplication.shared.canOpenURL(url) {
-                        UIApplication.shared.openURL(url)
-                    } else {
-                        UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
-                    }
-                    
-                })
-                alert.addAction(settingsAction)
-                
-                self?.present(alert, animated: true)
-            }
-        }
-    }
-    
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
