@@ -61,10 +61,5 @@ class DataStorage: NSObject {
             .flatMap {
             return $0.image
         }
-    }
-    
-    func clearAll() {
-        images = [String: OrderedImage]()
-    }
-    
+    }    
 }

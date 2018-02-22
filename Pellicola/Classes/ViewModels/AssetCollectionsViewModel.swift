@@ -69,7 +69,6 @@ class AssetCollectionsViewModel: NSObject {
     func stopDownloadingImages() {
         dataFetcher.clear()
     }
-    
 }
 
 // MARK: - PHPhotoLibraryChangeObserver

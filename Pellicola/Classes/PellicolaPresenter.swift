@@ -126,22 +126,13 @@ public final class PellicolaPresenter: NSObject {
     
     private func dismissWithImages(_ images: [UIImage]) {
         didSelectImages?(images)
-        navigationController.dismiss(animated: true) { [weak self] in
-            self?.clearMemory()
-        }
+        navigationController.dismiss(animated: true)
     }
     
     private func dismiss() {
         navigationController.dismiss(animated: true) { [weak self] in
             self?.userDidCancel?()
-            self?.clearMemory()
         }
-    }
-    
-    private func clearMemory() {
-        dataStorage = nil
-        dataFetcher = nil
-        navigationController.setViewControllers([], animated: false)
     }
 }
 
