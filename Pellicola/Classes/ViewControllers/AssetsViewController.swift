@@ -19,7 +19,6 @@ class AssetsViewController: UIViewController {
     private var isFirstAppearance = true
     
     private var doneBarButton: UIBarButtonItem?
-    private var dataStorageObservation: NSKeyValueObservation?
     
     var didSelectImages: (([UIImage]) -> Void)?
     var didPeekOnAsset: ((PHAsset) -> UIViewController)?

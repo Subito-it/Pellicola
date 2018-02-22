@@ -18,7 +18,6 @@ final class AssetCollectionsViewController: UIViewController {
     var didSelectAssetCollection: ((PHAssetCollection) -> Void)?
     
     private var doneBarButton: UIBarButtonItem?
-    private var dataStorageObservation: NSKeyValueObservation?
     
     private var viewModel: AssetCollectionsViewModel
     private var style: PellicolaStyleProtocol

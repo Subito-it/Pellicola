@@ -14,7 +14,6 @@ class AssetsViewModel: NSObject {
     private var dataFetcher: DataFetcher
     
     private let assetCollection: PHAssetCollection
-    private var dataStorageObservation: NSKeyValueObservation?
     private let imageManager = PHCachingImageManager()
     
     var assets: PHFetchResult<PHAsset>
@@ -69,10 +68,7 @@ class AssetsViewModel: NSObject {
     
         super.init()
         
-        dataStorageObservation = dataStorage.observe(\DataStorage.images) { [weak self] _, _ in
-            guard let sSelf = self else { return }
-            sSelf.onChangeSelectedAssets?(sSelf.numberOfSelectedAssets)
-        }
+        dataStorage.addObserver(self, forKeyPath: #keyPath(DataStorage.images), options: [], context: nil)
         PHPhotoLibrary.shared().register(self)
     }
     
@@ -122,10 +118,19 @@ class AssetsViewModel: NSObject {
     func stopDownloadingImages() {
         dataFetcher.clear()
     }
-    
+ 
+    // MARK: - KVO
+    override  func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        guard keyPath == #keyPath(DataStorage.images) else {
+            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+            return
+        }
+        
+        onChangeSelectedAssets?(numberOfSelectedAssets)
+    }
 }
-
 // MARK: - PHPhotoLibraryChangeObserver
+
 
 extension AssetsViewModel: PHPhotoLibraryChangeObserver {
     

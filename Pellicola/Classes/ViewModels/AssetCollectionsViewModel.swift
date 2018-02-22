@@ -21,7 +21,6 @@ class AssetCollectionsViewModel: NSObject {
     private var dataFetcher: DataFetcher
     private(set) var albums: [PHAssetCollection]
     private var fetchResult: PHFetchResult<PHAssetCollection>
-    private var dataStorageObservation: NSKeyValueObservation?
     
     var onChangeAssetCollections: (() -> Void)?
     var onChangeSelectedAssets: ((Int) -> Void)?
@@ -51,10 +50,7 @@ class AssetCollectionsViewModel: NSObject {
         albums = PHAssetCollection.fetch(assetCollectionType: assetCollectionType, sortedBy: smartAlbumSubtypes)
         super.init()
         
-        dataStorageObservation = dataStorage.observe(\DataStorage.images) { [weak self] _, _ in
-            guard let sSelf = self else { return }
-            sSelf.onChangeSelectedAssets?(sSelf.numberOfSelectedAssets)
-        }
+        dataStorage.addObserver(self, forKeyPath: #keyPath(DataStorage.images), options: [], context: nil)
         PHPhotoLibrary.shared().register(self)
     }
     
@@ -68,6 +64,16 @@ class AssetCollectionsViewModel: NSObject {
     
     func stopDownloadingImages() {
         dataFetcher.clear()
+    }
+
+    // MARK: - KVO
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        guard keyPath == #keyPath(DataStorage.images) else {
+            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+            return
+        }
+        
+        onChangeSelectedAssets?(numberOfSelectedAssets)
     }
 }
 
@@ -84,6 +90,5 @@ extension AssetCollectionsViewModel: PHPhotoLibraryChangeObserver {
         DispatchQueue.main.async { [weak self] in
             self?.onChangeAssetCollections?()
         }
-        
     }
 }
