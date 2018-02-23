@@ -14,8 +14,7 @@ class AssetCollectionsViewModel: NSObject {
     private let smartAlbumSubtypes: [PHAssetCollectionSubtype]  = [.smartAlbumUserLibrary,
                                                                    .smartAlbumFavorites,
                                                                    .smartAlbumSelfPortraits,
-                                                                   .smartAlbumScreenshots,
-                                                                   .smartAlbumPanoramas]
+                                                                   .smartAlbumScreenshots]
     
     private var dataStorage: DataStorage
     private var dataFetcher: DataFetcher
