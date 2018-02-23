@@ -56,6 +56,7 @@ class AssetCollectionsViewModel: NSObject {
     
     deinit {
         PHPhotoLibrary.shared().unregisterChangeObserver(self)
+        dataStorage.removeObserver(self, forKeyPath: #keyPath(DataStorage.images))
     }
     
     func getSelectedImages() -> [UIImage] {
