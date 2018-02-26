@@ -21,7 +21,7 @@ class AssetsViewController: UIViewController {
     private var doneBarButton: UIBarButtonItem?
     
     var didSelectImages: (([UIImage]) -> Void)?
-    var didPeekOnAsset: ((PHAsset) -> UIViewController)?
+    var didPeekOnAsset: ((PHAsset) -> UIViewController?)?
     
     private var viewModel: AssetsViewModel
     private var style: PellicolaStyleProtocol

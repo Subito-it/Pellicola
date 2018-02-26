@@ -95,8 +95,12 @@ public final class PellicolaPresenter: NSObject {
         let viewModel = AssetCollectionsViewModel(dataStorage: dataStorage,
                                                   dataFetcher: dataFetcher)
         let assetCollectionsVC = AssetCollectionsViewController(viewModel: viewModel, style: style)
-        assetCollectionsVC.didSelectImages = dismissWithImages
-        assetCollectionsVC.didCancel = dismiss
+        assetCollectionsVC.didSelectImages = { [weak self] images in
+            self?.dismissWithImages(images)
+        }
+        assetCollectionsVC.didCancel = { [weak self] in
+            self?.dismiss()
+        }
         assetCollectionsVC.didSelectAssetCollection = { [weak self] assetCollection in
             guard let sSelf = self,
                 let assetsViewController = sSelf.createAssetsViewController(with: assetCollection) else { return }
@@ -111,17 +115,21 @@ public final class PellicolaPresenter: NSObject {
                                         dataFetcher: dataFetcher,
                                         assetCollection: assetCollection)
         let assetsViewController = AssetsViewController(viewModel: viewModel, style: style)
-        assetsViewController.didSelectImages = dismissWithImages
-        assetsViewController.didPeekOnAsset = createDetailAssetViewController
-        return assetsViewController
+        assetsViewController.didSelectImages = { [weak self] images in
+            self?.dismissWithImages(images)
+        }
         
+        assetsViewController.didPeekOnAsset = { [weak self] asset in
+            self?.createDetailAssetViewController(with: asset)
+        }
+        
+        return assetsViewController
     }
     
     private func createDetailAssetViewController(with asset: PHAsset) -> DetailAssetViewController {
         let viewModel = DetailAssetViewModel(asset: asset)
         let detailViewController = DetailAssetViewController(viewModel: viewModel)
         return detailViewController
-        
     }
     
     private func dismissWithImages(_ images: [UIImage]) {
