@@ -10,11 +10,17 @@ import Photos
 
 class AssetCollectionsViewModel: NSObject {
     
-    private let assetCollectionType: PHAssetCollectionType = .smartAlbum
+    private let assetCollectionTypes: [PHAssetCollectionType] = [.smartAlbum, .album]
+    
     private let smartAlbumSubtypes: [PHAssetCollectionSubtype]  = [.smartAlbumUserLibrary,
                                                                    .smartAlbumFavorites,
                                                                    .smartAlbumSelfPortraits,
-                                                                   .smartAlbumScreenshots]
+                                                                   .smartAlbumScreenshots,
+                                                                   .albumRegular,
+                                                                   .albumMyPhotoStream,
+                                                                   .albumCloudShared,
+                                                                   .albumSyncedEvent,
+                                                                   .albumSyncedAlbum]
     
     private var dataStorage: DataStorage
     private var dataFetcher: DataFetcher
@@ -45,8 +51,8 @@ class AssetCollectionsViewModel: NSObject {
          dataFetcher: DataFetcher) {
         self.dataStorage = dataStorage
         self.dataFetcher = dataFetcher
-        fetchResult = PHAssetCollection.fetchAssetCollections(with: assetCollectionType, subtype: .albumRegular, options: nil)
-        albums = PHAssetCollection.fetch(assetCollectionType: assetCollectionType, sortedBy: smartAlbumSubtypes)
+        fetchResult = PHAssetCollection.fetchAssetCollections(with: assetCollectionTypes.first ?? .smartAlbum, subtype: .albumRegular, options: nil)
+        albums = PHAssetCollection.fetch(assetCollectionTypes: assetCollectionTypes, sortedBy: smartAlbumSubtypes)
         super.init()
         
         dataStorage.addObserver(self, forKeyPath: #keyPath(DataStorage.images), options: [], context: nil)
@@ -85,7 +91,7 @@ extension AssetCollectionsViewModel: PHPhotoLibraryChangeObserver {
         
         guard let changeDetails = changeInstance.changeDetails(for: fetchResult) else { return }
         fetchResult = changeDetails.fetchResultAfterChanges
-        albums = PHAssetCollection.fetch(assetCollectionType: assetCollectionType, sortedBy: smartAlbumSubtypes)
+        albums = PHAssetCollection.fetch(assetCollectionTypes: assetCollectionTypes, sortedBy: smartAlbumSubtypes)
         
         DispatchQueue.main.async { [weak self] in
             self?.onChangeAssetCollections?()

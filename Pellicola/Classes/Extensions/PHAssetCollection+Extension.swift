@@ -10,10 +10,13 @@ import Photos
 
 extension PHAssetCollection {
     
-    class func fetch(assetCollectionType type: PHAssetCollectionType,
+    class func fetch(assetCollectionTypes types: [PHAssetCollectionType],
                      sortedBy subtypes: [PHAssetCollectionSubtype]) -> [PHAssetCollection] {
         var albums: [PHAssetCollection] = []
-        let fetchedAlbum = fetch(assetCollectionType: .smartAlbum, filteredBy: subtypes)
+        var fetchedAlbum: [PHAssetCollectionSubtype: [PHAssetCollection]] = [:]
+        types.forEach {
+            fetchedAlbum.merge(fetch(assetCollectionType: $0, filteredBy: subtypes), uniquingKeysWith: +)
+        }
         subtypes.forEach {
             albums += fetchedAlbum[$0] ?? []
         }
