@@ -19,3 +19,10 @@
 "alert_access_denied.message" = "Acconsenti l'accesso alla tua libreria fotografica.";
 "alert_access_denied.later" = "Più tardi";
 "alert_access_denied.settings" = "Impostazioni";
+
+"accessibility_asset_state_selected" = "Selezionata";
+"accessibility_asset_state_not_selected" = "Non selezionata";
+"accessibility_asset_hint_to_select" = "Tappa due volte per selezionare";
+"accessibility_asset_hint_to_deselect" = "Tappa due volte per deselezionare";
+
+"accessibility_asset" = "Immagine";

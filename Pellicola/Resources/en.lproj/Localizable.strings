@@ -20,3 +20,10 @@
 "alert_access_denied.message" = "Grant access to the Photo Library";
 "alert_access_denied.later" = "Later on";
 "alert_access_denied.settings" = "Settings";
+
+"accessibility_asset_state_selected" = "Selected";
+"accessibility_asset_state_not_selected" = "Not selected";
+"accessibility_asset_hint_to_select" = "Double tap to select";
+"accessibility_asset_hint_to_deselect" = "Double tap to deselect";
+
+"accessibility_asset" = "Image";

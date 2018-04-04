@@ -36,6 +36,46 @@ class AssetCell: UICollectionViewCell {
         get { return imageView.image }
     }
     
+    override var isAccessibilityElement: Bool {
+        get {
+            return true
+        }
+        set { }
+    }
+    
+    override var accessibilityLabel: String? {
+        get {
+            return NSLocalizedString("accessibility_asset", bundle: Bundle.framework, comment: "")
+        }
+        set { }
+    }
+    
+    override var accessibilityValue: String? {
+        get {
+            switch state {
+            case .normal:
+                return NSLocalizedString("accessibility_asset_state_not_selected", bundle: Bundle.framework, comment: "")
+            case .selected:
+                return NSLocalizedString("accessibility_asset_state_selected", bundle: Bundle.framework, comment: "")
+            default: return nil
+            }
+        }
+        set { }
+    }
+    
+    override var accessibilityHint: String? {
+        get {
+            switch state {
+            case .normal:
+                return NSLocalizedString("accessibility_asset_hint_to_select", bundle: Bundle.framework, comment: "")
+            case .selected:
+                return NSLocalizedString("accessibility_asset_hint_to_deselect", bundle: Bundle.framework, comment: "")
+            default: return nil
+            }
+        }
+        set { }
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         commonInit()
