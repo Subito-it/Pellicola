@@ -58,7 +58,7 @@ class DataStorage: NSObject {
     func getImagesOrderedBySelection() -> [UIImage] {
         return images.values
             .sorted(by: <)
-            .flatMap {
+            .compactMap {
             return $0.image
         }
     }    

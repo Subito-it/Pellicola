@@ -97,7 +97,7 @@ class DataStorageTests: XCTestCase {
         dataStorage.removeImage(withIdentifier: array[1].1)
         array.remove(at: 1)
         
-        XCTAssertEqual(array.flatMap{$0.0}, dataStorage.getImagesOrderedBySelection())
+        XCTAssertEqual(array.compactMap{$0.0}, dataStorage.getImagesOrderedBySelection())
     }
     
 }
