@@ -57,7 +57,7 @@ public final class PellicolaPresenter: NSObject {
                 }
                 
                 sSelf.setupPresenter(with: maxNumberOfSelections)
-                guard let assetCollectionsVC = sSelf.createAssetsCollectionViewController() else { return }
+                guard let assetCollectionsVC = sSelf.createAssetsCollectionViewController(withSubtypes: sSelf.smartAlbumSubtypes, secondLevelSubtypes: sSelf.otherAlbumSubtypes) else { return }
                 sSelf.configureNavigationController(with: [assetCollectionsVC])
                 presentingViewController.present(sSelf.navigationController, animated: true, completion: nil)
             }
@@ -100,13 +100,13 @@ public final class PellicolaPresenter: NSObject {
     
     // MARK: - View Controller creation
     
-    private func createAssetsCollectionViewController() -> AssetCollectionsViewController? {
+    private func createAssetsCollectionViewController(withSubtypes subtypes: [PHAssetCollectionSubtype], secondLevelSubtypes: [PHAssetCollectionSubtype]? = nil) -> AssetCollectionsViewController? {
         guard let dataStorage = dataStorage, let dataFetcher = dataFetcher else { return nil }
         let viewModel = AssetCollectionsViewModel(dataStorage: dataStorage,
                                                   dataFetcher: dataFetcher,
                                                   collectionTypes: assetCollectionTypes,
-                                                  firstLevelSubtypes: smartAlbumSubtypes,
-                                                  secondLevelSubtypes: otherAlbumSubtypes)
+                                                  firstLevelSubtypes: subtypes,
+                                                  secondLevelSubtypes: secondLevelSubtypes)
         let assetCollectionsVC = AssetCollectionsViewController(viewModel: viewModel, style: style)
         assetCollectionsVC.didSelectImages = { [weak self] images in
             self?.dismissWithImages(images)
@@ -119,6 +119,13 @@ public final class PellicolaPresenter: NSObject {
                 let assetsViewController = sSelf.createAssetsViewController(with: assetCollection) else { return }
             sSelf.navigationController.pushViewController(assetsViewController, animated: true)
         }
+        
+        assetCollectionsVC.didSelectSecondLevelEntry = { [weak self] in
+            guard let sSelf = self,
+                let secondLevelVC = sSelf.createAssetsCollectionViewController(withSubtypes: sSelf.otherAlbumSubtypes)else { return}
+            sSelf.navigationController.pushViewController(secondLevelVC, animated: true)
+        }
+        
         return assetCollectionsVC
     }
     

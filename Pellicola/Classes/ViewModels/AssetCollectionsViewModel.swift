@@ -14,6 +14,7 @@ class AssetCollectionsViewModel: NSObject {
     
     private(set) var collectionTypes: [PHAssetCollectionType]
     private(set) var firstLevelSubtypes: [PHAssetCollectionSubtype]
+    private(set) var secondLevelSubtypes: [PHAssetCollectionSubtype]?
     
     private(set) var firstLevelAlbums: [PHAssetCollection]
     private(set) var secondLevelAlbums: [PHAssetCollection]?
@@ -50,6 +51,7 @@ class AssetCollectionsViewModel: NSObject {
 
         self.collectionTypes = collectionTypes
         self.firstLevelSubtypes = firstLevelSubtypes
+        self.secondLevelSubtypes = secondLevelSubtypes
         fetchResult = PHAssetCollection.fetchAssetCollections(with: collectionTypes.first ?? .smartAlbum, subtype: .albumRegular, options: nil)
         firstLevelAlbums = []
 

@@ -11,11 +11,17 @@ import Photos
 
 final class AssetCollectionsViewController: UIViewController {
     
+    private enum Section: Int {
+        case firstLevel = 0
+        case secondLevel = 1
+    }
+    
     @IBOutlet private var tableView: UITableView!
     
     var didCancel: (() -> Void)?
     var didSelectImages: (([UIImage]) -> Void)?
     var didSelectAssetCollection: ((PHAssetCollection) -> Void)?
+    var didSelectSecondLevelEntry: (() -> Void)?
     
     private var doneBarButton: UIBarButtonItem?
     
@@ -48,6 +54,12 @@ final class AssetCollectionsViewController: UIViewController {
         if let indexPathForSelectedRow = tableView.indexPathForSelectedRow {
             tableView.deselectRow(at: indexPathForSelectedRow, animated: false)
         }
+    }
+    
+    //MARK: - Business Logic
+    
+    private func shouldsShowSecondLevelEntry() -> Bool {
+        return viewModel.secondLevelSubtypes != nil
     }
     
     // MARK: - UI
@@ -89,7 +101,7 @@ final class AssetCollectionsViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
     }
-    
+
     private func createPlaceholderImage(withSize size: CGSize) -> UIImage? {
         
         UIGraphicsBeginImageContext(size)
@@ -169,9 +181,22 @@ final class AssetCollectionsViewController: UIViewController {
 // MARK: - UITableViewDataSource
 
 extension AssetCollectionsViewController: UITableViewDataSource {
+    public func numberOfSections(in tableView: UITableView) -> Int {
+        return shouldsShowSecondLevelEntry() ? 2 : 1
+    }
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.firstLevelAlbums.count
+        guard let tableSection = Section(rawValue: section) else {
+            assertionFailure("Undefined section")
+            return 0
+        }
+        
+        switch tableSection {
+        case .firstLevel:
+            return viewModel.firstLevelAlbums.count
+        case .secondLevel:
+            return 1
+        }
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -181,11 +206,29 @@ extension AssetCollectionsViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         
-        albumCell.accessibilityIdentifier = "album_\(indexPath.row)"
-        albumCell.tag = indexPath.row
+        guard let section = Section(rawValue: indexPath.section) else { return albumCell }
+        switch section {
+        case .firstLevel:
+            configureAlbumCell(albumCell, atIndex: indexPath.row)
+        case .secondLevel:
+            configureSecondLevelEntryCell(albumCell)
+        }
+        
+        return albumCell
+    }
+    
+    private func configureSecondLevelEntryCell(_ albumCell: AssetCollectionCell) {
+        albumCell.accessibilityIdentifier = "other_albums"
+        albumCell.configure(with: AssetCollectionCellStyle(style: style))
+        albumCell.title = NSLocalizedString("albums.list.other_albums", bundle: Bundle.framework, comment: "")
+    }
+    
+    private func configureAlbumCell(_ albumCell: AssetCollectionCell, atIndex index: Int) {
+        albumCell.accessibilityIdentifier = "album_\(index)"
+        albumCell.tag = index
         albumCell.configure(with: AssetCollectionCellStyle(style: style))
         
-        let album = viewModel.firstLevelAlbums[indexPath.row]
+        let album = viewModel.firstLevelAlbums[index]
         albumCell.title = album.localizedTitle ?? ""
         
         let scale = UIScreen.main.scale
@@ -203,7 +246,7 @@ extension AssetCollectionsViewController: UITableViewDataSource {
                                                       options: nil,
                                                       resultHandler: { (image, _) in
                                                         DispatchQueue.main.async {
-                                                            if albumCell.tag == indexPath.row {
+                                                            if albumCell.tag == index {
                                                                 albumCell.thumbnail = image
                                                                 albumCell.subtitle = String(fetchedAssets.count)
                                                             }
@@ -217,8 +260,6 @@ extension AssetCollectionsViewController: UITableViewDataSource {
                 }
             }
         }
-        
-        return albumCell
     }
     
 }
@@ -227,8 +268,16 @@ extension AssetCollectionsViewController: UITableViewDataSource {
 
 extension AssetCollectionsViewController: UITableViewDelegate {
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let assetCollection = viewModel.firstLevelAlbums[indexPath.row]
-        didSelectAssetCollection?(assetCollection)
-    }
-    
+        guard let section = Section(rawValue: indexPath.section) else { return }
+        
+        switch section {
+        case .firstLevel:
+            let assetCollection = viewModel.firstLevelAlbums[indexPath.row]
+            didSelectAssetCollection?(assetCollection)
+        case .secondLevel:
+            didSelectSecondLevelEntry?()
+        }
+    }    
 }
+
+
