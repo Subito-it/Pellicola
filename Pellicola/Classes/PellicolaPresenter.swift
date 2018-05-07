@@ -9,6 +9,16 @@ import Foundation
 import Photos
 
 public final class PellicolaPresenter: NSObject {
+    private let assetCollectionTypes: [PHAssetCollectionType] = [.smartAlbum, .album]
+    private let smartAlbumSubtypes: [PHAssetCollectionSubtype]  = [.smartAlbumUserLibrary,
+                                                                   .smartAlbumFavorites,
+                                                                   .smartAlbumSelfPortraits,
+                                                                   .smartAlbumScreenshots]
+    private let otherAlbumSubtypes: [PHAssetCollectionSubtype] = [.albumRegular,
+                                                                  .albumMyPhotoStream,
+                                                                  .albumCloudShared,
+                                                                  .albumSyncedEvent,
+                                                                  .albumSyncedAlbum]
     
     @objc public var didSelectImages: (([UIImage]) -> Void)?
     @objc public var userDidCancel: (() -> Void)?
@@ -93,7 +103,10 @@ public final class PellicolaPresenter: NSObject {
     private func createAssetsCollectionViewController() -> AssetCollectionsViewController? {
         guard let dataStorage = dataStorage, let dataFetcher = dataFetcher else { return nil }
         let viewModel = AssetCollectionsViewModel(dataStorage: dataStorage,
-                                                  dataFetcher: dataFetcher)
+                                                  dataFetcher: dataFetcher,
+                                                  collectionTypes: assetCollectionTypes,
+                                                  firstLevelSubtypes: smartAlbumSubtypes,
+                                                  secondLevelSubtypes: otherAlbumSubtypes)
         let assetCollectionsVC = AssetCollectionsViewController(viewModel: viewModel, style: style)
         assetCollectionsVC.didSelectImages = { [weak self] images in
             self?.dismissWithImages(images)

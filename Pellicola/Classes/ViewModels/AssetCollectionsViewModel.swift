@@ -9,22 +9,15 @@ import Foundation
 import Photos
 
 class AssetCollectionsViewModel: NSObject {
-    
-    private let assetCollectionTypes: [PHAssetCollectionType] = [.smartAlbum, .album]
-    
-    private let smartAlbumSubtypes: [PHAssetCollectionSubtype]  = [.smartAlbumUserLibrary,
-                                                                   .smartAlbumFavorites,
-                                                                   .smartAlbumSelfPortraits,
-                                                                   .smartAlbumScreenshots,
-                                                                   .albumRegular,
-                                                                   .albumMyPhotoStream,
-                                                                   .albumCloudShared,
-                                                                   .albumSyncedEvent,
-                                                                   .albumSyncedAlbum]
-    
     private var dataStorage: DataStorage
     private var dataFetcher: DataFetcher
-    private(set) var albums: [PHAssetCollection]
+    
+    private(set) var collectionTypes: [PHAssetCollectionType]
+    private(set) var firstLevelSubtypes: [PHAssetCollectionSubtype]
+    
+    private(set) var firstLevelAlbums: [PHAssetCollection]
+    private(set) var secondLevelAlbums: [PHAssetCollection]?
+    
     private var fetchResult: PHFetchResult<PHAssetCollection>
     
     var onChangeAssetCollections: (() -> Void)?
@@ -48,15 +41,23 @@ class AssetCollectionsViewModel: NSObject {
     }
     
     init(dataStorage: DataStorage,
-         dataFetcher: DataFetcher) {
+         dataFetcher: DataFetcher,
+         collectionTypes: [PHAssetCollectionType],
+         firstLevelSubtypes: [PHAssetCollectionSubtype],
+         secondLevelSubtypes: [PHAssetCollectionSubtype]? = nil) {
         self.dataStorage = dataStorage
         self.dataFetcher = dataFetcher
-        fetchResult = PHAssetCollection.fetchAssetCollections(with: assetCollectionTypes.first ?? .smartAlbum, subtype: .albumRegular, options: nil)
-        albums = []
+
+        self.collectionTypes = collectionTypes
+        self.firstLevelSubtypes = firstLevelSubtypes
+        fetchResult = PHAssetCollection.fetchAssetCollections(with: collectionTypes.first ?? .smartAlbum, subtype: .albumRegular, options: nil)
+        firstLevelAlbums = []
+
         super.init()
+    
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             guard let sSelf = self else { return }
-            sSelf.albums = PHAssetCollection.fetch(assetCollectionTypes: sSelf.assetCollectionTypes, sortedBy: sSelf.smartAlbumSubtypes)
+            sSelf.firstLevelAlbums = PHAssetCollection.fetch(assetCollectionTypes: collectionTypes, sortedBy: firstLevelSubtypes)
             DispatchQueue.main.async {
                 self?.onChangeAssetCollections?() //TODO: specialize this mehtod to only reload one section (the 1st in this case) instead of the whole TV
             }
@@ -99,7 +100,8 @@ extension AssetCollectionsViewModel: PHPhotoLibraryChangeObserver {
         
         guard let changeDetails = changeInstance.changeDetails(for: fetchResult) else { return }
         fetchResult = changeDetails.fetchResultAfterChanges
-        albums = PHAssetCollection.fetch(assetCollectionTypes: assetCollectionTypes, sortedBy: smartAlbumSubtypes)
+        
+        firstLevelAlbums = PHAssetCollection.fetch(assetCollectionTypes: collectionTypes, sortedBy: firstLevelSubtypes)
         
         DispatchQueue.main.async { [weak self] in
             self?.onChangeAssetCollections?()

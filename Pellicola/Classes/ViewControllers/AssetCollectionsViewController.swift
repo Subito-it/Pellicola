@@ -171,7 +171,7 @@ final class AssetCollectionsViewController: UIViewController {
 extension AssetCollectionsViewController: UITableViewDataSource {
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.albums.count
+        return viewModel.firstLevelAlbums.count
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -185,7 +185,7 @@ extension AssetCollectionsViewController: UITableViewDataSource {
         albumCell.tag = indexPath.row
         albumCell.configure(with: AssetCollectionCellStyle(style: style))
         
-        let album = viewModel.albums[indexPath.row]
+        let album = viewModel.firstLevelAlbums[indexPath.row]
         albumCell.title = album.localizedTitle ?? ""
         
         // Photos Count
@@ -231,9 +231,8 @@ extension AssetCollectionsViewController: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 
 extension AssetCollectionsViewController: UITableViewDelegate {
-    
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let assetCollection = viewModel.albums[indexPath.row]
+        let assetCollection = viewModel.firstLevelAlbums[indexPath.row]
         didSelectAssetCollection?(assetCollection)
     }
     
