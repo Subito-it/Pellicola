@@ -188,11 +188,6 @@ extension AssetCollectionsViewController: UITableViewDataSource {
         let album = viewModel.firstLevelAlbums[indexPath.row]
         albumCell.title = album.localizedTitle ?? ""
         
-        // Photos Count
-        let fetchedAssets = PHAsset.fetchImageAssets(in: album)
-        let numberOfImages = fetchedAssets.count
-        albumCell.subtitle = String(numberOfImages)
-        
         let scale = UIScreen.main.scale
         let thumbnailSize = CGSize(width: albumCell.thumbnailSize.width * scale, height: albumCell.thumbnailSize.height * scale)
         
