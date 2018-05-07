@@ -197,21 +197,30 @@ extension AssetCollectionsViewController: UITableViewDataSource {
         let thumbnailSize = CGSize(width: albumCell.thumbnailSize.width * scale, height: albumCell.thumbnailSize.height * scale)
         
         // Album thumbnails
-        let imageManager = PHImageManager.default()
-        
-        if let lastAsset = fetchedAssets.lastObject {
-            imageManager.requestImage(for: lastAsset,
-                                      targetSize: thumbnailSize,
-                                      contentMode: .aspectFill,
-                                      options: nil,
-                                      resultHandler: { (image, _) in
-                                        if albumCell.tag == indexPath.row {
-                                            albumCell.thumbnail = image
-                                        }
-            })
-        } else {
-            let placeholderImage = createPlaceholderImage(withSize: albumCell.thumbnailSize)
-            albumCell.thumbnail = placeholderImage
+        DispatchQueue.global(qos: .userInitiated).async { //TODO add weak self
+            let fetchedAssets = PHAsset.fetchImageAssets(in: album)
+            if let lastAsset = fetchedAssets.lastObject {
+                let options = PHImageRequestOptions()
+                options.isSynchronous = true
+                PHImageManager.default().requestImage(for: lastAsset,
+                                                      targetSize: thumbnailSize,
+                                                      contentMode: .aspectFill,
+                                                      options: nil,
+                                                      resultHandler: { (image, _) in
+                                                        DispatchQueue.main.async {
+                                                            if albumCell.tag == indexPath.row {
+                                                                albumCell.thumbnail = image
+                                                                albumCell.subtitle = String(fetchedAssets.count)
+                                                            }
+                                                        }
+                })
+            } else {
+                DispatchQueue.main.async {
+                    let placeholderImage = self.createPlaceholderImage(withSize: albumCell.thumbnailSize)
+                    albumCell.thumbnail = placeholderImage
+                    albumCell.subtitle = String(fetchedAssets.count)
+                }
+            }
         }
         
         return albumCell
