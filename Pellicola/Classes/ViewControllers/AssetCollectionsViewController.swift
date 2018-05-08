@@ -291,6 +291,7 @@ extension AssetCollectionsViewController: UITableViewDataSource {
 
 extension AssetCollectionsViewController: UITableViewDelegate {
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         guard let section = Section(rawValue: indexPath.section) else { return }
         
         switch section {
