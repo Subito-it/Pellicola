@@ -28,6 +28,8 @@ final class AssetCollectionsViewController: UIViewController {
     private var viewModel: AssetCollectionsViewModel
     private var style: PellicolaStyleProtocol
     
+    private var loadingIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+    
     init(viewModel: AssetCollectionsViewModel, style: PellicolaStyleProtocol) {
         self.viewModel = viewModel
         self.style = style
@@ -44,6 +46,7 @@ final class AssetCollectionsViewController: UIViewController {
         super.viewDidLoad()
         configureUI()
         viewModel.onChangeAssetCollections = { [weak self] in
+            self?.removeLoadingIndicator()
             self?.tableView.reloadData()
         }
     }
@@ -67,6 +70,24 @@ final class AssetCollectionsViewController: UIViewController {
     private func configureUI() {
         setupNavigationBar()
         setupTableView()
+        
+        if viewModel.firstLevelAlbums.isEmpty {
+            showLoadingIndicator()
+        }
+    }
+    
+    private func showLoadingIndicator() {
+        loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(loadingIndicator)
+        
+        loadingIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        loadingIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        loadingIndicator.startAnimating()
+    }
+    
+    private func removeLoadingIndicator() {
+        loadingIndicator.stopAnimating()
+        loadingIndicator.removeFromSuperview()
     }
     
     private func setupNavigationBar() {
