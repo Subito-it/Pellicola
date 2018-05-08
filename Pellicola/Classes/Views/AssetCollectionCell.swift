@@ -34,7 +34,6 @@ class AssetCollectionCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
         thumbnailView.applyThumbnailStyle()
     }
     
@@ -47,6 +46,7 @@ class AssetCollectionCell: UITableViewCell {
         albumTitle.textColor = style.titleColor
         photosCount.font = style.subtitleFont
         photosCount.textColor = style.subtitleColor
+        thumbnailView.layer.borderWidth =  (1.0 / UIScreen.main.scale) * 1.0 //This is used to achieve a 1px width
+        thumbnailView.layer.borderColor = style.thumbBorderColor.cgColor
     }
-    
 }

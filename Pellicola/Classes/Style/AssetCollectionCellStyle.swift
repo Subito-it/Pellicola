@@ -35,4 +35,8 @@ struct AssetCollectionCellStyle {
         return style.grayColor
     }
     
+    var thumbBorderColor: UIColor {
+        return style.grayColor
+    }
+    
 }
