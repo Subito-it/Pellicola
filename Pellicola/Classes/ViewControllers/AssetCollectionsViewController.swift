@@ -235,7 +235,7 @@ extension AssetCollectionsViewController: UITableViewDataSource {
         let thumbnailSize = CGSize(width: albumCell.thumbnailSize.width * scale, height: albumCell.thumbnailSize.height * scale)
         
         // Album thumbnails
-        DispatchQueue.global(qos: .userInitiated).async { //TODO add weak self
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             let fetchedAssets = PHAsset.fetchImageAssets(in: album)
             if let lastAsset = fetchedAssets.lastObject {
                 let options = PHImageRequestOptions()
@@ -254,8 +254,10 @@ extension AssetCollectionsViewController: UITableViewDataSource {
                 })
             } else {
                 DispatchQueue.main.async {
-                    let placeholderImage = self.createPlaceholderImage(withSize: albumCell.thumbnailSize)
-                    albumCell.thumbnail = placeholderImage
+                    if let placeholderImage = self?.createPlaceholderImage(withSize: albumCell.thumbnailSize) {
+                        albumCell.thumbnail = placeholderImage
+                    }
+                    
                     albumCell.subtitle = String(fetchedAssets.count)
                 }
             }
