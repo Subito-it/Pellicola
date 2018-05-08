@@ -8,6 +8,18 @@
 import Foundation
 import Photos
 
+class AlbumData {
+    let title: String
+    var photoCount: Int?
+    var thumbnail: UIImage?
+    let assetCollection: PHAssetCollection
+    
+    init(title: String, assetCollection: PHAssetCollection) {
+        self.title = title
+        self.assetCollection = assetCollection
+    }
+}
+
 class AssetCollectionsViewModel: NSObject {
     private var dataStorage: DataStorage
     private var dataFetcher: DataFetcher
@@ -21,7 +33,7 @@ class AssetCollectionsViewModel: NSObject {
     
     private var fetchResult: PHFetchResult<PHAssetCollection>
     
-    var onChangeAssetCollections: (() -> Void)?
+    var onChangeAssetCollections: (([AlbumData]) -> Void)?
     var onChangeSelectedAssets: ((Int) -> Void)?
     
     var maxNumberOfSelection: Int? {
@@ -60,8 +72,10 @@ class AssetCollectionsViewModel: NSObject {
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             guard let sSelf = self else { return }
             sSelf.firstLevelAlbums = PHAssetCollection.fetch(assetCollectionTypes: collectionTypes, sortedBy: firstLevelSubtypes)
+            
+            let albumsData = sSelf.firstLevelAlbums.map { sSelf.albumData(fromAssetCollection: $0) }
             DispatchQueue.main.async {
-                self?.onChangeAssetCollections?() //TODO: specialize this mehtod to only reload one section (the 1st in this case) instead of the whole TV
+                self?.onChangeAssetCollections?(albumsData) //TODO: specialize this mehtod to only reload one section (the 1st in this case) instead of the whole TV
             }
             
         }
@@ -83,6 +97,14 @@ class AssetCollectionsViewModel: NSObject {
         dataFetcher.clear()
     }
 
+    // MARK: Album Data creation
+    
+    private func albumData(fromAssetCollection assetCollection: PHAssetCollection) -> AlbumData {
+        let albumData = AlbumData(title: assetCollection.localizedTitle ?? "", assetCollection: assetCollection)
+        //TODO: how to fetch thumb and image count?
+        return albumData
+    }
+    
     // MARK: - KVO
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         guard keyPath == #keyPath(DataStorage.images) else {
@@ -104,9 +126,10 @@ extension AssetCollectionsViewModel: PHPhotoLibraryChangeObserver {
         fetchResult = changeDetails.fetchResultAfterChanges
         
         firstLevelAlbums = PHAssetCollection.fetch(assetCollectionTypes: collectionTypes, sortedBy: firstLevelSubtypes)
+        let albumsData = firstLevelAlbums.map { albumData(fromAssetCollection: $0) }
         
         DispatchQueue.main.async { [weak self] in
-            self?.onChangeAssetCollections?()
+            self?.onChangeAssetCollections?(albumsData)
         }
     }
 }

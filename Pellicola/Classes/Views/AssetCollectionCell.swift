@@ -12,6 +12,7 @@ class AssetCollectionCell: UITableViewCell {
     @IBOutlet weak private var albumTitle: UILabel!
     @IBOutlet weak private var photosCount: UILabel!
     @IBOutlet weak private var thumbnailView: UIImageView!
+    var thumbnailFetchWorkItem: DispatchWorkItem?
     
     var title: String? {
         set { albumTitle.text = newValue }
@@ -39,9 +40,21 @@ class AssetCollectionCell: UITableViewCell {
     
     override func prepareForReuse() {
         thumbnail = nil
+        title = ""
+        subtitle = ""
+        thumbnailFetchWorkItem?.cancel()
     }
     
-    func configure(with style: AssetCollectionCellStyle) {
+    func configureData(with album: AlbumData) {
+        title = album.title
+        thumbnail = album.thumbnail
+        
+        if let photoCount = album.photoCount {
+            subtitle = String(photoCount)
+        }
+    }
+    
+    func configureStyle(with style: AssetCollectionCellStyle) {
         albumTitle.font = style.titleFont
         albumTitle.textColor = style.titleColor
         photosCount.font = style.subtitleFont
