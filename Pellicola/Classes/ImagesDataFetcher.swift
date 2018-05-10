@@ -8,7 +8,7 @@
 import Foundation
 import Photos
 
-class DataFetcher {
+class ImagesDataFetcher {
     
     private let imageManager = PHCachingImageManager()
     

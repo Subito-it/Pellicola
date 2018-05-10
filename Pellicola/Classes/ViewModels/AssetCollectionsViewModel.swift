@@ -22,7 +22,7 @@ class AlbumData {
 
 class AssetCollectionsViewModel: NSObject {
     private var dataStorage: DataStorage
-    private var dataFetcher: DataFetcher
+    private var imagesDataFetcher: ImagesDataFetcher
     
     private(set) var collectionTypes: [PHAssetCollectionType]
     private(set) var firstLevelSubtypes: [PHAssetCollectionSubtype]
@@ -50,16 +50,16 @@ class AssetCollectionsViewModel: NSObject {
     }
     
     var isDownloadingImages: Bool {
-        return dataFetcher.count != 0
+        return imagesDataFetcher.count != 0
     }
     
     init(dataStorage: DataStorage,
-         dataFetcher: DataFetcher,
+         imagesDataFetcher: ImagesDataFetcher,
          collectionTypes: [PHAssetCollectionType],
          firstLevelSubtypes: [PHAssetCollectionSubtype],
          secondLevelSubtypes: [PHAssetCollectionSubtype]? = nil) {
         self.dataStorage = dataStorage
-        self.dataFetcher = dataFetcher
+        self.imagesDataFetcher = imagesDataFetcher
 
         self.collectionTypes = collectionTypes
         self.firstLevelSubtypes = firstLevelSubtypes
@@ -94,7 +94,7 @@ class AssetCollectionsViewModel: NSObject {
     }
     
     func stopDownloadingImages() {
-        dataFetcher.clear()
+        imagesDataFetcher.clear()
     }
 
     // MARK: Album Data creation

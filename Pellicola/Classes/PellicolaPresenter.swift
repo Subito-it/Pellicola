@@ -28,7 +28,7 @@ public final class PellicolaPresenter: NSObject {
     }()
     
     var dataStorage: DataStorage?
-    var dataFetcher: DataFetcher?
+    var imagesDataFetcher: ImagesDataFetcher?
     
     let style: PellicolaStyleProtocol
     
@@ -95,15 +95,15 @@ public final class PellicolaPresenter: NSObject {
     
     private func setupPresenter(with maxNumberOfSelections: Int) {
         dataStorage = DataStorage(limit: maxNumberOfSelections <= 0 ? nil : maxNumberOfSelections)
-        dataFetcher = DataFetcher()
+        imagesDataFetcher = ImagesDataFetcher()
     }
     
     // MARK: - View Controller creation
     
     private func createAssetsCollectionViewController(withSubtypes subtypes: [PHAssetCollectionSubtype], secondLevelSubtypes: [PHAssetCollectionSubtype]? = nil) -> AssetCollectionsViewController? {
-        guard let dataStorage = dataStorage, let dataFetcher = dataFetcher else { return nil }
+        guard let dataStorage = dataStorage, let imagesDataFetcher = imagesDataFetcher else { return nil }
         let viewModel = AssetCollectionsViewModel(dataStorage: dataStorage,
-                                                  dataFetcher: dataFetcher,
+                                                  imagesDataFetcher: imagesDataFetcher,
                                                   collectionTypes: assetCollectionTypes,
                                                   firstLevelSubtypes: subtypes,
                                                   secondLevelSubtypes: secondLevelSubtypes)
@@ -130,9 +130,9 @@ public final class PellicolaPresenter: NSObject {
     }
     
     private func createAssetsViewController(with assetCollection: PHAssetCollection) -> AssetsViewController? {
-        guard let dataStorage = dataStorage, let dataFetcher = dataFetcher else { return nil }
+        guard let dataStorage = dataStorage, let imagesDataFetcher = imagesDataFetcher else { return nil }
         let viewModel = AssetsViewModel(dataStorage: dataStorage,
-                                        dataFetcher: dataFetcher,
+                                        imagesDataFetcher: imagesDataFetcher,
                                         assetCollection: assetCollection)
         let assetsViewController = AssetsViewController(viewModel: viewModel, style: style)
         assetsViewController.didSelectImages = { [weak self] images in
