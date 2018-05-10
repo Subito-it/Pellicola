@@ -27,7 +27,7 @@ public final class PellicolaPresenter: NSObject {
         return PellicolaNavigationController()
     }()
     
-    var dataStorage: DataStorage?
+    var imagesDataStorage: ImagesDataStorage?
     var imagesDataFetcher: ImagesDataFetcher?
     
     let style: PellicolaStyleProtocol
@@ -94,15 +94,15 @@ public final class PellicolaPresenter: NSObject {
     }
     
     private func setupPresenter(with maxNumberOfSelections: Int) {
-        dataStorage = DataStorage(limit: maxNumberOfSelections <= 0 ? nil : maxNumberOfSelections)
+        imagesDataStorage = ImagesDataStorage(limit: maxNumberOfSelections <= 0 ? nil : maxNumberOfSelections)
         imagesDataFetcher = ImagesDataFetcher()
     }
     
     // MARK: - View Controller creation
     
     private func createAssetsCollectionViewController(withSubtypes subtypes: [PHAssetCollectionSubtype], secondLevelSubtypes: [PHAssetCollectionSubtype]? = nil) -> AssetCollectionsViewController? {
-        guard let dataStorage = dataStorage, let imagesDataFetcher = imagesDataFetcher else { return nil }
-        let viewModel = AssetCollectionsViewModel(dataStorage: dataStorage,
+        guard let imagesDataStorage = imagesDataStorage, let imagesDataFetcher = imagesDataFetcher else { return nil }
+        let viewModel = AssetCollectionsViewModel(imagesDataStorage: imagesDataStorage,
                                                   imagesDataFetcher: imagesDataFetcher,
                                                   collectionTypes: assetCollectionTypes,
                                                   firstLevelSubtypes: subtypes,
@@ -130,8 +130,8 @@ public final class PellicolaPresenter: NSObject {
     }
     
     private func createAssetsViewController(with assetCollection: PHAssetCollection) -> AssetsViewController? {
-        guard let dataStorage = dataStorage, let imagesDataFetcher = imagesDataFetcher else { return nil }
-        let viewModel = AssetsViewModel(dataStorage: dataStorage,
+        guard let imagesDataStorage = imagesDataStorage, let imagesDataFetcher = imagesDataFetcher else { return nil }
+        let viewModel = AssetsViewModel(imagesDataStorage: imagesDataStorage,
                                         imagesDataFetcher: imagesDataFetcher,
                                         assetCollection: assetCollection)
         let assetsViewController = AssetsViewController(viewModel: viewModel, style: style)

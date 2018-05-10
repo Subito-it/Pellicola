@@ -10,7 +10,7 @@ import Photos
 
 class AssetsViewModel: NSObject {
     
-    private var dataStorage: DataStorage
+    private var imagesDataStorage: ImagesDataStorage
     private var imagesDataFetcher: ImagesDataFetcher
     
     private let assetCollection: PHAssetCollection
@@ -30,7 +30,7 @@ class AssetsViewModel: NSObject {
     }
     
     var maxNumberOfSelection: Int? {
-        return dataStorage.limit
+        return imagesDataStorage.limit
     }
     
     var isSingleSelection: Bool {
@@ -39,7 +39,7 @@ class AssetsViewModel: NSObject {
     }
     
     var numberOfSelectedAssets: Int {
-        return dataStorage.images.count
+        return imagesDataStorage.images.count
     }
     
     var isDownloadingImages: Bool {
@@ -57,10 +57,10 @@ class AssetsViewModel: NSObject {
                maxNumberOfSelection)
     }
     
-    init(dataStorage: DataStorage,
+    init(imagesDataStorage: ImagesDataStorage,
          imagesDataFetcher: ImagesDataFetcher,
          assetCollection: PHAssetCollection) {
-        self.dataStorage = dataStorage
+        self.imagesDataStorage = imagesDataStorage
         self.imagesDataFetcher = imagesDataFetcher
         self.assetCollection = assetCollection
         
@@ -68,13 +68,13 @@ class AssetsViewModel: NSObject {
     
         super.init()
         
-        dataStorage.addObserver(self, forKeyPath: #keyPath(DataStorage.images), options: [], context: nil)
+        imagesDataStorage.addObserver(self, forKeyPath: #keyPath(ImagesDataStorage.images), options: [], context: nil)
         PHPhotoLibrary.shared().register(self)
     }
     
     deinit {
         PHPhotoLibrary.shared().unregisterChangeObserver(self)
-        dataStorage.removeObserver(self, forKeyPath: #keyPath(DataStorage.images))
+        imagesDataStorage.removeObserver(self, forKeyPath: #keyPath(ImagesDataStorage.images))
     }
     
     func select(_ asset: PHAsset,
@@ -82,10 +82,10 @@ class AssetsViewModel: NSObject {
                      onUpdate: @escaping () -> Void,
                      onLimit: @escaping () -> Void) {
         let limit = maxNumberOfSelection ?? Int.max
-        let numberOfSelectableAssets = limit - dataStorage.images.count - imagesDataFetcher.count
+        let numberOfSelectableAssets = limit - imagesDataStorage.images.count - imagesDataFetcher.count
         
-        if dataStorage.containsImage(withIdentifier: asset.localIdentifier) {
-            dataStorage.removeImage(withIdentifier: asset.localIdentifier)
+        if imagesDataStorage.containsImage(withIdentifier: asset.localIdentifier) {
+            imagesDataStorage.removeImage(withIdentifier: asset.localIdentifier)
             onUpdate()
         } else if imagesDataFetcher.containsRequest(withIdentifier: asset.localIdentifier) {
             imagesDataFetcher.removeRequest(withIdentifier: asset.localIdentifier)
@@ -93,7 +93,7 @@ class AssetsViewModel: NSObject {
         } else if numberOfSelectableAssets > 0 {
             
             imagesDataFetcher.requestImage(for: asset, onProgress: onDownload, onComplete: { [weak self] image in
-                self?.dataStorage.addImage(image, withIdentifier: asset.localIdentifier)
+                self?.imagesDataStorage.addImage(image, withIdentifier: asset.localIdentifier)
                 onUpdate()
             })
             
@@ -103,7 +103,7 @@ class AssetsViewModel: NSObject {
     }
     
     func getState(for asset: PHAsset) -> AssetCell.State {
-        if dataStorage.containsImage(withIdentifier: asset.localIdentifier) {
+        if imagesDataStorage.containsImage(withIdentifier: asset.localIdentifier) {
             return .selected
         } else if imagesDataFetcher.containsRequest(withIdentifier: asset.localIdentifier) {
             return .loading
@@ -113,7 +113,7 @@ class AssetsViewModel: NSObject {
     }
     
     func getSelectedImages() -> [UIImage] {
-        return dataStorage.getImagesOrderedBySelection()
+        return imagesDataStorage.getImagesOrderedBySelection()
     }
     
     func stopDownloadingImages() {
@@ -122,7 +122,7 @@ class AssetsViewModel: NSObject {
  
     // MARK: - KVO
     override  func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        guard keyPath == #keyPath(DataStorage.images) else {
+        guard keyPath == #keyPath(ImagesDataStorage.images) else {
             super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
             return
         }
@@ -143,7 +143,7 @@ extension AssetsViewModel: PHPhotoLibraryChangeObserver {
         
         (changeDetails.removedObjects + changeDetails.changedObjects).forEach {
             imagesDataFetcher.removeRequest(withIdentifier: $0.localIdentifier)
-            dataStorage.removeImage(withIdentifier: $0.localIdentifier)
+            imagesDataStorage.removeImage(withIdentifier: $0.localIdentifier)
         }
         
         DispatchQueue.main.async { [weak self] in

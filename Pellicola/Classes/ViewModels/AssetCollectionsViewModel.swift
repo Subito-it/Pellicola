@@ -21,7 +21,7 @@ class AlbumData {
 }
 
 class AssetCollectionsViewModel: NSObject {
-    private var dataStorage: DataStorage
+    private var imagesDataStorage: ImagesDataStorage
     private var imagesDataFetcher: ImagesDataFetcher
     
     private(set) var collectionTypes: [PHAssetCollectionType]
@@ -37,7 +37,7 @@ class AssetCollectionsViewModel: NSObject {
     var onChangeSelectedAssets: ((Int) -> Void)?
     
     var maxNumberOfSelection: Int? {
-        return dataStorage.limit
+        return imagesDataStorage.limit
     }
     
     var isSingleSelection: Bool {
@@ -46,19 +46,19 @@ class AssetCollectionsViewModel: NSObject {
     }
     
     var numberOfSelectedAssets: Int {
-        return dataStorage.images.count
+        return imagesDataStorage.images.count
     }
     
     var isDownloadingImages: Bool {
         return imagesDataFetcher.count != 0
     }
     
-    init(dataStorage: DataStorage,
+    init(imagesDataStorage: ImagesDataStorage,
          imagesDataFetcher: ImagesDataFetcher,
          collectionTypes: [PHAssetCollectionType],
          firstLevelSubtypes: [PHAssetCollectionSubtype],
          secondLevelSubtypes: [PHAssetCollectionSubtype]? = nil) {
-        self.dataStorage = dataStorage
+        self.imagesDataStorage = imagesDataStorage
         self.imagesDataFetcher = imagesDataFetcher
 
         self.collectionTypes = collectionTypes
@@ -80,17 +80,17 @@ class AssetCollectionsViewModel: NSObject {
             
         }
         
-        dataStorage.addObserver(self, forKeyPath: #keyPath(DataStorage.images), options: [], context: nil)
+        imagesDataStorage.addObserver(self, forKeyPath: #keyPath(ImagesDataStorage.images), options: [], context: nil)
         PHPhotoLibrary.shared().register(self)
     }
     
     deinit {
         PHPhotoLibrary.shared().unregisterChangeObserver(self)
-        dataStorage.removeObserver(self, forKeyPath: #keyPath(DataStorage.images))
+        imagesDataStorage.removeObserver(self, forKeyPath: #keyPath(ImagesDataStorage.images))
     }
     
     func getSelectedImages() -> [UIImage] {
-        return dataStorage.getImagesOrderedBySelection()
+        return imagesDataStorage.getImagesOrderedBySelection()
     }
     
     func stopDownloadingImages() {
@@ -107,7 +107,7 @@ class AssetCollectionsViewModel: NSObject {
     
     // MARK: - KVO
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        guard keyPath == #keyPath(DataStorage.images) else {
+        guard keyPath == #keyPath(ImagesDataStorage.images) else {
             super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
             return
         }
