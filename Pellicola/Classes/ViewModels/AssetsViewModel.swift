@@ -52,7 +52,7 @@ class AssetsViewModel: NSObject {
             return ""
         }
         
-        return String(format: NSLocalizedString("selected_assets", bundle:  Bundle.framework, comment: ""),
+        return String(format: Pellicola.localizedString("selected_assets"),
                numberOfSelectedAssets,
                maxNumberOfSelection)
     }

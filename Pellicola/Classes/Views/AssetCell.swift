@@ -45,7 +45,7 @@ class AssetCell: UICollectionViewCell {
     
     override var accessibilityLabel: String? {
         get {
-            return NSLocalizedString("accessibility_asset", bundle: Bundle.framework, comment: "")
+            return Pellicola.localizedString("accessibility_asset")
         }
         set { }
     }
@@ -54,9 +54,9 @@ class AssetCell: UICollectionViewCell {
         get {
             switch state {
             case .normal:
-                return NSLocalizedString("accessibility_asset_state_not_selected", bundle: Bundle.framework, comment: "")
+                return Pellicola.localizedString("accessibility_asset_state_not_selected")
             case .selected:
-                return NSLocalizedString("accessibility_asset_state_selected", bundle: Bundle.framework, comment: "")
+                return Pellicola.localizedString("accessibility_asset_state_selected")
             default: return nil
             }
         }
@@ -67,9 +67,9 @@ class AssetCell: UICollectionViewCell {
         get {
             switch state {
             case .normal:
-                return NSLocalizedString("accessibility_asset_hint_to_select", bundle: Bundle.framework, comment: "")
+                return Pellicola.localizedString("accessibility_asset_hint_to_select")
             case .selected:
-                return NSLocalizedString("accessibility_asset_hint_to_deselect", bundle: Bundle.framework, comment: "")
+                return Pellicola.localizedString("accessibility_asset_hint_to_deselect")
             default: return nil
             }
         }

@@ -123,7 +123,7 @@ final class AssetCollectionsViewController: UIViewController {
             navigationItem.rightBarButtonItem = doneBarButton
         }
         
-        title = NSLocalizedString("albums.title", bundle: Bundle.framework, comment: "")
+        title = Pellicola.localizedString("albums.title")
     }
     
     private func setupTableView() {
@@ -191,10 +191,10 @@ final class AssetCollectionsViewController: UIViewController {
     @objc func doneButtonTapped() {
         guard !viewModel.isDownloadingImages else {
             viewModel.stopDownloadingImages()
-            let alert = UIAlertController(title: NSLocalizedString("alert_deselection.title", bundle: Bundle.framework, comment: ""),
+            let alert = UIAlertController(title: Pellicola.localizedString("alert_deselection.title"),
                                           message: nil,
                                           preferredStyle: .alert)
-            let okAction = UIAlertAction(title: NSLocalizedString("alert_deselection.ok", bundle: Bundle.framework, comment: ""),
+            let okAction = UIAlertAction(title: Pellicola.localizedString("alert_deselection.ok"),
                                          style: .default)
             alert.addAction(okAction)
             present(alert, animated: true)

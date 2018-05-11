@@ -29,7 +29,7 @@ class AssetsViewController: UIViewController {
     init(viewModel: AssetsViewModel, style: PellicolaStyleProtocol) {
         self.viewModel = viewModel
         self.style = style
-        super.init(nibName: nil, bundle: Bundle.framework)
+        super.init(nibName: nil, bundle: Pellicola.frameworkBundle)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -163,10 +163,10 @@ class AssetsViewController: UIViewController {
     @objc func doneButtonTapped() {
         guard !viewModel.isDownloadingImages else {
             viewModel.stopDownloadingImages()
-            let alert = UIAlertController(title: NSLocalizedString("alert_deselection.title", bundle: Bundle.framework, comment: ""),
+            let alert = UIAlertController(title: Pellicola.localizedString("alert_deselection.title"),
                                           message: nil,
                                           preferredStyle: .alert)
-            let okAction = UIAlertAction(title: NSLocalizedString("alert_deselection.ok", bundle: Bundle.framework, comment: ""),
+            let okAction = UIAlertAction(title: Pellicola.localizedString("alert_deselection.ok"),
                                          style: .default) { [weak self] _ in
                 self?.collectionView.reloadData()
             }
@@ -264,10 +264,10 @@ extension AssetsViewController: UICollectionViewDelegate {
                 
             }, onLimit: { [weak self] in
                 
-                let alert = UIAlertController(title: NSLocalizedString("alert_limit.title", bundle: Bundle.framework, comment: ""),
+                let alert = UIAlertController(title: Pellicola.localizedString("alert_limit.title"),
                                               message: nil,
                                               preferredStyle: .alert)
-                let okAction = UIAlertAction(title: NSLocalizedString("alert_deselection.ok", bundle: Bundle.framework, comment: ""),
+                let okAction = UIAlertAction(title: Pellicola.localizedString("alert_deselection.ok"),
                                              style: .default)
                 alert.addAction(okAction)
                 self?.present(alert, animated: true)
