@@ -17,7 +17,12 @@ extension Pellicola {
     }
     
     static func localizedString(_ key: String) -> String {
-        return NSLocalizedString(key, tableName: "PellicolaLocalizable", bundle: frameworkBundle, value: "", comment: "")
+        guard let url = frameworkBundle.url(forResource: "Pellicola", withExtension: "bundle"),
+              let stringBundle = Bundle(url: url) else {
+            return key
+        }
+        
+        return stringBundle.localizedString(forKey: key, value: "", table: nil)
     }
 }
 
