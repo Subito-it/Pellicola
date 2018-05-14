@@ -10,6 +10,11 @@ import UIKit
 import Photos
 
 final class AssetCollectionsViewController: UIViewController {
+    enum LeftBarButtonType {
+        case back
+        case dismiss
+    }
+    
     private enum Section: Int {
         case firstLevel = 0
         case secondLevel = 1
@@ -33,9 +38,12 @@ final class AssetCollectionsViewController: UIViewController {
     
     private let albumsDataFetcher = AlbumsDataFetcher()
     
-    init(viewModel: AssetCollectionsViewModel, style: PellicolaStyleProtocol) {
+    private let leftBarButtonType: LeftBarButtonType
+    
+    init(viewModel: AssetCollectionsViewModel, style: PellicolaStyleProtocol, leftBarButtonType: LeftBarButtonType) {
         self.viewModel = viewModel
         self.style = style
+        self.leftBarButtonType = leftBarButtonType
         super.init(nibName: nil, bundle: Pellicola.frameworkBundle)
     }
     
@@ -99,10 +107,12 @@ final class AssetCollectionsViewController: UIViewController {
     }
     
     private func setupNavigationBar() {
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: style.cancelString,
-                                                           style: .plain,
-                                                           target: self,
-                                                           action: #selector(cancelButtonTapped))
+        if leftBarButtonType == .dismiss {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(title: style.cancelString,
+                                                               style: .plain,
+                                                               target: self,
+                                                               action: #selector(cancelButtonTapped))
+        }
         
         if !viewModel.isSingleSelection {
             doneBarButton = UIBarButtonItem(title: style.doneString,

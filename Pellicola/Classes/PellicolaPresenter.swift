@@ -100,14 +100,18 @@ public final class PellicolaPresenter: NSObject {
     
     // MARK: - View Controller creation
     
-    private func createAssetsCollectionViewController(withSubtypes subtypes: [PHAssetCollectionSubtype], secondLevelSubtypes: [PHAssetCollectionSubtype]? = nil) -> AssetCollectionsViewController? {
+    private func createAssetsCollectionViewController(withSubtypes subtypes: [PHAssetCollectionSubtype],
+                                                      secondLevelSubtypes: [PHAssetCollectionSubtype]? = nil,
+                                                      isRootLevel: Bool = true) -> AssetCollectionsViewController? {
         guard let imagesDataStorage = imagesDataStorage, let imagesDataFetcher = imagesDataFetcher else { return nil }
         let viewModel = AssetCollectionsViewModel(imagesDataStorage: imagesDataStorage,
                                                   imagesDataFetcher: imagesDataFetcher,
                                                   collectionTypes: assetCollectionTypes,
                                                   firstLevelSubtypes: subtypes,
                                                   secondLevelSubtypes: secondLevelSubtypes)
-        let assetCollectionsVC = AssetCollectionsViewController(viewModel: viewModel, style: style)
+        
+        let leftBarButtonType: AssetCollectionsViewController.LeftBarButtonType = isRootLevel ? .dismiss : .back
+        let assetCollectionsVC = AssetCollectionsViewController(viewModel: viewModel, style: style, leftBarButtonType: leftBarButtonType)
         assetCollectionsVC.didSelectImages = { [weak self] images in
             self?.dismissWithImages(images)
         }
@@ -122,7 +126,9 @@ public final class PellicolaPresenter: NSObject {
         
         assetCollectionsVC.didSelectSecondLevelEntry = { [weak self] in
             guard let sSelf = self,
-                let secondLevelVC = sSelf.createAssetsCollectionViewController(withSubtypes: sSelf.otherAlbumSubtypes)else { return}
+                let secondLevelVC = sSelf.createAssetsCollectionViewController(withSubtypes: sSelf.otherAlbumSubtypes,
+                                                                               secondLevelSubtypes: nil,
+                                                                               isRootLevel: false) else { return}
             sSelf.navigationController.pushViewController(secondLevelVC, animated: true)
         }
         
