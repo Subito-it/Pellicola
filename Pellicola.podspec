@@ -16,6 +16,4 @@ Pod::Spec.new do |s|
 
   s.source_files = 'Pellicola/Classes/**/*'
   s.resources = ['Pellicola/Classes/**/*.xib', 'Pellicola/Resources/**/*']
-  s.static_framework = true
 end
-  
