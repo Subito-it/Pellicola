@@ -36,7 +36,7 @@ final class AssetCollectionsViewController: UIViewController {
     init(viewModel: AssetCollectionsViewModel, style: PellicolaStyleProtocol) {
         self.viewModel = viewModel
         self.style = style
-        super.init(nibName: nil, bundle: Bundle.framework)
+        super.init(nibName: nil, bundle: Pellicola.frameworkBundle)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -123,7 +123,8 @@ final class AssetCollectionsViewController: UIViewController {
     }
     
     private func setupTableView() {
-        tableView.register(UINib(nibName: AssetCollectionCell.identifier, bundle: Bundle(for: AssetCollectionCell.self)),
+        let nib = UINib(nibName: AssetCollectionCell.identifier, bundle: Pellicola.frameworkBundle)
+        tableView.register(nib,
                            forCellReuseIdentifier: AssetCollectionCell.identifier)
         tableView.rowHeight = 85
         tableView.separatorStyle = .none
