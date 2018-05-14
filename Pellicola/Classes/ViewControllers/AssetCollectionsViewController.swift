@@ -30,16 +30,12 @@ final class AssetCollectionsViewController: UIViewController {
     private var loadingIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
     
     private var albums = [AlbumData]()
-    private let albumFetchOperationQueue = OperationQueue()
     
-    private let cachingImageManager = PHCachingImageManager()
+    private let albumsDataFetcher = AlbumsDataFetcher()
     
     init(viewModel: AssetCollectionsViewModel, style: PellicolaStyleProtocol) {
         self.viewModel = viewModel
         self.style = style
-        
-        cachingImageManager.allowsCachingHighQualityImages = false
-        
         super.init(nibName: nil, bundle: Bundle.framework)
     }
     
@@ -253,7 +249,6 @@ extension AssetCollectionsViewController: UITableViewDataSource {
 
 //MARK: Cells Configuration
 extension AssetCollectionsViewController {
-    
     private func configureAlbumCell(_ albumCell: AssetCollectionCell, atIndex index: Int) {
         albumCell.accessibilityIdentifier = "album_\(index)"
         albumCell.configureStyle(with: AssetCollectionCellStyle(style: style))
@@ -266,7 +261,7 @@ extension AssetCollectionsViewController {
             let thumbnailSize = CGSize(width: albumCell.thumbnailSize.width * scale, height: albumCell.thumbnailSize.height * scale)
             
             var imageFetchWorkItem: DispatchWorkItem?
-            imageFetchWorkItem = fetchThumbnail(forAlbum: album, size: thumbnailSize) {[weak self, weak albumCell] image in
+            imageFetchWorkItem = albumsDataFetcher.fetchThumbnail(forAlbum: album, size: thumbnailSize) {[weak self, weak albumCell] image in
                 guard let sAlbumCell = albumCell else { return }
                 var image = image
                 if image == nil {
@@ -288,37 +283,7 @@ extension AssetCollectionsViewController {
     private func configureSecondLevelEntryCell(_ albumCell: AssetCollectionCell) {
         albumCell.accessibilityIdentifier = "other_albums"
         albumCell.configureStyle(with: AssetCollectionCellStyle(style: style))
-        albumCell.title = NSLocalizedString("albums.list.other_albums", bundle: Bundle.framework, comment: "")
-    }
-}
-
-//MARK: Data Fetch
-extension AssetCollectionsViewController {
-    private func fetchThumbnail(forAlbum album: AlbumData, size: CGSize, completion: @escaping (UIImage?) -> Void) -> DispatchWorkItem {
-        let dispatchWorkItem = DispatchWorkItem { [weak self] in
-            let fetchedAssets = PHAsset.fetchImageAssets(in: album.assetCollection)
-            album.photoCount = fetchedAssets.count
-            
-            guard let lastAsset = fetchedAssets.lastObject else {
-                completion (nil)
-                return
-            }
-            
-            let options = PHImageRequestOptions()
-            options.isNetworkAccessAllowed = true
-            options.deliveryMode = .fastFormat
-            
-            self?.cachingImageManager.requestImage(for: lastAsset,
-                                                   targetSize: size,
-                                                   contentMode: .aspectFill,
-                                                   options: options,
-                                                   resultHandler: { (image, _) in
-                                                    completion(image)
-            })
-        }
-        
-        DispatchQueue.global(qos: .userInitiated).async(execute: dispatchWorkItem)
-        return dispatchWorkItem
+        albumCell.title = Pellicola.localizedString("albums.list.other_albums")
     }
 }
 
