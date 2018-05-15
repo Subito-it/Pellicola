@@ -23,15 +23,18 @@ class AlbumData {
 class AssetCollectionsViewModel: NSObject {
     private var imagesDataStorage: ImagesDataStorage
     private var imagesDataFetcher: ImagesDataFetcher
-    
-    private(set) var collectionTypes: [PHAssetCollectionType]
-    private(set) var firstLevelSubtypes: [PHAssetCollectionSubtype]
-    private(set) var secondLevelSubtypes: [PHAssetCollectionSubtype]?
+        
+    private let albumType: AlbumType
+    private let secondLevelAlbumType: AlbumType?
     
     private(set) var firstLevelAlbums: [PHAssetCollection]
     private(set) var secondLevelAlbums: [PHAssetCollection]?
     
     private var fetchResult: PHFetchResult<PHAssetCollection>
+    
+    var hasSecondLevel: Bool {
+        return secondLevelAlbumType != nil
+    }
     
     var onChangeAssetCollections: (([AlbumData]) -> Void)?
     var onChangeSelectedAssets: ((Int) -> Void)?
@@ -55,15 +58,15 @@ class AssetCollectionsViewModel: NSObject {
     
     init(imagesDataStorage: ImagesDataStorage,
          imagesDataFetcher: ImagesDataFetcher,
-         collectionTypes: [PHAssetCollectionType],
-         firstLevelSubtypes: [PHAssetCollectionSubtype],
-         secondLevelSubtypes: [PHAssetCollectionSubtype]? = nil) {
+         albumType: AlbumType,
+         secondLevelAlbumType: AlbumType?) {
+
         self.imagesDataStorage = imagesDataStorage
         self.imagesDataFetcher = imagesDataFetcher
+        
+        self.albumType = albumType
+        self.secondLevelAlbumType = secondLevelAlbumType
 
-        self.collectionTypes = collectionTypes
-        self.firstLevelSubtypes = firstLevelSubtypes
-        self.secondLevelSubtypes = secondLevelSubtypes
         fetchResult = PHAssetCollection.fetchAssetCollections(with: collectionTypes.first ?? .smartAlbum, subtype: .albumRegular, options: nil)
         firstLevelAlbums = []
 
@@ -71,7 +74,7 @@ class AssetCollectionsViewModel: NSObject {
     
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             guard let sSelf = self else { return }
-            sSelf.firstLevelAlbums = PHAssetCollection.fetch(assetCollectionTypes: collectionTypes, sortedBy: firstLevelSubtypes)
+            sSelf.firstLevelAlbums = PHAssetCollection.fetch(withType: albumType)
             
             let albumsData = sSelf.firstLevelAlbums.map { sSelf.albumData(fromAssetCollection: $0) }
             DispatchQueue.main.async {

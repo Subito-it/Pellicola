@@ -9,16 +9,16 @@ import Foundation
 import Photos
 
 public final class PellicolaPresenter: NSObject {
-    private let assetCollectionTypes: [PHAssetCollectionType] = [.smartAlbum, .album]
-    private let smartAlbumSubtypes: [PHAssetCollectionSubtype]  = [.smartAlbumUserLibrary,
-                                                                   .smartAlbumFavorites,
-                                                                   .smartAlbumSelfPortraits,
-                                                                   .smartAlbumScreenshots]
-    private let otherAlbumSubtypes: [PHAssetCollectionSubtype] = [.albumRegular,
-                                                                  .albumMyPhotoStream,
-                                                                  .albumCloudShared,
-                                                                  .albumSyncedEvent,
-                                                                  .albumSyncedAlbum]
+    private let smartAlbumsType = AlbumType(type: .smartAlbum, subtypes: [.smartAlbumUserLibrary,
+                                                                          .smartAlbumFavorites,
+                                                                          .smartAlbumSelfPortraits,
+                                                                          .smartAlbumScreenshots])
+    
+    private let otherAlbumsType = AlbumType(type: .album, subtypes: [.albumRegular,
+                                                                     .albumMyPhotoStream,
+                                                                     .albumCloudShared,
+                                                                     .albumSyncedEvent,
+                                                                     .albumSyncedAlbum])
     
     @objc public var didSelectImages: (([UIImage]) -> Void)?
     @objc public var userDidCancel: (() -> Void)?
@@ -57,7 +57,7 @@ public final class PellicolaPresenter: NSObject {
                 }
                 
                 sSelf.setupPresenter(with: maxNumberOfSelections)
-                guard let assetCollectionsVC = sSelf.createAssetsCollectionViewController(withSubtypes: sSelf.smartAlbumSubtypes, secondLevelSubtypes: sSelf.otherAlbumSubtypes) else { return }
+                guard let assetCollectionsVC = sSelf.createAssetsCollectionViewController(withType: sSelf.smartAlbumsType, secondLevelType: sSelf.otherAlbumsType, isRootLevel: true) else { return }
                 sSelf.configureNavigationController(with: [assetCollectionsVC])
                 presentingViewController.present(sSelf.navigationController, animated: true, completion: nil)
             }
@@ -99,16 +99,15 @@ public final class PellicolaPresenter: NSObject {
     }
     
     // MARK: - View Controller creation
-    
-    private func createAssetsCollectionViewController(withSubtypes subtypes: [PHAssetCollectionSubtype],
-                                                      secondLevelSubtypes: [PHAssetCollectionSubtype]? = nil,
+    private func createAssetsCollectionViewController(withType albumType: AlbumType,
+                                                      secondLevelType: AlbumType? = nil,
                                                       isRootLevel: Bool = true) -> AssetCollectionsViewController? {
+
         guard let imagesDataStorage = imagesDataStorage, let imagesDataFetcher = imagesDataFetcher else { return nil }
         let viewModel = AssetCollectionsViewModel(imagesDataStorage: imagesDataStorage,
                                                   imagesDataFetcher: imagesDataFetcher,
-                                                  collectionTypes: assetCollectionTypes,
-                                                  firstLevelSubtypes: subtypes,
-                                                  secondLevelSubtypes: secondLevelSubtypes)
+                                                  albumType: albumType,
+                                                  secondLevelAlbumType: secondLevelType)
         
         let leftBarButtonType: AssetCollectionsViewController.LeftBarButtonType = isRootLevel ? .dismiss : .back
         let assetCollectionsVC = AssetCollectionsViewController(viewModel: viewModel, style: style, leftBarButtonType: leftBarButtonType)
@@ -126,9 +125,8 @@ public final class PellicolaPresenter: NSObject {
         
         assetCollectionsVC.didSelectSecondLevelEntry = { [weak self] in
             guard let sSelf = self,
-                let secondLevelVC = sSelf.createAssetsCollectionViewController(withSubtypes: sSelf.otherAlbumSubtypes,
-                                                                               secondLevelSubtypes: nil,
-                                                                               isRootLevel: false) else { return}
+                let secondLevelType = secondLevelType,
+                let secondLevelVC = sSelf.createAssetsCollectionViewController(withType: secondLevelType, secondLevelType: nil, isRootLevel: false) else { return }
             sSelf.navigationController.pushViewController(secondLevelVC, animated: true)
         }
         

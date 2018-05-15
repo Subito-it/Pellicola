@@ -78,7 +78,7 @@ final class AssetCollectionsViewController: UIViewController {
     //MARK: - Business Logic
     
     private func shouldsShowSecondLevelEntry() -> Bool {
-        return viewModel.secondLevelSubtypes != nil
+        return viewModel.hasSecondLevel
     }
     
     // MARK: - UI
