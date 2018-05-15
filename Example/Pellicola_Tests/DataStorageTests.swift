@@ -11,14 +11,14 @@ import XCTest
 
 class DataStorageTests: XCTestCase {
     
-    var dataStorage: DataStorage!
+    var dataStorage: ImagesDataStorage!
     
     let limit = 5
     
     override func setUp() {
         super.setUp()
         
-        dataStorage = DataStorage(limit: limit)
+        dataStorage = ImagesDataStorage(limit: limit)
     }
     
     override func tearDown() {
