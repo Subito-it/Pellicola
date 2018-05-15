@@ -16,7 +16,8 @@ extension PHAssetCollection {
         //This is also the main reason for returning [PHAssetCollection] instead of PHFetchResult (which should have better performances).
         albumType.subtypes.forEach { subtype in
             let fetchResult = PHAssetCollection.fetchAssetCollections(with: albumType.type, subtype: subtype, options: nil)
-            allAlbums += fetchResult.objects(at: IndexSet(0..<fetchResult.count))
+            let albums = fetchResult.objects(at: IndexSet(0..<fetchResult.count))
+            allAlbums += albums.filter { $0.estimatedAssetCount != 0 }
         }
         
         return allAlbums
