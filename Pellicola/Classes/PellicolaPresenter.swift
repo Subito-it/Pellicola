@@ -117,7 +117,7 @@ public final class PellicolaPresenter: NSObject {
         assetCollectionsVC.didCancel = { [weak self] in
             self?.dismiss()
         }
-        assetCollectionsVC.didSelectAssetCollection = { [weak self] assetCollection in
+        assetCollectionsVC.didSelectAlbum = { [weak self] assetCollection in
             guard let sSelf = self,
                 let assetsViewController = sSelf.createAssetsViewController(with: assetCollection) else { return }
             sSelf.navigationController.pushViewController(assetsViewController, animated: true)
@@ -133,11 +133,12 @@ public final class PellicolaPresenter: NSObject {
         return assetCollectionsVC
     }
     
-    private func createAssetsViewController(with assetCollection: PHAssetCollection) -> AssetsViewController? {
-        guard let imagesDataStorage = imagesDataStorage, let imagesDataFetcher = imagesDataFetcher else { return nil }
+    private func createAssetsViewController(with album: AlbumData) -> AssetsViewController? {
+        guard let imagesDataStorage = imagesDataStorage,
+            let imagesDataFetcher = imagesDataFetcher else { return nil }
         let viewModel = AssetsViewModel(imagesDataStorage: imagesDataStorage,
                                         imagesDataFetcher: imagesDataFetcher,
-                                        assetCollection: assetCollection)
+                                        albumData: album)
         let assetsViewController = AssetsViewController(viewModel: viewModel, style: style)
         assetsViewController.didSelectImages = { [weak self] images in
             self?.dismissWithImages(images)

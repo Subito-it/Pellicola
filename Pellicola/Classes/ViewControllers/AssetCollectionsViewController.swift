@@ -24,7 +24,7 @@ final class AssetCollectionsViewController: UIViewController {
     
     var didCancel: (() -> Void)?
     var didSelectImages: (([UIImage]) -> Void)?
-    var didSelectAssetCollection: ((PHAssetCollection) -> Void)?
+    var didSelectAlbum: ((AlbumData) -> Void)?
     var didSelectSecondLevelEntry: (() -> Void)?
     
     private var doneBarButton: UIBarButtonItem?
@@ -307,8 +307,7 @@ extension AssetCollectionsViewController: UITableViewDelegate {
         
         switch section {
         case .firstLevel:
-            let assetCollection = albums[indexPath.row].assetCollection
-            didSelectAssetCollection?(assetCollection)
+            didSelectAlbum?(albums[indexPath.row])
         case .secondLevel:
             didSelectSecondLevelEntry?()
         }

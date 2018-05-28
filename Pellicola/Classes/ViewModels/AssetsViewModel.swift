@@ -13,7 +13,6 @@ class AssetsViewModel: NSObject {
     private var imagesDataStorage: ImagesDataStorage
     private var imagesDataFetcher: ImagesDataFetcher
     
-    private let assetCollection: PHAssetCollection
     private let imageManager = PHCachingImageManager()
     
     var assets: PHFetchResult<PHAsset>
@@ -21,9 +20,7 @@ class AssetsViewModel: NSObject {
     var onChangeAssets: (() -> Void)?
     var onChangeSelectedAssets: ((Int) -> Void)?
     
-    var assetCollectionName: String? {
-        return assetCollection.localizedTitle
-    }
+    var assetCollectionName: String?
     
     var numberOfImages: Int {
         return assets.count
@@ -59,12 +56,12 @@ class AssetsViewModel: NSObject {
     
     init(imagesDataStorage: ImagesDataStorage,
          imagesDataFetcher: ImagesDataFetcher,
-         assetCollection: PHAssetCollection) {
+         albumData: AlbumData) {
         self.imagesDataStorage = imagesDataStorage
         self.imagesDataFetcher = imagesDataFetcher
-        self.assetCollection = assetCollection
-        
-        assets = PHAsset.fetchImageAssets(in: assetCollection)
+    
+        assetCollectionName = albumData.assetCollection.localizedTitle
+        assets = PHAsset.fetchImageAssets(in: albumData.assetCollection)
     
         super.init()
         
