@@ -36,6 +36,9 @@ class AssetCollectionCell: UITableViewCell {
         super.awakeFromNib()
         
         thumbnailView.applyThumbnailStyle()
+        if #available(iOS 11.0, *) {
+            thumbnailView.accessibilityIgnoresInvertColors = true
+        }
     }
     
     override func prepareForReuse() {

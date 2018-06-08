@@ -13,6 +13,9 @@ class AssetCell: UICollectionViewCell {
         let imageView = UIImageView()
         imageView.applyThumbnailStyle()
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        if #available(iOS 11.0, *) {
+            imageView.accessibilityIgnoresInvertColors = true
+        }
         return imageView
     }()
     
