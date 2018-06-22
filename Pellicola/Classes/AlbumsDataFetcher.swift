@@ -10,6 +10,7 @@ import Photos
 
 class AlbumsDataFetcher {    
     private let cachingImageManager = PHCachingImageManager()
+    private let bgSerialQueue = DispatchQueue(label: "albums_thumb_serial")
     
     init() {
         cachingImageManager.allowsCachingHighQualityImages = false
@@ -46,7 +47,7 @@ class AlbumsDataFetcher {
             })
         }
         
-        DispatchQueue.global(qos: .userInitiated).async(execute: dispatchWorkItem)
+        bgSerialQueue.async(execute: dispatchWorkItem)
         return dispatchWorkItem
     }
 }
