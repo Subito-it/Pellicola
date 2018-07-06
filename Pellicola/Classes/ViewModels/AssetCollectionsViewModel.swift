@@ -10,9 +10,17 @@ import Photos
 
 class AlbumData {
     let title: String
-    var photoCount: Int?
+    
+    var photoCount: Int {
+        return PHAsset.fetchImageAssets(in: assetCollection).count
+    }
+    
     var thumbnail: UIImage?
     let assetCollection: PHAssetCollection
+    
+    var thumbnailAsset: PHAsset? {
+        return PHAsset.fetchImageAssets(in: assetCollection).firstObject
+    }
     
     init(title: String, assetCollection: PHAssetCollection) {
         self.title = title
@@ -67,7 +75,7 @@ class AssetCollectionsViewModel: NSObject {
         self.albumType = albumType
         self.secondLevelAlbumType = secondLevelAlbumType
 
-        fetchResult = PHAssetCollection.fetchAssetCollections(with: collectionTypes.first ?? .smartAlbum, subtype: .albumRegular, options: nil)
+        fetchResult = PHFetchResult()
         firstLevelAlbums = []
 
         super.init()
@@ -104,7 +112,6 @@ class AssetCollectionsViewModel: NSObject {
     
     private func albumData(fromAssetCollection assetCollection: PHAssetCollection) -> AlbumData {
         let albumData = AlbumData(title: assetCollection.localizedTitle ?? "", assetCollection: assetCollection)
-        //TODO: how to fetch thumb and image count?
         return albumData
     }
     

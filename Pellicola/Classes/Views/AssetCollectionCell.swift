@@ -12,7 +12,6 @@ class AssetCollectionCell: UITableViewCell {
     @IBOutlet weak private var albumTitle: UILabel!
     @IBOutlet weak private var photosCount: UILabel!
     @IBOutlet weak private var thumbnailView: UIImageView!
-    var thumbnailFetchWorkItem: DispatchWorkItem?
     
     var title: String? {
         set { albumTitle.text = newValue }
@@ -42,16 +41,13 @@ class AssetCollectionCell: UITableViewCell {
         thumbnail = nil
         title = ""
         subtitle = ""
-        thumbnailFetchWorkItem?.cancel()
     }
     
     func configureData(with album: AlbumData) {
         title = album.title
         thumbnail = album.thumbnail
         
-        if let photoCount = album.photoCount {
-            subtitle = String(photoCount)
-        }
+        subtitle = String(album.photoCount)
     }
     
     func configureStyle(with style: AssetCollectionCellStyle) {

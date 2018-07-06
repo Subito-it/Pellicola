@@ -36,14 +36,16 @@ final class AssetCollectionsViewController: UIViewController {
     
     private var albums = [AlbumData]()
     
-    private let albumsDataFetcher = AlbumsDataFetcher()
-    
     private let leftBarButtonType: LeftBarButtonType
+        
+    private let cachingImageManager = PHCachingImageManager()
     
     init(viewModel: AssetCollectionsViewModel, style: PellicolaStyleProtocol, leftBarButtonType: LeftBarButtonType) {
         self.viewModel = viewModel
         self.style = style
         self.leftBarButtonType = leftBarButtonType
+        cachingImageManager.allowsCachingHighQualityImages = false
+        
         super.init(nibName: nil, bundle: Pellicola.frameworkBundle)
     }
     
@@ -63,7 +65,6 @@ final class AssetCollectionsViewController: UIViewController {
             
             self?.albums = albums
             self?.tableView.reloadData()
-            
         }
     }
     
@@ -249,7 +250,7 @@ extension AssetCollectionsViewController: UITableViewDataSource {
         guard let section = Section(rawValue: indexPath.section) else { return albumCell }
         switch section {
         case .firstLevel:
-            configureAlbumCell(albumCell, atIndex: indexPath.row)
+            configureAlbumCell(albumCell, atIndex: indexPath)
         case .secondLevel:
             configureSecondLevelEntryCell(albumCell)
         }
@@ -260,35 +261,33 @@ extension AssetCollectionsViewController: UITableViewDataSource {
 
 //MARK: Cells Configuration
 extension AssetCollectionsViewController {
-    private func configureAlbumCell(_ albumCell: AssetCollectionCell, atIndex index: Int) {
-        albumCell.accessibilityIdentifier = "album_\(index)"
+    private func configureAlbumCell(_ albumCell: AssetCollectionCell, atIndex indexPath: IndexPath) {
+        albumCell.accessibilityIdentifier = "album_\(indexPath.row)"
         albumCell.configureStyle(with: AssetCollectionCellStyle(style: style))
         
-        let album = albums[index]
-        albumCell.configureData(with: album)
+        let album = albums[indexPath.row]
         
-        if (album.thumbnail == nil || album.photoCount == nil) {
-            let scale = UIScreen.main.scale
-            let thumbnailSize = CGSize(width: albumCell.thumbnailSize.width * scale, height: albumCell.thumbnailSize.height * scale)
-            
-            var imageFetchWorkItem: DispatchWorkItem?
-            imageFetchWorkItem = albumsDataFetcher.fetchThumbnail(forAlbum: album, size: thumbnailSize) {[weak self, weak albumCell] image in
-                guard let sAlbumCell = albumCell else { return }
-                var image = image
-                if image == nil {
-                    image = self?.createPlaceholderImage(withSize: sAlbumCell.thumbnailSize)
-                }
-                
-                album.thumbnail = image
-                
-                if let imageFetchWorkItem = imageFetchWorkItem,
-                    imageFetchWorkItem.isCancelled == false {
-                    sAlbumCell.configureData(with: album)
-                }
+        if album.thumbnail == nil {
+            if let thumbAsset = album.thumbnailAsset {
+                let options = PHImageRequestOptions()
+                options.isNetworkAccessAllowed = true
+                options.deliveryMode = .fastFormat
+                let scale = UIScreen.main.scale
+                let thumbnailSize = CGSize(width: albumCell.thumbnailSize.width * scale, height: albumCell.thumbnailSize.height * scale)
+                cachingImageManager.requestImage(for: thumbAsset,
+                                                 targetSize: thumbnailSize,
+                                                 contentMode: .aspectFill,
+                                                 options: options,
+                                                 resultHandler: { (image, _) in
+                                                    album.thumbnail = image
+                                                    albumCell.configureData(with: album)
+                                                        //TODO: what happens if the cell has been recycled? (the wrong image is set?)
+                                                    //How do we handle this in our app?
+                })
             }
-            
-            albumCell.thumbnailFetchWorkItem = imageFetchWorkItem
         }
+        
+        albumCell.configureData(with: album)
     }
     
     private func configureSecondLevelEntryCell(_ albumCell: AssetCollectionCell) {
