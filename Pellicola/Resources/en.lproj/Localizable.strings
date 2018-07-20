@@ -9,7 +9,8 @@
 "albums.title" = "Photos";
 "albums.list.other_albums" = "All albums";
 
-"selected_assets" = "%d of %d photos";
+"selected_assets" = "%d selected";
+"selected_assets_with_limit" = "%d of %d photos";
 "alert_deselection.title" = "One or more photos cannot be used. They have been deselected.";
 "alert_deselection.ok" = "OK";
 "alert_limit.title" = "You have reached the maximum number of images to upload";

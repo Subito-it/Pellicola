@@ -8,7 +8,8 @@
 "albums.title" = "Foto";
 "albums.list.other_albums" = "Tutti gli album";
 
-"selected_assets" = "%d di %d foto";
+"selected_assets" = "%d selezionate";
+"selected_assets_with_limit" = "%d di %d foto";
 "alert_deselection.title" = "Uno o più foto non possono essere usati e sono stati deselezionati.";
 "alert_deselection.ok" = "OK";
 "alert_limit.title" = "Hai raggiunto il numero massimo di immagini da caricare";

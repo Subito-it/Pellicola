@@ -204,16 +204,21 @@ public final class PellicolaPresenter: NSObject {
 //MARK: - Toolbar
 extension PellicolaPresenter {
     private func updateToolbar() {
-        guard let maxNumberOfSelections = maxNumberOfSelections,
-            let numberOfSelectedAssets = numberOfSelectedAssets,
-            maxNumberOfSelections > 1, numberOfSelectedAssets > 0 else {
+        guard let numberOfSelectedAssets = numberOfSelectedAssets,
+            maxNumberOfSelections != 0, numberOfSelectedAssets > 0 else {
             navigationController.setToolbarHidden(true, animated: true)
             return
         }
         
-        centerBarButtonToolbar.title = String(format: Pellicola.localizedString("selected_assets"),
-                                              numberOfSelectedAssets,
-                                              maxNumberOfSelections)
+        var toolbarText = String(format: Pellicola.localizedString("selected_assets"),
+                                 numberOfSelectedAssets)
+        if let maxNumberOfSelections = maxNumberOfSelections {
+            toolbarText = String(format: Pellicola.localizedString("selected_assets_with_limit"),
+                                 numberOfSelectedAssets,
+                                 maxNumberOfSelections)
+        }
+        
+        centerBarButtonToolbar.title = toolbarText
         navigationController.setToolbarHidden(false, animated: true)
     }
 }
