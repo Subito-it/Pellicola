@@ -7,11 +7,38 @@
 
 import UIKit
 
+class MultiThumbnail: UIView {
+    @IBOutlet weak private var thumb1: UIImageView!
+    @IBOutlet weak private var thumb2: UIImageView!
+    @IBOutlet weak private var thumb3: UIImageView!
+    @IBOutlet weak private var thumb4: UIImageView!
+    
+    var imageViews: [UIImageView] {
+        return [thumb1, thumb2, thumb3, thumb4]
+    }
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        imageViews.forEach { imageView in
+            imageView.contentMode = .center
+            imageView.clipsToBounds = true
+            imageView.layer.cornerRadius = 3.0
+        }
+    }
+    
+    func setThumbnails(_ thumbs: [UIImage]) {
+        for (thumb, imageView) in zip(thumbs, imageViews) {
+            imageView.image = thumb
+        }
+    }
+}
+
 class AssetCollectionCell: UITableViewCell {
 
     @IBOutlet weak private var albumTitle: UILabel!
     @IBOutlet weak private var photosCount: UILabel!
     @IBOutlet weak private var thumbnailView: UIImageView!
+    @IBOutlet weak var multiThumbnailView: MultiThumbnail!
     
     var title: String? {
         set { albumTitle.text = newValue }
@@ -23,7 +50,7 @@ class AssetCollectionCell: UITableViewCell {
         get { return photosCount.text }
     }
     
-    var thumbnail: UIImage? {
+    private(set) var thumbnail: UIImage? {
         set { thumbnailView.image = newValue }
         get { return thumbnailView.image }
     }
@@ -46,8 +73,15 @@ class AssetCollectionCell: UITableViewCell {
     func configureData(with album: AlbumData) {
         title = album.title
         thumbnail = album.thumbnail
-        
+        thumbnailView.isHidden = false
+        multiThumbnailView.isHidden = true
         subtitle = String(album.photoCount)
+    }
+    
+    func setMultipleThumbnails(_ images: [UIImage]) {
+        thumbnailView.isHidden = true
+        multiThumbnailView.isHidden = false
+        multiThumbnailView.setThumbnails(images)
     }
     
     func configureStyle(with style: AssetCollectionCellStyle) {
@@ -55,7 +89,10 @@ class AssetCollectionCell: UITableViewCell {
         albumTitle.textColor = style.titleColor
         photosCount.font = style.subtitleFont
         photosCount.textColor = style.subtitleColor
-        thumbnailView.layer.borderWidth =  (1.0 / UIScreen.main.scale) * 1.0 //This is used to achieve a 1px width
-        thumbnailView.layer.borderColor = style.thumbBorderColor.cgColor
+        
+        ([thumbnailView, multiThumbnailView] as [UIView]).forEach { view in
+            view.layer.borderWidth = (1.0 / UIScreen.main.scale) * 1.0 //This is used to achieve a 1px width
+            view.layer.borderColor = style.thumbBorderColor.cgColor
+        }
     }
 }
