@@ -211,7 +211,6 @@ final class AssetCollectionsViewController: UIViewController {
         }
         
         didSelectImages?(viewModel.getSelectedImages())
-        
     }
     
     @objc func cancelButtonTapped() {
@@ -279,9 +278,14 @@ extension AssetCollectionsViewController {
                                                  targetSize: thumbnailSize,
                                                  contentMode: .aspectFill,
                                                  options: options,
-                                                 resultHandler: { (image, _) in
+                                                 resultHandler: { [weak self] (image, _) in
                                                     album.thumbnail = image
                                                     albumCell.configureData(with: album)
+                                                    // Once we got a tumb, we reload the second section to update multimages thumbnails
+                                                    if let tableView = self?.tableView,
+                                                        tableView.numberOfSections > 1 {
+                                                        tableView.reloadSections([Section.secondLevel.rawValue], with: .none)
+                                                    }
                 })
             }
         }
@@ -293,6 +297,13 @@ extension AssetCollectionsViewController {
         albumCell.accessibilityIdentifier = "other_albums"
         albumCell.configureStyle(with: AssetCollectionCellStyle(style: style))
         albumCell.title = Pellicola.localizedString("albums.list.other_albums")
+        updateSecondLevelCellThumbnail(albumCell)
+    }
+    
+    private func updateSecondLevelCellThumbnail(_ albumCell: AssetCollectionCell) {
+        if (albums.count >= 4) {
+            albumCell.setMultipleThumbnails( albums[0...3].compactMap{ $0.thumbnail } )
+        }
     }
 }
 
