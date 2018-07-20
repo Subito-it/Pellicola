@@ -58,14 +58,15 @@ final class AssetCollectionsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
-        viewModel.onChangeAssetCollections = { [weak self] albums in
-            if !albums.isEmpty {
-                self?.removeLoadingIndicator()
-            }
-            
+        
+        let updateData: ([AlbumData]) -> () = { [weak self] albums in
+            self?.removeLoadingIndicator()
             self?.albums = albums
             self?.tableView.reloadData()
         }
+
+        viewModel.onChangeAssetCollections = updateData
+        viewModel.fetchData(completion: updateData)
     }
     
     override func viewDidDisappear(_ animated: Bool) {

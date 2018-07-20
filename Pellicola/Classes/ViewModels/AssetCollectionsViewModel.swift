@@ -80,14 +80,16 @@ class AssetCollectionsViewModel: NSObject {
 
         super.init()
     
+        imagesDataStorage.addObserver(self, forKeyPath: #keyPath(ImagesDataStorage.images), options: [], context: nil)
+        PHPhotoLibrary.shared().register(self)
+    }
+    
+    func fetchData(completion: (([AlbumData]) -> Void)?) {
         firstLevelAlbums = PHAssetCollection.fetch(withType: albumType)
         let albumsData = firstLevelAlbums.map { albumData(fromAssetCollection: $0) }
         DispatchQueue.main.async { [weak self] in
-            self?.onChangeAssetCollections?(albumsData)
+            completion?(albumsData)
         }
-
-        imagesDataStorage.addObserver(self, forKeyPath: #keyPath(ImagesDataStorage.images), options: [], context: nil)
-        PHPhotoLibrary.shared().register(self)
     }
     
     deinit {
