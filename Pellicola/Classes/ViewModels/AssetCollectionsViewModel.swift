@@ -8,26 +8,6 @@
 import Foundation
 import Photos
 
-class AlbumData {
-    let title: String
-    
-    var photoCount: Int {
-        return PHAsset.fetchImageAssets(in: assetCollection).count
-    }
-    
-    var thumbnail: UIImage?
-    let assetCollection: PHAssetCollection
-    
-    var thumbnailAsset: PHAsset? {
-        return PHAsset.fetchImageAssets(in: assetCollection).lastObject
-    }
-    
-    init(title: String, assetCollection: PHAssetCollection) {
-        self.title = title
-        self.assetCollection = assetCollection
-    }
-}
-
 class AssetCollectionsViewModel: NSObject {
     private var imagesDataStorage: ImagesDataStorage
     private var imagesDataFetcher: ImagesDataFetcher
