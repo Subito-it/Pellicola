@@ -19,7 +19,7 @@ class AlbumData {
     let assetCollection: PHAssetCollection
     
     var thumbnailAsset: PHAsset? {
-        return PHAsset.fetchImageAssets(in: assetCollection).firstObject
+        return PHAsset.fetchImageAssets(in: assetCollection).lastObject
     }
     
     init(title: String, assetCollection: PHAssetCollection) {
