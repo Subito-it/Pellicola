@@ -17,7 +17,7 @@ extension PHAssetCollection {
         albumType.subtypes.forEach { subtype in
             let fetchResult = PHAssetCollection.fetchAssetCollections(with: albumType.type, subtype: subtype, options: nil)
             let albums = fetchResult.objects(at: IndexSet(0..<fetchResult.count))
-            allAlbums += albums.filter { $0.estimatedAssetCount != 0 }
+            allAlbums += albums
         }
         
         return allAlbums
