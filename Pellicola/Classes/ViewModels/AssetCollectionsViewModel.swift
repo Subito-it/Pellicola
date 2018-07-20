@@ -35,9 +35,6 @@ class AssetCollectionsViewModel: NSObject {
     private let albumType: AlbumType
     private let secondLevelAlbumType: AlbumType?
     
-    private(set) var firstLevelAlbums: [PHAssetCollection]
-    private(set) var secondLevelAlbums: [PHAssetCollection]?
-    
     private var fetchResult: PHFetchResult<PHAssetCollection>
     
     var hasSecondLevel: Bool {
@@ -76,7 +73,6 @@ class AssetCollectionsViewModel: NSObject {
         self.secondLevelAlbumType = secondLevelAlbumType
 
         fetchResult = PHFetchResult()
-        firstLevelAlbums = []
 
         super.init()
     
@@ -85,8 +81,8 @@ class AssetCollectionsViewModel: NSObject {
     }
     
     func fetchData(completion: (([AlbumData]) -> Void)?) {
-        firstLevelAlbums = PHAssetCollection.fetch(withType: albumType)
-        let albumsData = firstLevelAlbums.map { albumData(fromAssetCollection: $0) }
+        let albums = PHAssetCollection.fetch(withType: albumType)
+        let albumsData = albums.map { albumData(fromAssetCollection: $0) }
         DispatchQueue.main.async { [weak self] in
             completion?(albumsData)
         }
@@ -126,14 +122,12 @@ class AssetCollectionsViewModel: NSObject {
 // MARK: - PHPhotoLibraryChangeObserver
 
 extension AssetCollectionsViewModel: PHPhotoLibraryChangeObserver {
-    
     func photoLibraryDidChange(_ changeInstance: PHChange) {
-        
         guard let changeDetails = changeInstance.changeDetails(for: fetchResult) else { return }
         fetchResult = changeDetails.fetchResultAfterChanges
         
-        firstLevelAlbums = PHAssetCollection.fetch(assetCollectionTypes: collectionTypes, sortedBy: firstLevelSubtypes)
-        let albumsData = firstLevelAlbums.map { albumData(fromAssetCollection: $0) }
+        let albums = fetchResult.objects(at: IndexSet(0..<fetchResult.count))
+        let albumsData = albums.map { albumData(fromAssetCollection: $0) }
         
         DispatchQueue.main.async { [weak self] in
             self?.onChangeAssetCollections?(albumsData)
