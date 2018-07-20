@@ -30,7 +30,32 @@ public final class PellicolaPresenter: NSObject {
     var imagesDataStorage: ImagesDataStorage?
     var imagesDataFetcher: ImagesDataFetcher?
     
+    var maxNumberOfSelections: Int? {
+        return imagesDataStorage?.limit
+    }
+    
+    var numberOfSelectedAssets: Int? {
+        return imagesDataStorage?.images.count
+    }
+    
     let style: PellicolaStyleProtocol
+    
+    private lazy var centerBarButtonToolbar: UIBarButtonItem = {
+        let infoBarButton = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        infoBarButton.isEnabled = false
+        let attributes = [ NSAttributedStringKey.foregroundColor: style.blackColor ]
+        infoBarButton.setTitleTextAttributes(attributes, for: .normal)
+        infoBarButton.setTitleTextAttributes(attributes, for: .disabled)
+        return infoBarButton
+    }()
+    
+    private lazy var toolBarItems: [UIBarButtonItem] = {
+        return [
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            centerBarButtonToolbar,
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        ]
+    }()
     
     @objc public init(style: PellicolaStyleProtocol) {
         self.style = style
@@ -71,6 +96,7 @@ public final class PellicolaPresenter: NSObject {
         navigationController.statusBarStyle = style.statusBarStyle
         navigationController.modalPresentationStyle = .formSheet
         navigationController.setViewControllers(viewControllers, animated: false)
+        
     }
     
     // MARK: - Helper method
@@ -130,6 +156,7 @@ public final class PellicolaPresenter: NSObject {
             sSelf.navigationController.pushViewController(secondLevelVC, animated: true)
         }
         
+        assetCollectionsVC.setToolbarItems(toolBarItems, animated: false)
         return assetCollectionsVC
     }
     
@@ -148,6 +175,11 @@ public final class PellicolaPresenter: NSObject {
             self?.createDetailAssetViewController(with: asset)
         }
         
+        assetsViewController.shouldUpdateToolbar = { [weak self] in
+            self?.updateToolbar()
+        }
+        
+        assetsViewController.setToolbarItems(toolBarItems, animated: false)
         return assetsViewController
     }
     
@@ -166,6 +198,23 @@ public final class PellicolaPresenter: NSObject {
         navigationController.dismiss(animated: true) { [weak self] in
             self?.userDidCancel?()
         }
+    }
+}
+
+//MARK: - Toolbar
+extension PellicolaPresenter {
+    private func updateToolbar() {
+        guard let maxNumberOfSelections = maxNumberOfSelections,
+            let numberOfSelectedAssets = numberOfSelectedAssets,
+            maxNumberOfSelections > 1, numberOfSelectedAssets > 0 else {
+            navigationController.setToolbarHidden(true, animated: true)
+            return
+        }
+        
+        centerBarButtonToolbar.title = String(format: Pellicola.localizedString("selected_assets"),
+                                              numberOfSelectedAssets,
+                                              maxNumberOfSelections)
+        navigationController.setToolbarHidden(false, animated: true)
     }
 }
 

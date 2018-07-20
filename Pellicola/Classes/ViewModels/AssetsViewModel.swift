@@ -43,17 +43,6 @@ class AssetsViewModel: NSObject {
         return imagesDataFetcher.count != 0
     }
     
-    var toolbarText: String {
-        
-        guard let maxNumberOfSelection = maxNumberOfSelection else {
-            return ""
-        }
-        
-        return String(format: Pellicola.localizedString("selected_assets"),
-               numberOfSelectedAssets,
-               maxNumberOfSelection)
-    }
-    
     init(imagesDataStorage: ImagesDataStorage,
          imagesDataFetcher: ImagesDataFetcher,
          albumData: AlbumData) {
