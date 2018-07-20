@@ -80,17 +80,12 @@ class AssetCollectionsViewModel: NSObject {
 
         super.init()
     
-        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-            guard let sSelf = self else { return }
-            sSelf.firstLevelAlbums = PHAssetCollection.fetch(withType: albumType)
-            
-            let albumsData = sSelf.firstLevelAlbums.map { sSelf.albumData(fromAssetCollection: $0) }
-            DispatchQueue.main.async {
-                self?.onChangeAssetCollections?(albumsData) //TODO: specialize this mehtod to only reload one section (the 1st in this case) instead of the whole TV
-            }
-            
+        firstLevelAlbums = PHAssetCollection.fetch(withType: albumType)
+        let albumsData = firstLevelAlbums.map { albumData(fromAssetCollection: $0) }
+        DispatchQueue.main.async { [weak self] in
+            self?.onChangeAssetCollections?(albumsData)
         }
-        
+
         imagesDataStorage.addObserver(self, forKeyPath: #keyPath(ImagesDataStorage.images), options: [], context: nil)
         PHPhotoLibrary.shared().register(self)
     }
