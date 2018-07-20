@@ -63,7 +63,7 @@ class AssetCollectionsViewModel: NSObject {
     func fetchData(completion: (([AlbumData]) -> Void)?) {
         let albums = PHAssetCollection.fetch(withType: albumType)
         let albumsData = albums.map { albumData(fromAssetCollection: $0) }
-        DispatchQueue.main.async { [weak self] in
+        DispatchQueue.main.async {
             completion?(albumsData)
         }
     }

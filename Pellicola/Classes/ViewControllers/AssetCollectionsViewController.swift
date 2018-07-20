@@ -282,8 +282,6 @@ extension AssetCollectionsViewController {
                                                  resultHandler: { (image, _) in
                                                     album.thumbnail = image
                                                     albumCell.configureData(with: album)
-                                                        //TODO: what happens if the cell has been recycled? (the wrong image is set?)
-                                                    //How do we handle this in our app?
                 })
             }
         }
