@@ -80,7 +80,7 @@ final class AssetCollectionsViewController: UIViewController {
     //MARK: - Business Logic
     
     private func shouldsShowSecondLevelEntry() -> Bool {
-        return viewModel.hasSecondLevel
+        return viewModel.hasSecondLevel && albums.count > 0
     }
     
     // MARK: - UI
