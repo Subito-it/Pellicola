@@ -19,10 +19,11 @@ class MultiThumbnail: UIView {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        layer.cornerRadius = 2
         imageViews.forEach { imageView in
-            imageView.contentMode = .center
+            imageView.contentMode = .scaleAspectFill
             imageView.clipsToBounds = true
-            imageView.layer.cornerRadius = 3.0
+            imageView.layer.cornerRadius = 1.0
         }
     }
     
@@ -92,6 +93,7 @@ class AssetCollectionCell: UITableViewCell {
         
         ([thumbnailView, multiThumbnailView] as [UIView]).forEach { view in
             view.layer.borderWidth = (1.0 / UIScreen.main.scale) * 1.0 //This is used to achieve a 1px width
+            view.layer.cornerRadius = 2
             view.layer.borderColor = style.thumbBorderColor.cgColor
         }
     }

@@ -8,7 +8,6 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
-        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -45,6 +44,10 @@
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="S6r-ID-1H4" userLabel="thumb1">
                                 <rect key="frame" x="2" y="2" width="30.5" height="30.5"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="31" id="Clz-ry-rnJ"/>
+                                    <constraint firstAttribute="width" constant="31" id="Ikt-qY-l1Z"/>
+                                </constraints>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="PoI-zi-AZG" userLabel="thumb3">
                                 <rect key="frame" x="2" y="35.5" width="30.5" height="30.5"/>
@@ -63,10 +66,8 @@
                             <constraint firstItem="gQ5-aG-toW" firstAttribute="height" secondItem="S6r-ID-1H4" secondAttribute="height" id="UxX-Ke-OWd"/>
                             <constraint firstItem="S6r-ID-1H4" firstAttribute="leading" secondItem="J8U-aC-WOI" secondAttribute="leading" constant="2" id="VWl-5r-RlZ"/>
                             <constraint firstItem="5tv-Pt-Fbt" firstAttribute="height" secondItem="S6r-ID-1H4" secondAttribute="height" id="YCD-O2-hdW"/>
-                            <constraint firstItem="S6r-ID-1H4" firstAttribute="width" secondItem="J8U-aC-WOI" secondAttribute="width" multiplier="0.45" id="aEz-C7-j3i"/>
                             <constraint firstItem="gQ5-aG-toW" firstAttribute="bottom" secondItem="PoI-zi-AZG" secondAttribute="bottom" id="cNC-1B-SnI"/>
                             <constraint firstAttribute="bottom" secondItem="PoI-zi-AZG" secondAttribute="bottom" constant="2" id="hWY-ZU-U6h"/>
-                            <constraint firstItem="S6r-ID-1H4" firstAttribute="height" secondItem="J8U-aC-WOI" secondAttribute="height" multiplier="0.45" id="iSr-Mw-j5u"/>
                             <constraint firstItem="PoI-zi-AZG" firstAttribute="width" secondItem="S6r-ID-1H4" secondAttribute="width" id="kEn-e8-thB"/>
                             <constraint firstItem="5tv-Pt-Fbt" firstAttribute="width" secondItem="S6r-ID-1H4" secondAttribute="width" id="mzx-0P-wTD"/>
                             <constraint firstItem="gQ5-aG-toW" firstAttribute="width" secondItem="S6r-ID-1H4" secondAttribute="width" id="oCa-DI-QLC"/>
