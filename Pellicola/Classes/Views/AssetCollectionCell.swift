@@ -8,6 +8,8 @@
 import UIKit
 
 class MultiThumbnail: UIView {
+    static let numOfThumbs = 4
+    
     @IBOutlet weak private var thumb1: UIImageView!
     @IBOutlet weak private var thumb2: UIImageView!
     @IBOutlet weak private var thumb3: UIImageView!

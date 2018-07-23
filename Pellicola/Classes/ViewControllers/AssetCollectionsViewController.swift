@@ -26,6 +26,7 @@ final class AssetCollectionsViewController: UIViewController {
     var didSelectImages: (([UIImage]) -> Void)?
     var didSelectAlbum: ((AlbumData) -> Void)?
     var didSelectSecondLevelEntry: (() -> Void)?
+    var randomImages = [AnyHashable: UIImage]()
     
     private var doneBarButton: UIBarButtonItem?
     
@@ -40,12 +41,13 @@ final class AssetCollectionsViewController: UIViewController {
         
     private let cachingImageManager = PHCachingImageManager()
     
+    private let thumbnailSize = CGSize(width: 68.0 * UIScreen.main.scale, height: 68.0 * UIScreen.main.scale)
+    
     init(viewModel: AssetCollectionsViewModel, style: PellicolaStyleProtocol, leftBarButtonType: LeftBarButtonType) {
         self.viewModel = viewModel
         self.style = style
         self.leftBarButtonType = leftBarButtonType
         cachingImageManager.allowsCachingHighQualityImages = false
-        
         super.init(nibName: nil, bundle: Pellicola.frameworkBundle)
     }
     
@@ -67,6 +69,26 @@ final class AssetCollectionsViewController: UIViewController {
 
         viewModel.onChangeAssetCollections = updateData
         viewModel.fetchData(completion: updateData)
+        
+        // Load random images for 2nd level MultiThumbnail imageview
+        let fetchOptions = PHFetchOptions()
+        fetchOptions.fetchLimit = MultiThumbnail.numOfThumbs
+        let assets  = PHAsset.fetchAssets(with: .image, options: fetchOptions).objects(at: IndexSet(0..<MultiThumbnail.numOfThumbs))
+        for asset in assets {
+            let startImg = CFAbsoluteTimeGetCurrent()
+            let imageRequestOptions = PHImageRequestOptions()
+            imageRequestOptions.isNetworkAccessAllowed = true
+            cachingImageManager.requestImage(for: asset,
+                                             targetSize: thumbnailSize,
+                                             contentMode: .aspectFill,
+                                             options: imageRequestOptions) { [weak self] (image, resultInfo) in
+                                                // Since this block can be called more than once (first with a lowRes image and subsequently with an highRes, we use a dict for randomImages (instead of a simple array); in this way higRes images will replace lowRes ones when available
+                                                if let image = image,
+                                                    let imageID = resultInfo?[PHImageResultRequestIDKey] as? AnyHashable {
+                                                    self?.randomImages[imageID] = image
+                                                }                                                
+            }
+        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -271,21 +293,13 @@ extension AssetCollectionsViewController {
             if let thumbAsset = album.thumbnailAsset {
                 let options = PHImageRequestOptions()
                 options.isNetworkAccessAllowed = true
-                options.deliveryMode = .fastFormat
-                let scale = UIScreen.main.scale
-                let thumbnailSize = CGSize(width: albumCell.thumbnailSize.width * scale, height: albumCell.thumbnailSize.height * scale)
                 cachingImageManager.requestImage(for: thumbAsset,
                                                  targetSize: thumbnailSize,
                                                  contentMode: .aspectFill,
                                                  options: options,
-                                                 resultHandler: { [weak self] (image, _) in
+                                                 resultHandler: { (image, _) in
                                                     album.thumbnail = image
                                                     albumCell.configureData(with: album)
-                                                    // Once we got a tumb, we reload the second section to update multimages thumbnails
-                                                    if let tableView = self?.tableView,
-                                                        tableView.numberOfSections > 1 {
-                                                        tableView.reloadSections([Section.secondLevel.rawValue], with: .none)
-                                                    }
                 })
             }
         }
@@ -301,8 +315,8 @@ extension AssetCollectionsViewController {
     }
     
     private func updateSecondLevelCellThumbnail(_ albumCell: AssetCollectionCell) {
-        if (albums.count >= 4) {
-            albumCell.setMultipleThumbnails( albums[0...3].compactMap{ $0.thumbnail } )
+        if randomImages.count >= MultiThumbnail.numOfThumbs {
+            albumCell.setMultipleThumbnails(Array(randomImages.values))
         }
     }
 }
