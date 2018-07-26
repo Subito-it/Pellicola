@@ -15,13 +15,13 @@ class AssetsViewController: UIViewController {
     private let numberOfPhotosForRow: Int = 4
     private let imageManager = PHCachingImageManager()
     private var thumbnailSize: CGSize!
-    private weak var centerBarButtonToolbar: UIBarButtonItem?
     private var isFirstAppearance = true
     
     private var doneBarButton: UIBarButtonItem?
     
     var didSelectImages: (([UIImage]) -> Void)?
     var didPeekOnAsset: ((PHAsset) -> UIViewController?)?
+    var shouldUpdateToolbar: (() -> ())?
     
     private var viewModel: AssetsViewModel
     private var style: PellicolaStyleProtocol
@@ -29,7 +29,7 @@ class AssetsViewController: UIViewController {
     init(viewModel: AssetsViewModel, style: PellicolaStyleProtocol) {
         self.viewModel = viewModel
         self.style = style
-        super.init(nibName: nil, bundle: Bundle.framework)
+        super.init(nibName: nil, bundle: Pellicola.frameworkBundle)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -43,7 +43,7 @@ class AssetsViewController: UIViewController {
         
         viewModel.onChangeAssets = { [weak self] in
             self?.collectionView.reloadData()
-            self?.updateToolbar()
+            self?.shouldUpdateToolbar?() 
         }
         
         if traitCollection.forceTouchCapability == .available {
@@ -90,7 +90,6 @@ class AssetsViewController: UIViewController {
     private func configureUI() {
         setupNavigationBar()
         setupCollectionView()
-        setupToolbar()
     }
     
     private func setupNavigationBar() {
@@ -124,49 +123,15 @@ class AssetsViewController: UIViewController {
         }
     }
     
-    private func setupToolbar() {
-        
-        let infoBarButton = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        infoBarButton.isEnabled = false
-        let attributes = [ NSAttributedStringKey.foregroundColor: style.blackColor ]
-        infoBarButton.setTitleTextAttributes(attributes, for: .normal)
-        infoBarButton.setTitleTextAttributes(attributes, for: .disabled)
-        
-        let items = [
-            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-            infoBarButton,
-            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        ]
-        
-        setToolbarItems(items, animated: false)
-        
-        centerBarButtonToolbar = infoBarButton
-        
-        updateToolbar()
-        
-    }
-    
-    private func updateToolbar() {
-        
-        guard viewModel.maxNumberOfSelection != nil, !viewModel.isSingleSelection, viewModel.numberOfSelectedAssets > 0 else {
-            navigationController?.setToolbarHidden(true, animated: true)
-            return
-        }
-        
-        centerBarButtonToolbar?.title = viewModel.toolbarText
-        navigationController?.setToolbarHidden(false, animated: true)
-        
-    }
-    
     // MARK: - Action
     
     @objc func doneButtonTapped() {
         guard !viewModel.isDownloadingImages else {
             viewModel.stopDownloadingImages()
-            let alert = UIAlertController(title: NSLocalizedString("alert_deselection.title", bundle: Bundle.framework, comment: ""),
+            let alert = UIAlertController(title: Pellicola.localizedString("alert_deselection.title"),
                                           message: nil,
                                           preferredStyle: .alert)
-            let okAction = UIAlertAction(title: NSLocalizedString("alert_deselection.ok", bundle: Bundle.framework, comment: ""),
+            let okAction = UIAlertAction(title: Pellicola.localizedString("alert_deselection.ok"),
                                          style: .default) { [weak self] _ in
                 self?.collectionView.reloadData()
             }
@@ -235,7 +200,7 @@ extension AssetsViewController: UICollectionViewDelegate {
             DispatchQueue.main.async { [weak self] in
                 guard let cell = collectionView.cellForItem(at: indexPath) as? AssetCell else { return }
                 guard let sSelf = self else { return }
-                sSelf.updateToolbar()
+                sSelf.shouldUpdateToolbar?()
                 cell.setState(sSelf.viewModel.getState(for: asset))
                 cell.setNeedsDisplay()
             }
@@ -264,10 +229,10 @@ extension AssetsViewController: UICollectionViewDelegate {
                 
             }, onLimit: { [weak self] in
                 
-                let alert = UIAlertController(title: NSLocalizedString("alert_limit.title", bundle: Bundle.framework, comment: ""),
+                let alert = UIAlertController(title: Pellicola.localizedString("alert_limit.title"),
                                               message: nil,
                                               preferredStyle: .alert)
-                let okAction = UIAlertAction(title: NSLocalizedString("alert_deselection.ok", bundle: Bundle.framework, comment: ""),
+                let okAction = UIAlertAction(title: Pellicola.localizedString("alert_deselection.ok"),
                                              style: .default)
                 alert.addAction(okAction)
                 self?.present(alert, animated: true)

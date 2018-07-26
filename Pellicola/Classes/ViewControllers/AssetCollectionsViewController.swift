@@ -10,22 +10,45 @@ import UIKit
 import Photos
 
 final class AssetCollectionsViewController: UIViewController {
+    enum LeftBarButtonType {
+        case back
+        case dismiss
+    }
+    
+    private enum Section: Int {
+        case firstLevel = 0
+        case secondLevel = 1
+    }
     
     @IBOutlet private var tableView: UITableView!
     
     var didCancel: (() -> Void)?
     var didSelectImages: (([UIImage]) -> Void)?
-    var didSelectAssetCollection: ((PHAssetCollection) -> Void)?
+    var didSelectAlbum: ((AlbumData) -> Void)?
+    var didSelectSecondLevelEntry: (() -> Void)?
+    var randomImages = [AnyHashable: UIImage]()
     
     private var doneBarButton: UIBarButtonItem?
     
     private var viewModel: AssetCollectionsViewModel
     private var style: PellicolaStyleProtocol
     
-    init(viewModel: AssetCollectionsViewModel, style: PellicolaStyleProtocol) {
+    private var loadingIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+    
+    private var albums = [AlbumData]()
+    
+    private let leftBarButtonType: LeftBarButtonType
+        
+    private let cachingImageManager = PHCachingImageManager()
+    
+    private let thumbnailSize = CGSize(width: 68.0 * UIScreen.main.scale, height: 68.0 * UIScreen.main.scale)
+    
+    init(viewModel: AssetCollectionsViewModel, style: PellicolaStyleProtocol, leftBarButtonType: LeftBarButtonType) {
         self.viewModel = viewModel
         self.style = style
-        super.init(nibName: nil, bundle: Bundle.framework)
+        self.leftBarButtonType = leftBarButtonType
+        cachingImageManager.allowsCachingHighQualityImages = false
+        super.init(nibName: nil, bundle: Pellicola.frameworkBundle)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -37,8 +60,34 @@ final class AssetCollectionsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
-        viewModel.onChangeAssetCollections = { [weak self] in
+        
+        let updateData: ([AlbumData]) -> () = { [weak self] albums in
+            self?.removeLoadingIndicator()
+            self?.albums = albums
             self?.tableView.reloadData()
+        }
+
+        viewModel.onChangeAssetCollections = updateData
+        viewModel.fetchData(completion: updateData)
+        
+        // Load random images for 2nd level MultiThumbnail imageview
+        let fetchOptions = PHFetchOptions()
+        fetchOptions.fetchLimit = MultiThumbnail.numOfThumbs
+        let assets  = PHAsset.fetchAssets(with: .image, options: fetchOptions).objects(at: IndexSet(0..<MultiThumbnail.numOfThumbs))
+        for asset in assets {
+            let startImg = CFAbsoluteTimeGetCurrent()
+            let imageRequestOptions = PHImageRequestOptions()
+            imageRequestOptions.isNetworkAccessAllowed = true
+            cachingImageManager.requestImage(for: asset,
+                                             targetSize: thumbnailSize,
+                                             contentMode: .aspectFill,
+                                             options: imageRequestOptions) { [weak self] (image, resultInfo) in
+                                                // Since this block can be called more than once (first with a lowRes image and subsequently with an highRes, we use a dict for randomImages (instead of a simple array); in this way higRes images will replace lowRes ones when available
+                                                if let image = image,
+                                                    let imageID = resultInfo?[PHImageResultRequestIDKey] as? AnyHashable {
+                                                    self?.randomImages[imageID] = image
+                                                }                                                
+            }
         }
     }
     
@@ -50,18 +99,44 @@ final class AssetCollectionsViewController: UIViewController {
         }
     }
     
+    //MARK: - Business Logic
+    
+    private func shouldsShowSecondLevelEntry() -> Bool {
+        return viewModel.hasSecondLevel && albums.count > 0
+    }
+    
     // MARK: - UI
     
     private func configureUI() {
         setupNavigationBar()
         setupTableView()
+        
+        if albums.isEmpty {
+            showLoadingIndicator()
+        }
+    }
+    
+    private func showLoadingIndicator() {
+        loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(loadingIndicator)
+        
+        loadingIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        loadingIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        loadingIndicator.startAnimating()
+    }
+    
+    private func removeLoadingIndicator() {
+        loadingIndicator.stopAnimating()
+        loadingIndicator.removeFromSuperview()
     }
     
     private func setupNavigationBar() {
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: style.cancelString,
-                                                           style: .plain,
-                                                           target: self,
-                                                           action: #selector(cancelButtonTapped))
+        if leftBarButtonType == .dismiss {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(title: style.cancelString,
+                                                               style: .plain,
+                                                               target: self,
+                                                               action: #selector(cancelButtonTapped))
+        }
         
         if !viewModel.isSingleSelection {
             doneBarButton = UIBarButtonItem(title: style.doneString,
@@ -78,18 +153,19 @@ final class AssetCollectionsViewController: UIViewController {
             navigationItem.rightBarButtonItem = doneBarButton
         }
         
-        title = NSLocalizedString("albums.title", bundle: Bundle.framework, comment: "")
+        title = Pellicola.localizedString("albums.title")
     }
     
     private func setupTableView() {
-        tableView.register(UINib(nibName: AssetCollectionCell.identifier, bundle: Bundle(for: AssetCollectionCell.self)),
+        let nib = UINib(nibName: AssetCollectionCell.identifier, bundle: Pellicola.frameworkBundle)
+        tableView.register(nib,
                            forCellReuseIdentifier: AssetCollectionCell.identifier)
         tableView.rowHeight = 85
         tableView.separatorStyle = .none
         tableView.dataSource = self
         tableView.delegate = self
     }
-    
+
     private func createPlaceholderImage(withSize size: CGSize) -> UIImage? {
         
         UIGraphicsBeginImageContext(size)
@@ -146,10 +222,10 @@ final class AssetCollectionsViewController: UIViewController {
     @objc func doneButtonTapped() {
         guard !viewModel.isDownloadingImages else {
             viewModel.stopDownloadingImages()
-            let alert = UIAlertController(title: NSLocalizedString("alert_deselection.title", bundle: Bundle.framework, comment: ""),
+            let alert = UIAlertController(title: Pellicola.localizedString("alert_deselection.title"),
                                           message: nil,
                                           preferredStyle: .alert)
-            let okAction = UIAlertAction(title: NSLocalizedString("alert_deselection.ok", bundle: Bundle.framework, comment: ""),
+            let okAction = UIAlertAction(title: Pellicola.localizedString("alert_deselection.ok"),
                                          style: .default)
             alert.addAction(okAction)
             present(alert, animated: true)
@@ -157,7 +233,6 @@ final class AssetCollectionsViewController: UIViewController {
         }
         
         didSelectImages?(viewModel.getSelectedImages())
-        
     }
     
     @objc func cancelButtonTapped() {
@@ -169,9 +244,22 @@ final class AssetCollectionsViewController: UIViewController {
 // MARK: - UITableViewDataSource
 
 extension AssetCollectionsViewController: UITableViewDataSource {
+    public func numberOfSections(in tableView: UITableView) -> Int {
+        return shouldsShowSecondLevelEntry() ? 2 : 1
+    }
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.albums.count
+        guard let tableSection = Section(rawValue: section) else {
+            assertionFailure("Undefined section")
+            return 0
+        }
+        
+        switch tableSection {
+        case .firstLevel:
+            return albums.count
+        case .secondLevel:
+            return 1
+        }
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -181,51 +269,70 @@ extension AssetCollectionsViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         
-        albumCell.accessibilityIdentifier = "album_\(indexPath.row)"
-        albumCell.tag = indexPath.row
-        albumCell.configure(with: AssetCollectionCellStyle(style: style))
-        
-        let album = viewModel.albums[indexPath.row]
-        albumCell.title = album.localizedTitle ?? ""
-        
-        // Photos Count
-        let fetchedAssets = PHAsset.fetchImageAssets(in: album)
-        let numberOfImages = fetchedAssets.count
-        albumCell.subtitle = String(numberOfImages)
-        
-        let scale = UIScreen.main.scale
-        let thumbnailSize = CGSize(width: albumCell.thumbnailSize.width * scale, height: albumCell.thumbnailSize.height * scale)
-        
-        // Album thumbnails
-        let imageManager = PHImageManager.default()
-        
-        if let lastAsset = fetchedAssets.lastObject {
-            imageManager.requestImage(for: lastAsset,
-                                      targetSize: thumbnailSize,
-                                      contentMode: .aspectFill,
-                                      options: nil,
-                                      resultHandler: { (image, _) in
-                                        if albumCell.tag == indexPath.row {
-                                            albumCell.thumbnail = image
-                                        }
-            })
-        } else {
-            let placeholderImage = createPlaceholderImage(withSize: albumCell.thumbnailSize)
-            albumCell.thumbnail = placeholderImage
+        guard let section = Section(rawValue: indexPath.section) else { return albumCell }
+        switch section {
+        case .firstLevel:
+            configureAlbumCell(albumCell, atIndex: indexPath)
+        case .secondLevel:
+            configureSecondLevelEntryCell(albumCell)
         }
         
         return albumCell
     }
+}
+
+//MARK: Cells Configuration
+extension AssetCollectionsViewController {
+    private func configureAlbumCell(_ albumCell: AssetCollectionCell, atIndex indexPath: IndexPath) {
+        albumCell.accessibilityIdentifier = "album_\(indexPath.row)"
+        albumCell.configureStyle(with: AssetCollectionCellStyle(style: style))
+        
+        let album = albums[indexPath.row]
+        
+        if album.thumbnail == nil {
+            if let thumbAsset = album.thumbnailAsset {
+                let options = PHImageRequestOptions()
+                options.isNetworkAccessAllowed = true
+                cachingImageManager.requestImage(for: thumbAsset,
+                                                 targetSize: thumbnailSize,
+                                                 contentMode: .aspectFill,
+                                                 options: options,
+                                                 resultHandler: { (image, _) in
+                                                    album.thumbnail = image
+                                                    albumCell.configureData(with: album)
+                })
+            }
+        }
+        
+        albumCell.configureData(with: album)
+    }
     
+    private func configureSecondLevelEntryCell(_ albumCell: AssetCollectionCell) {
+        albumCell.accessibilityIdentifier = "other_albums"
+        albumCell.configureStyle(with: AssetCollectionCellStyle(style: style))
+        albumCell.title = Pellicola.localizedString("albums.list.other_albums")
+        updateSecondLevelCellThumbnail(albumCell)
+    }
+    
+    private func updateSecondLevelCellThumbnail(_ albumCell: AssetCollectionCell) {
+        if randomImages.count >= MultiThumbnail.numOfThumbs {
+            albumCell.setMultipleThumbnails(Array(randomImages.values))
+        }
+    }
 }
 
 // MARK: - UITableViewDelegate
 
 extension AssetCollectionsViewController: UITableViewDelegate {
-    
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let assetCollection = viewModel.albums[indexPath.row]
-        didSelectAssetCollection?(assetCollection)
-    }
-    
+        tableView.deselectRow(at: indexPath, animated: true)
+        guard let section = Section(rawValue: indexPath.section) else { return }
+        
+        switch section {
+        case .firstLevel:
+            didSelectAlbum?(albums[indexPath.row])
+        case .secondLevel:
+            didSelectSecondLevelEntry?()
+        }
+    }    
 }

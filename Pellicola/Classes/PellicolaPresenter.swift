@@ -9,6 +9,16 @@ import Foundation
 import Photos
 
 public final class PellicolaPresenter: NSObject {
+    private let smartAlbumsType = AlbumType(type: .smartAlbum, subtypes: [.smartAlbumUserLibrary,
+                                                                          .smartAlbumFavorites,
+                                                                          .smartAlbumSelfPortraits,
+                                                                          .smartAlbumScreenshots])
+    
+    private let otherAlbumsType = AlbumType(type: .album, subtypes: [.albumRegular,
+                                                                     .albumMyPhotoStream,
+                                                                     .albumCloudShared,
+                                                                     .albumSyncedEvent,
+                                                                     .albumSyncedAlbum])
     
     @objc public var didSelectImages: (([UIImage]) -> Void)?
     @objc public var userDidCancel: (() -> Void)?
@@ -17,10 +27,35 @@ public final class PellicolaPresenter: NSObject {
         return PellicolaNavigationController()
     }()
     
-    var dataStorage: DataStorage?
-    var dataFetcher: DataFetcher?
+    var imagesDataStorage: ImagesDataStorage?
+    var imagesDataFetcher: ImagesDataFetcher?
+    
+    var maxNumberOfSelections: Int? {
+        return imagesDataStorage?.limit
+    }
+    
+    var numberOfSelectedAssets: Int? {
+        return imagesDataStorage?.images.count
+    }
     
     let style: PellicolaStyleProtocol
+    
+    private lazy var centerBarButtonToolbar: UIBarButtonItem = {
+        let infoBarButton = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        infoBarButton.isEnabled = false
+        let attributes = [ NSAttributedStringKey.foregroundColor: style.blackColor ]
+        infoBarButton.setTitleTextAttributes(attributes, for: .normal)
+        infoBarButton.setTitleTextAttributes(attributes, for: .disabled)
+        return infoBarButton
+    }()
+    
+    private lazy var toolBarItems: [UIBarButtonItem] = {
+        return [
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            centerBarButtonToolbar,
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        ]
+    }()
     
     @objc public init(style: PellicolaStyleProtocol) {
         self.style = style
@@ -47,7 +82,7 @@ public final class PellicolaPresenter: NSObject {
                 }
                 
                 sSelf.setupPresenter(with: maxNumberOfSelections)
-                guard let assetCollectionsVC = sSelf.createAssetsCollectionViewController() else { return }
+                guard let assetCollectionsVC = sSelf.createAssetsCollectionViewController(withType: sSelf.smartAlbumsType, secondLevelType: sSelf.otherAlbumsType, isRootLevel: true) else { return }
                 sSelf.configureNavigationController(with: [assetCollectionsVC])
                 presentingViewController.present(sSelf.navigationController, animated: true, completion: nil)
             }
@@ -61,22 +96,23 @@ public final class PellicolaPresenter: NSObject {
         navigationController.statusBarStyle = style.statusBarStyle
         navigationController.modalPresentationStyle = .formSheet
         navigationController.setViewControllers(viewControllers, animated: false)
+        
     }
     
     // MARK: - Helper method
     
     private func openSettingsAlert() -> UIAlertController {
-        let title = style.alertAccessDeniedTitle ?? NSLocalizedString("alert_access_denied.title", bundle: Bundle.framework, comment: "")
-        let message = style.alertAccessDeniedMessage ?? NSLocalizedString("alert_access_denied.message", bundle: Bundle.framework, comment: "")
+        let title = style.alertAccessDeniedTitle ?? Pellicola.localizedString("alert_access_denied.title")
+        let message = style.alertAccessDeniedMessage ?? Pellicola.localizedString("alert_access_denied.message")
         let alert = UIAlertController(title: title,
                                       message: message,
                                       preferredStyle: .alert)
-        let okAction = UIAlertAction(title: NSLocalizedString("alert_access_denied.later", bundle: Bundle.framework, comment: ""), style: .default, handler: { [weak self] _ in
+        let okAction = UIAlertAction(title: Pellicola.localizedString("alert_access_denied.later"), style: .default, handler: { [weak self] _ in
             self?.userDidCancel?()
         })
         alert.addAction(okAction)
         
-        let settingsAction = UIAlertAction(title: NSLocalizedString("alert_access_denied.settings", bundle: Bundle.framework, comment: ""), style: .cancel, handler: { _ in
+        let settingsAction = UIAlertAction(title: Pellicola.localizedString("alert_access_denied.settings"), style: .cancel, handler: { _ in
             UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
         })
         alert.addAction(settingsAction)
@@ -84,36 +120,52 @@ public final class PellicolaPresenter: NSObject {
     }
     
     private func setupPresenter(with maxNumberOfSelections: Int) {
-        dataStorage = DataStorage(limit: maxNumberOfSelections <= 0 ? nil : maxNumberOfSelections)
-        dataFetcher = DataFetcher()
+        imagesDataStorage = ImagesDataStorage(limit: maxNumberOfSelections <= 0 ? nil : maxNumberOfSelections)
+        imagesDataFetcher = ImagesDataFetcher()
     }
     
     // MARK: - View Controller creation
-    
-    private func createAssetsCollectionViewController() -> AssetCollectionsViewController? {
-        guard let dataStorage = dataStorage, let dataFetcher = dataFetcher else { return nil }
-        let viewModel = AssetCollectionsViewModel(dataStorage: dataStorage,
-                                                  dataFetcher: dataFetcher)
-        let assetCollectionsVC = AssetCollectionsViewController(viewModel: viewModel, style: style)
+    private func createAssetsCollectionViewController(withType albumType: AlbumType,
+                                                      secondLevelType: AlbumType? = nil,
+                                                      isRootLevel: Bool = true) -> AssetCollectionsViewController? {
+
+        guard let imagesDataStorage = imagesDataStorage, let imagesDataFetcher = imagesDataFetcher else { return nil }
+        let viewModel = AssetCollectionsViewModel(imagesDataStorage: imagesDataStorage,
+                                                  imagesDataFetcher: imagesDataFetcher,
+                                                  albumType: albumType,
+                                                  secondLevelAlbumType: secondLevelType)
+        
+        let leftBarButtonType: AssetCollectionsViewController.LeftBarButtonType = isRootLevel ? .dismiss : .back
+        let assetCollectionsVC = AssetCollectionsViewController(viewModel: viewModel, style: style, leftBarButtonType: leftBarButtonType)
         assetCollectionsVC.didSelectImages = { [weak self] images in
             self?.dismissWithImages(images)
         }
         assetCollectionsVC.didCancel = { [weak self] in
             self?.dismiss()
         }
-        assetCollectionsVC.didSelectAssetCollection = { [weak self] assetCollection in
+        assetCollectionsVC.didSelectAlbum = { [weak self] assetCollection in
             guard let sSelf = self,
                 let assetsViewController = sSelf.createAssetsViewController(with: assetCollection) else { return }
             sSelf.navigationController.pushViewController(assetsViewController, animated: true)
         }
+        
+        assetCollectionsVC.didSelectSecondLevelEntry = { [weak self] in
+            guard let sSelf = self,
+                let secondLevelType = secondLevelType,
+                let secondLevelVC = sSelf.createAssetsCollectionViewController(withType: secondLevelType, secondLevelType: nil, isRootLevel: false) else { return }
+            sSelf.navigationController.pushViewController(secondLevelVC, animated: true)
+        }
+        
+        assetCollectionsVC.setToolbarItems(toolBarItems, animated: false)
         return assetCollectionsVC
     }
     
-    private func createAssetsViewController(with assetCollection: PHAssetCollection) -> AssetsViewController? {
-        guard let dataStorage = dataStorage, let dataFetcher = dataFetcher else { return nil }
-        let viewModel = AssetsViewModel(dataStorage: dataStorage,
-                                        dataFetcher: dataFetcher,
-                                        assetCollection: assetCollection)
+    private func createAssetsViewController(with album: AlbumData) -> AssetsViewController? {
+        guard let imagesDataStorage = imagesDataStorage,
+            let imagesDataFetcher = imagesDataFetcher else { return nil }
+        let viewModel = AssetsViewModel(imagesDataStorage: imagesDataStorage,
+                                        imagesDataFetcher: imagesDataFetcher,
+                                        albumData: album)
         let assetsViewController = AssetsViewController(viewModel: viewModel, style: style)
         assetsViewController.didSelectImages = { [weak self] images in
             self?.dismissWithImages(images)
@@ -123,6 +175,11 @@ public final class PellicolaPresenter: NSObject {
             self?.createDetailAssetViewController(with: asset)
         }
         
+        assetsViewController.shouldUpdateToolbar = { [weak self] in
+            self?.updateToolbar()
+        }
+        
+        assetsViewController.setToolbarItems(toolBarItems, animated: false)
         return assetsViewController
     }
     
@@ -141,6 +198,28 @@ public final class PellicolaPresenter: NSObject {
         navigationController.dismiss(animated: true) { [weak self] in
             self?.userDidCancel?()
         }
+    }
+}
+
+//MARK: - Toolbar
+extension PellicolaPresenter {
+    private func updateToolbar() {
+        guard let numberOfSelectedAssets = numberOfSelectedAssets,
+            maxNumberOfSelections != 0, numberOfSelectedAssets > 0 else {
+            navigationController.setToolbarHidden(true, animated: true)
+            return
+        }
+        
+        var toolbarText = String(format: Pellicola.localizedString("selected_assets"),
+                                 numberOfSelectedAssets)
+        if let maxNumberOfSelections = maxNumberOfSelections {
+            toolbarText = String(format: Pellicola.localizedString("selected_assets_with_limit"),
+                                 numberOfSelectedAssets,
+                                 maxNumberOfSelections)
+        }
+        
+        centerBarButtonToolbar.title = toolbarText
+        navigationController.setToolbarHidden(false, animated: true)
     }
 }
 

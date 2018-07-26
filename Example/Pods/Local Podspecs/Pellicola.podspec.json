@@ -1,23 +1,26 @@
 {
   "name": "Pellicola",
-  "version": "0.1.0",
-  "summary": "A replacement for UIImagePickerController with multiselection support.",
-  "description": "A replacement for UIImagePickerController with multiselection support.\n\nFeatures:\n  - Specify a maximum number of items to select\n  - Objective-C compatibility",
-  "homepage": "https://github.com/francybiga/Pellicola",
+  "version": "0.3.0",
+  "summary": "A replacement for UIImagePickerController with multiple selection",
+  "description": "A replacement for UIImagePickerController with multiple selection support written in Swift.",
+  "homepage": "https://github.com/Subito-it/Pellicola",
   "license": "Apache License, Version 2.0",
-  "authors": {
-    "francybiga": "francesco.bigagnoli@scmitaly.it"
-  },
+  "authors": "Subito",
   "source": {
     "git": "https://github.com/Subito-it/Pellicola.git",
-    "tag": "0.1.0"
+    "tag": "0.3.0"
   },
   "platforms": {
     "ios": "9.0"
   },
+  "swift_version": "4.1",
+  "requires_arc": true,
   "source_files": "Pellicola/Classes/**/*",
   "resources": [
-    "Pellicola/Classes/**.xib",
-    "Pellicola/Resources/*"
-  ]
+    "Pellicola/Classes/**/*.xib"
+  ],
+  "resource_bundles": {
+    "Pellicola": "Pellicola/Resources/**"
+  },
+  "static_framework": true
 }

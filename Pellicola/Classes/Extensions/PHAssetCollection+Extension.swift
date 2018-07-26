@@ -9,36 +9,17 @@ import Foundation
 import Photos
 
 extension PHAssetCollection {
-    
-    class func fetch(assetCollectionTypes types: [PHAssetCollectionType],
-                     sortedBy subtypes: [PHAssetCollectionSubtype]) -> [PHAssetCollection] {
-        var albums: [PHAssetCollection] = []
-        var fetchedAlbum: [PHAssetCollectionSubtype: [PHAssetCollection]] = [:]
-        types.forEach {
-            fetchedAlbum.merge(fetch(assetCollectionType: $0, filteredBy: subtypes), uniquingKeysWith: +)
-        }
-        subtypes.forEach {
-            albums += fetchedAlbum[$0] ?? []
+    class func fetch(withType albumType: AlbumType) -> [PHAssetCollection] {
+        var allAlbums: [PHAssetCollection] = []
+        
+        //PHAssetCollection doesn't currently allow fetching for multiple subtypes at once, thus we should perform multiple fetches and merge results.
+        //This is also the main reason for returning [PHAssetCollection] instead of PHFetchResult (which should have better performances).
+        albumType.subtypes.forEach { subtype in
+            let fetchResult = PHAssetCollection.fetchAssetCollections(with: albumType.type, subtype: subtype, options: nil)
+            let albums = fetchResult.objects(at: IndexSet(0..<fetchResult.count))
+            allAlbums += albums
         }
         
-        return albums
+        return allAlbums
     }
-    
-    private class func fetch(assetCollectionType type: PHAssetCollectionType,
-                             filteredBy subtypes: [PHAssetCollectionSubtype]) -> [PHAssetCollectionSubtype: [PHAssetCollection]] {
-        
-        var filteredSmartAlbums: [PHAssetCollection] = []
-        
-        PHAssetCollection
-            .fetchAssetCollections(with: type, subtype: .any, options: nil)
-            .enumerateObjects { (album, _, _) in
-                guard subtypes.contains(album.assetCollectionSubtype) else { return }
-                guard PHAsset.fetchImageAssets(in: album).count > 0 else { return }
-                filteredSmartAlbums.append(album)
-        }
-        
-        return Dictionary(grouping: filteredSmartAlbums,
-                          by: { return $0.assetCollectionSubtype })
-    }
-    
 }

@@ -16,7 +16,7 @@ class DetailAssetViewController: UIViewController {
     
     init(viewModel: DetailAssetViewModel) {
         self.viewModel = viewModel
-        super.init(nibName: nil, bundle: Bundle.framework)
+        super.init(nibName: nil, bundle: Pellicola.frameworkBundle)
     }
     
     required init?(coder aDecoder: NSCoder) {

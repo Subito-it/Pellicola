@@ -9,29 +9,23 @@ import Foundation
 import Photos
 
 class AssetCollectionsViewModel: NSObject {
+    private var imagesDataStorage: ImagesDataStorage
+    private var imagesDataFetcher: ImagesDataFetcher
+        
+    private let albumType: AlbumType
+    private let secondLevelAlbumType: AlbumType?
     
-    private let assetCollectionTypes: [PHAssetCollectionType] = [.smartAlbum, .album]
-    
-    private let smartAlbumSubtypes: [PHAssetCollectionSubtype]  = [.smartAlbumUserLibrary,
-                                                                   .smartAlbumFavorites,
-                                                                   .smartAlbumSelfPortraits,
-                                                                   .smartAlbumScreenshots,
-                                                                   .albumRegular,
-                                                                   .albumMyPhotoStream,
-                                                                   .albumCloudShared,
-                                                                   .albumSyncedEvent,
-                                                                   .albumSyncedAlbum]
-    
-    private var dataStorage: DataStorage
-    private var dataFetcher: DataFetcher
-    private(set) var albums: [PHAssetCollection]
     private var fetchResult: PHFetchResult<PHAssetCollection>
     
-    var onChangeAssetCollections: (() -> Void)?
+    var hasSecondLevel: Bool {
+        return secondLevelAlbumType != nil
+    }
+    
+    var onChangeAssetCollections: (([AlbumData]) -> Void)?
     var onChangeSelectedAssets: ((Int) -> Void)?
     
     var maxNumberOfSelection: Int? {
-        return dataStorage.limit
+        return imagesDataStorage.limit
     }
     
     var isSingleSelection: Bool {
@@ -40,41 +34,63 @@ class AssetCollectionsViewModel: NSObject {
     }
     
     var numberOfSelectedAssets: Int {
-        return dataStorage.images.count
+        return imagesDataStorage.images.count
     }
     
     var isDownloadingImages: Bool {
-        return dataFetcher.count != 0
+        return imagesDataFetcher.count != 0
     }
     
-    init(dataStorage: DataStorage,
-         dataFetcher: DataFetcher) {
-        self.dataStorage = dataStorage
-        self.dataFetcher = dataFetcher
-        fetchResult = PHAssetCollection.fetchAssetCollections(with: assetCollectionTypes.first ?? .smartAlbum, subtype: .albumRegular, options: nil)
-        albums = PHAssetCollection.fetch(assetCollectionTypes: assetCollectionTypes, sortedBy: smartAlbumSubtypes)
-        super.init()
+    init(imagesDataStorage: ImagesDataStorage,
+         imagesDataFetcher: ImagesDataFetcher,
+         albumType: AlbumType,
+         secondLevelAlbumType: AlbumType?) {
+
+        self.imagesDataStorage = imagesDataStorage
+        self.imagesDataFetcher = imagesDataFetcher
         
-        dataStorage.addObserver(self, forKeyPath: #keyPath(DataStorage.images), options: [], context: nil)
+        self.albumType = albumType
+        self.secondLevelAlbumType = secondLevelAlbumType
+
+        fetchResult = PHFetchResult()
+
+        super.init()
+    
+        imagesDataStorage.addObserver(self, forKeyPath: #keyPath(ImagesDataStorage.images), options: [], context: nil)
         PHPhotoLibrary.shared().register(self)
+    }
+    
+    func fetchData(completion: (([AlbumData]) -> Void)?) {
+        let albums = PHAssetCollection.fetch(withType: albumType)
+        let albumsData = albums.map { albumData(fromAssetCollection: $0) }
+        DispatchQueue.main.async {
+            completion?(albumsData)
+        }
     }
     
     deinit {
         PHPhotoLibrary.shared().unregisterChangeObserver(self)
-        dataStorage.removeObserver(self, forKeyPath: #keyPath(DataStorage.images))
+        imagesDataStorage.removeObserver(self, forKeyPath: #keyPath(ImagesDataStorage.images))
     }
     
     func getSelectedImages() -> [UIImage] {
-        return dataStorage.getImagesOrderedBySelection()
+        return imagesDataStorage.getImagesOrderedBySelection()
     }
     
     func stopDownloadingImages() {
-        dataFetcher.clear()
+        imagesDataFetcher.clear()
     }
 
+    // MARK: Album Data creation
+    
+    private func albumData(fromAssetCollection assetCollection: PHAssetCollection) -> AlbumData {
+        let albumData = AlbumData(title: assetCollection.localizedTitle ?? "", assetCollection: assetCollection)
+        return albumData
+    }
+    
     // MARK: - KVO
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        guard keyPath == #keyPath(DataStorage.images) else {
+        guard keyPath == #keyPath(ImagesDataStorage.images) else {
             super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
             return
         }
@@ -86,15 +102,15 @@ class AssetCollectionsViewModel: NSObject {
 // MARK: - PHPhotoLibraryChangeObserver
 
 extension AssetCollectionsViewModel: PHPhotoLibraryChangeObserver {
-    
     func photoLibraryDidChange(_ changeInstance: PHChange) {
-        
         guard let changeDetails = changeInstance.changeDetails(for: fetchResult) else { return }
         fetchResult = changeDetails.fetchResultAfterChanges
-        albums = PHAssetCollection.fetch(assetCollectionTypes: assetCollectionTypes, sortedBy: smartAlbumSubtypes)
+        
+        let albums = fetchResult.objects(at: IndexSet(0..<fetchResult.count))
+        let albumsData = albums.map { albumData(fromAssetCollection: $0) }
         
         DispatchQueue.main.async { [weak self] in
-            self?.onChangeAssetCollections?()
+            self?.onChangeAssetCollections?(albumsData)
         }
     }
 }

@@ -15,7 +15,7 @@ Pod::Spec.new do |s|
   s.requires_arc = true
 
   s.source_files = 'Pellicola/Classes/**/*'
-  s.resources = ['Pellicola/Classes/**.xib', 'Pellicola/Resources/*']
-
-  
+  s.resources = ['Pellicola/Classes/**/*.xib']
+  s.resource_bundle = { 'Pellicola' => 'Pellicola/Resources/**' }
+  s.static_framework = true  
 end

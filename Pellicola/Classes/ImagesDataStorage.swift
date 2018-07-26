@@ -1,5 +1,5 @@
 //
-//  DataStorage.swift
+//  ImagesDataStorage.swift
 //  Pellicola
 //
 //  Created by Andrea Antonioni on 08/01/2018.
@@ -21,7 +21,7 @@ class OrderedImage: NSObject, Comparable {
     }
 }
 
-class DataStorage: NSObject {
+class ImagesDataStorage: NSObject {
     
     @objc dynamic private(set) var images: [String: OrderedImage] = [String: OrderedImage]()
     private var index = 0

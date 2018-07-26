@@ -18,7 +18,6 @@
 		CE33BCC620120BE2002EC65E /* DataStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE33BCC520120BE2002EC65E /* DataStorageTests.swift */; };
 		CE33BCCE20120D3B002EC65E /* OrderedImageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE33BCCD20120D3B002EC65E /* OrderedImageTests.swift */; };
 		CE33BCD020120D72002EC65E /* UIImage+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE33BCCF20120D72002EC65E /* UIImage+Color.swift */; };
-		CE33BCD220120E02002EC65E /* PellicolaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE33BCD120120E02002EC65E /* PellicolaTests.swift */; };
 		CE33BCD620121080002EC65E /* AssetCollectionsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE33BCD520121080002EC65E /* AssetCollectionsViewModelTests.swift */; };
 		CEDAA8D32023601D004A5940 /* PhotoStarStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = CEDAA8D22023601D004A5940 /* PhotoStarStyle.m */; };
 		CEDAA8D520236418004A5940 /* ShonenPunk-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CEDAA8D420236418004A5940 /* ShonenPunk-Regular.ttf */; };
@@ -59,7 +58,6 @@
 		CE33BCC720120BE2002EC65E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CE33BCCD20120D3B002EC65E /* OrderedImageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderedImageTests.swift; sourceTree = "<group>"; };
 		CE33BCCF20120D72002EC65E /* UIImage+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Color.swift"; sourceTree = "<group>"; };
-		CE33BCD120120E02002EC65E /* PellicolaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PellicolaTests.swift; sourceTree = "<group>"; };
 		CE33BCD520121080002EC65E /* AssetCollectionsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetCollectionsViewModelTests.swift; sourceTree = "<group>"; };
 		CEDAA8D120236009004A5940 /* PhotoStarStyle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhotoStarStyle.h; sourceTree = "<group>"; };
 		CEDAA8D22023601D004A5940 /* PhotoStarStyle.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PhotoStarStyle.m; sourceTree = "<group>"; };
@@ -173,7 +171,6 @@
 		CE33BCC420120BE2002EC65E /* Pellicola_Tests */ = {
 			isa = PBXGroup;
 			children = (
-				CE33BCD120120E02002EC65E /* PellicolaTests.swift */,
 				CE33BCC520120BE2002EC65E /* DataStorageTests.swift */,
 				CE33BCC720120BE2002EC65E /* Info.plist */,
 				CE33BCCD20120D3B002EC65E /* OrderedImageTests.swift */,
@@ -194,7 +191,6 @@
 				607FACCC1AFB9204008FA782 /* Sources */,
 				607FACCD1AFB9204008FA782 /* Frameworks */,
 				607FACCE1AFB9204008FA782 /* Resources */,
-				3C36C837090A121CEDC724DB /* [CP] Embed Pods Frameworks */,
 				0A9D0AEC2450648099BA2975 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
@@ -214,8 +210,6 @@
 				CE33BCBF20120BE2002EC65E /* Sources */,
 				CE33BCC020120BE2002EC65E /* Frameworks */,
 				CE33BCC120120BE2002EC65E /* Resources */,
-				3D3EC1280398242917F110C1 /* [CP] Embed Pods Frameworks */,
-				BA9BB4B580AF34FB6DC75293 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -239,12 +233,10 @@
 				TargetAttributes = {
 					607FACCF1AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
-						DevelopmentTeam = 7A8K2VDJFV;
 						LastSwiftMigration = 0910;
 					};
 					CE33BCC220120BE2002EC65E = {
 						CreatedOnToolsVersion = 9.2;
-						DevelopmentTeam = 7A8K2VDJFV;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 607FACCF1AFB9204008FA782;
 					};
@@ -298,46 +290,24 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Pellicola_Example/Pods-Pellicola_Example-resources.sh",
+				"${PODS_ROOT}/../../Pellicola/Classes/ViewControllers/AssetCollectionsViewController.xib",
+				"${PODS_ROOT}/../../Pellicola/Classes/ViewControllers/AssetsViewController.xib",
+				"${PODS_ROOT}/../../Pellicola/Classes/ViewControllers/DetailAssetViewController.xib",
+				"${PODS_ROOT}/../../Pellicola/Classes/Views/AssetCollectionCell.xib",
+				"${PODS_CONFIGURATION_BUILD_DIR}/Pellicola/Pellicola.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AssetCollectionsViewController.nib",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AssetsViewController.nib",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/DetailAssetViewController.nib",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AssetCollectionCell.nib",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Pellicola.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Pellicola_Example/Pods-Pellicola_Example-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		3C36C837090A121CEDC724DB /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-Pellicola_Example/Pods-Pellicola_Example-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Pellicola/Pellicola.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Pellicola.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Pellicola_Example/Pods-Pellicola_Example-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		3D3EC1280398242917F110C1 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Pellicola_Tests/Pods-Pellicola_Tests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		A99853C12635E3320A5140B9 /* [CP] Check Pods Manifest.lock */ = {
@@ -356,21 +326,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		BA9BB4B580AF34FB6DC75293 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Pellicola_Tests/Pods-Pellicola_Tests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F5DB28BD6FD666F23CB7AD94 /* [CP] Check Pods Manifest.lock */ = {
@@ -413,7 +368,6 @@
 				CE33BCCE20120D3B002EC65E /* OrderedImageTests.swift in Sources */,
 				CE33BCD020120D72002EC65E /* UIImage+Color.swift in Sources */,
 				CE33BCD620121080002EC65E /* AssetCollectionsViewModelTests.swift in Sources */,
-				CE33BCD220120E02002EC65E /* PellicolaTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -554,7 +508,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				DEVELOPMENT_TEAM = 7A8K2VDJFV;
+				DEVELOPMENT_TEAM = "";
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				INFOPLIST_FILE = Pellicola/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -576,7 +530,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				DEVELOPMENT_TEAM = 7A8K2VDJFV;
+				DEVELOPMENT_TEAM = "";
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				INFOPLIST_FILE = Pellicola/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -604,7 +558,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = 7A8K2VDJFV;
+				DEVELOPMENT_TEAM = "";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = Pellicola_Tests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
@@ -630,7 +584,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 7A8K2VDJFV;
+				DEVELOPMENT_TEAM = "";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = Pellicola_Tests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;

@@ -11,17 +11,18 @@ import XCTest
 
 class AssetCollectionsViewModelTests: XCTestCase {
     
-    var dataStorage: DataStorage!
-    var dataFetcher: DataFetcher!
+    var dataStorage: ImagesDataStorage!
+    var dataFetcher: ImagesDataFetcher!
+    var albumType: AlbumType!
     var viewModel: AssetCollectionsViewModel!
     
     override func setUp() {
         super.setUp()
         
-        dataStorage = DataStorage(limit: 3)
-        dataFetcher = DataFetcher()
-        viewModel = AssetCollectionsViewModel(dataStorage: dataStorage, dataFetcher: dataFetcher)
-        
+        dataStorage = ImagesDataStorage(limit: 3)
+        dataFetcher = ImagesDataFetcher()
+        albumType = AlbumType(type: .smartAlbum, subtypes: [.smartAlbumUserLibrary])
+        viewModel = AssetCollectionsViewModel(imagesDataStorage: dataStorage, imagesDataFetcher: dataFetcher, albumType: albumType, secondLevelAlbumType: nil)
     }
     
     override func tearDown() {

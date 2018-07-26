@@ -10,10 +10,9 @@ import Photos
 
 class AssetsViewModel: NSObject {
     
-    private var dataStorage: DataStorage
-    private var dataFetcher: DataFetcher
+    private var imagesDataStorage: ImagesDataStorage
+    private var imagesDataFetcher: ImagesDataFetcher
     
-    private let assetCollection: PHAssetCollection
     private let imageManager = PHCachingImageManager()
     
     var assets: PHFetchResult<PHAsset>
@@ -21,16 +20,14 @@ class AssetsViewModel: NSObject {
     var onChangeAssets: (() -> Void)?
     var onChangeSelectedAssets: ((Int) -> Void)?
     
-    var assetCollectionName: String? {
-        return assetCollection.localizedTitle
-    }
+    var assetCollectionName: String?
     
     var numberOfImages: Int {
         return assets.count
     }
     
     var maxNumberOfSelection: Int? {
-        return dataStorage.limit
+        return imagesDataStorage.limit
     }
     
     var isSingleSelection: Bool {
@@ -39,42 +36,31 @@ class AssetsViewModel: NSObject {
     }
     
     var numberOfSelectedAssets: Int {
-        return dataStorage.images.count
+        return imagesDataStorage.images.count
     }
     
     var isDownloadingImages: Bool {
-        return dataFetcher.count != 0
+        return imagesDataFetcher.count != 0
     }
     
-    var toolbarText: String {
-        
-        guard let maxNumberOfSelection = maxNumberOfSelection else {
-            return ""
-        }
-        
-        return String(format: NSLocalizedString("selected_assets", bundle:  Bundle.framework, comment: ""),
-               numberOfSelectedAssets,
-               maxNumberOfSelection)
-    }
+    init(imagesDataStorage: ImagesDataStorage,
+         imagesDataFetcher: ImagesDataFetcher,
+         albumData: AlbumData) {
+        self.imagesDataStorage = imagesDataStorage
+        self.imagesDataFetcher = imagesDataFetcher
     
-    init(dataStorage: DataStorage,
-         dataFetcher: DataFetcher,
-         assetCollection: PHAssetCollection) {
-        self.dataStorage = dataStorage
-        self.dataFetcher = dataFetcher
-        self.assetCollection = assetCollection
-        
-        assets = PHAsset.fetchImageAssets(in: assetCollection)
+        assetCollectionName = albumData.assetCollection.localizedTitle
+        assets = PHAsset.fetchImageAssets(in: albumData.assetCollection)
     
         super.init()
         
-        dataStorage.addObserver(self, forKeyPath: #keyPath(DataStorage.images), options: [], context: nil)
+        imagesDataStorage.addObserver(self, forKeyPath: #keyPath(ImagesDataStorage.images), options: [], context: nil)
         PHPhotoLibrary.shared().register(self)
     }
     
     deinit {
         PHPhotoLibrary.shared().unregisterChangeObserver(self)
-        dataStorage.removeObserver(self, forKeyPath: #keyPath(DataStorage.images))
+        imagesDataStorage.removeObserver(self, forKeyPath: #keyPath(ImagesDataStorage.images))
     }
     
     func select(_ asset: PHAsset,
@@ -82,18 +68,18 @@ class AssetsViewModel: NSObject {
                      onUpdate: @escaping () -> Void,
                      onLimit: @escaping () -> Void) {
         let limit = maxNumberOfSelection ?? Int.max
-        let numberOfSelectableAssets = limit - dataStorage.images.count - dataFetcher.count
+        let numberOfSelectableAssets = limit - imagesDataStorage.images.count - imagesDataFetcher.count
         
-        if dataStorage.containsImage(withIdentifier: asset.localIdentifier) {
-            dataStorage.removeImage(withIdentifier: asset.localIdentifier)
+        if imagesDataStorage.containsImage(withIdentifier: asset.localIdentifier) {
+            imagesDataStorage.removeImage(withIdentifier: asset.localIdentifier)
             onUpdate()
-        } else if dataFetcher.containsRequest(withIdentifier: asset.localIdentifier) {
-            dataFetcher.removeRequest(withIdentifier: asset.localIdentifier)
+        } else if imagesDataFetcher.containsRequest(withIdentifier: asset.localIdentifier) {
+            imagesDataFetcher.removeRequest(withIdentifier: asset.localIdentifier)
             onUpdate()
         } else if numberOfSelectableAssets > 0 {
             
-            dataFetcher.requestImage(for: asset, onProgress: onDownload, onComplete: { [weak self] image in
-                self?.dataStorage.addImage(image, withIdentifier: asset.localIdentifier)
+            imagesDataFetcher.requestImage(for: asset, onProgress: onDownload, onComplete: { [weak self] image in
+                self?.imagesDataStorage.addImage(image, withIdentifier: asset.localIdentifier)
                 onUpdate()
             })
             
@@ -103,9 +89,9 @@ class AssetsViewModel: NSObject {
     }
     
     func getState(for asset: PHAsset) -> AssetCell.State {
-        if dataStorage.containsImage(withIdentifier: asset.localIdentifier) {
+        if imagesDataStorage.containsImage(withIdentifier: asset.localIdentifier) {
             return .selected
-        } else if dataFetcher.containsRequest(withIdentifier: asset.localIdentifier) {
+        } else if imagesDataFetcher.containsRequest(withIdentifier: asset.localIdentifier) {
             return .loading
         } else {
             return .normal
@@ -113,16 +99,16 @@ class AssetsViewModel: NSObject {
     }
     
     func getSelectedImages() -> [UIImage] {
-        return dataStorage.getImagesOrderedBySelection()
+        return imagesDataStorage.getImagesOrderedBySelection()
     }
     
     func stopDownloadingImages() {
-        dataFetcher.clear()
+        imagesDataFetcher.clear()
     }
  
     // MARK: - KVO
     override  func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        guard keyPath == #keyPath(DataStorage.images) else {
+        guard keyPath == #keyPath(ImagesDataStorage.images) else {
             super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
             return
         }
@@ -142,8 +128,8 @@ extension AssetsViewModel: PHPhotoLibraryChangeObserver {
         assets = changeDetails.fetchResultAfterChanges
         
         (changeDetails.removedObjects + changeDetails.changedObjects).forEach {
-            dataFetcher.removeRequest(withIdentifier: $0.localIdentifier)
-            dataStorage.removeImage(withIdentifier: $0.localIdentifier)
+            imagesDataFetcher.removeRequest(withIdentifier: $0.localIdentifier)
+            imagesDataStorage.removeImage(withIdentifier: $0.localIdentifier)
         }
         
         DispatchQueue.main.async { [weak self] in

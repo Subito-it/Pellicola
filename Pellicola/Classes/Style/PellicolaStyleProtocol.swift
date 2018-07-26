@@ -33,9 +33,9 @@ public class DefaultPellicolaStyle: NSObject, PellicolaStyleProtocol {
 
     public var fontNameNormal: String?
 
-    public var doneString: String = NSLocalizedString("navigation_bar.done", bundle: Bundle.framework, comment: "")
+    public var doneString: String = Pellicola.localizedString("navigation_bar.done")
 
-    public var cancelString: String = NSLocalizedString("navigation_bar.cancel", bundle: Bundle.framework, comment: "")
+    public var cancelString: String = Pellicola.localizedString("navigation_bar.cancel")
 
     public var blackColor: UIColor = .black
 
