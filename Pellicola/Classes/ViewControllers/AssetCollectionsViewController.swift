@@ -75,7 +75,6 @@ final class AssetCollectionsViewController: UIViewController {
         fetchOptions.fetchLimit = MultiThumbnail.numOfThumbs
         let assets  = PHAsset.fetchAssets(with: .image, options: fetchOptions).objects(at: IndexSet(0..<MultiThumbnail.numOfThumbs))
         for asset in assets {
-            let startImg = CFAbsoluteTimeGetCurrent()
             let imageRequestOptions = PHImageRequestOptions()
             imageRequestOptions.isNetworkAccessAllowed = true
             cachingImageManager.requestImage(for: asset,
