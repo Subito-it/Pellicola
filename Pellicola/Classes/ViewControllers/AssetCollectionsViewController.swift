@@ -73,8 +73,10 @@ final class AssetCollectionsViewController: UIViewController {
         // Load random images for 2nd level MultiThumbnail imageview
         let fetchOptions = PHFetchOptions()
         fetchOptions.fetchLimit = MultiThumbnail.numOfThumbs
-        let assets  = PHAsset.fetchAssets(with: .image, options: fetchOptions).objects(at: IndexSet(0..<MultiThumbnail.numOfThumbs))
-        for asset in assets {
+        let assets = PHAsset.fetchAssets(with: .image, options: fetchOptions)
+        let multiThumbAssetsNum = min(MultiThumbnail.numOfThumbs, assets.count)
+        let multiThumbAssets = assets.objects(at: IndexSet(0..<multiThumbAssetsNum))
+        for asset in multiThumbAssets {
             let imageRequestOptions = PHImageRequestOptions()
             imageRequestOptions.isNetworkAccessAllowed = true
             cachingImageManager.requestImage(for: asset,
@@ -314,9 +316,7 @@ extension AssetCollectionsViewController {
     }
     
     private func updateSecondLevelCellThumbnail(_ albumCell: AssetCollectionCell) {
-        if randomImages.count >= MultiThumbnail.numOfThumbs {
-            albumCell.setMultipleThumbnails(Array(randomImages.values))
-        }
+        albumCell.setMultipleThumbnails(Array(randomImages.values))
     }
 }
 
