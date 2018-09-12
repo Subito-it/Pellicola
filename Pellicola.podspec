@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'Pellicola'
-  s.version          = '0.4.0'
+  s.version          = '0.4.1'
   s.summary          = 'A replacement for UIImagePickerController with multiple selection'
   s.description      = 'A replacement for UIImagePickerController with multiple selection support written in Swift.'
   s.homepage         = 'https://github.com/Subito-it/Pellicola'
