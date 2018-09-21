@@ -33,7 +33,7 @@ final class AssetCollectionsViewController: UIViewController {
     private var viewModel: AssetCollectionsViewModel
     private var style: PellicolaStyleProtocol
     
-    private var loadingIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+    private var loadingIndicator = UIActivityIndicatorView(style: .gray)
     
     private var albums = [AlbumData]()
     

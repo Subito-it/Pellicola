@@ -43,7 +43,7 @@ public final class PellicolaPresenter: NSObject {
     private lazy var centerBarButtonToolbar: UIBarButtonItem = {
         let infoBarButton = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         infoBarButton.isEnabled = false
-        let attributes = [ NSAttributedStringKey.foregroundColor: style.blackColor ]
+        let attributes = [ NSAttributedString.Key.foregroundColor: style.blackColor ]
         infoBarButton.setTitleTextAttributes(attributes, for: .normal)
         infoBarButton.setTitleTextAttributes(attributes, for: .disabled)
         return infoBarButton
@@ -113,7 +113,7 @@ public final class PellicolaPresenter: NSObject {
         alert.addAction(okAction)
         
         let settingsAction = UIAlertAction(title: Pellicola.localizedString("alert_access_denied.settings"), style: .cancel, handler: { _ in
-            UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
+            UIApplication.shared.openURL(URL(string: UIApplication.openSettingsURLString)!)
         })
         alert.addAction(settingsAction)
         return alert
