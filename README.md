@@ -24,9 +24,9 @@ We use the open source version `master` branch in the [Subito](https://itunes.ap
 
 ## Requirements
 
-* Xcode 9.0+
+* Xcode 10.0+
 * iOS 9.0+
-* Swift 4.0+
+* Swift 4.2+
 * Interoperability with Objective-C
 
 ## Installation
