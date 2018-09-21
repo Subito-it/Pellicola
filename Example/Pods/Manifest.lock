@@ -1,5 +1,5 @@
 PODS:
-  - Pellicola (0.3.0)
+  - Pellicola (1.0.0)
 
 DEPENDENCIES:
   - Pellicola (from `../`)
@@ -9,8 +9,8 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Pellicola: f8956ac05c42a6ea10ea0e8905aebe05edc982c0
+  Pellicola: d648c781a0f511bc70e1bd8682ef5e53dc044a9b
 
 PODFILE CHECKSUM: 060ccc712a90cebcb9cf8c3f78e6b75bed6aff8c
 
-COCOAPODS: 1.5.0
+COCOAPODS: 1.5.3
