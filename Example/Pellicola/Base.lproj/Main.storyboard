@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="GsL-lv-3qw">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -13,7 +13,7 @@
         <!--Photo Star View Controller-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
-                <viewController id="vXZ-lx-hvc" customClass="PhotoStarViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PhotoStarViewController" id="vXZ-lx-hvc" customClass="PhotoStarViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -31,7 +31,7 @@
                                         <rect key="frame" x="16" y="8" width="343" height="44"/>
                                         <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="44" id="mFp-JY-OE7"/>
+                                            <constraint firstAttribute="height" constant="44" id="FrF-8R-csZ"/>
                                         </constraints>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" title="Present Pellicola"/>
@@ -48,15 +48,14 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="91N-TW-76l" firstAttribute="centerX" secondItem="kQQ-xk-qd9" secondAttribute="centerX" id="15H-qg-cqI"/>
-                                    <constraint firstItem="91N-TW-76l" firstAttribute="leading" secondItem="kQQ-xk-qd9" secondAttribute="leading" constant="16" id="79Z-nS-2X6"/>
+                                    <constraint firstItem="91N-TW-76l" firstAttribute="leading" secondItem="ODf-G5-a7f" secondAttribute="leading" id="5Q6-rH-Uew"/>
                                     <constraint firstAttribute="bottom" secondItem="ODf-G5-a7f" secondAttribute="bottom" constant="8" id="CqP-b5-mHa"/>
+                                    <constraint firstAttribute="trailing" secondItem="91N-TW-76l" secondAttribute="trailing" constant="16" id="DRK-Nf-fPN"/>
+                                    <constraint firstItem="ODf-G5-a7f" firstAttribute="top" secondItem="91N-TW-76l" secondAttribute="bottom" constant="8" symbolic="YES" id="Mpw-jp-PBL"/>
                                     <constraint firstAttribute="height" constant="100" id="Ngh-X7-XiM"/>
-                                    <constraint firstItem="91N-TW-76l" firstAttribute="top" secondItem="kQQ-xk-qd9" secondAttribute="top" constant="8" id="gbs-LK-Gp4"/>
-                                    <constraint firstItem="ODf-G5-a7f" firstAttribute="top" secondItem="91N-TW-76l" secondAttribute="bottom" constant="8" id="hhg-DS-jVu"/>
-                                    <constraint firstItem="ODf-G5-a7f" firstAttribute="trailing" secondItem="91N-TW-76l" secondAttribute="trailing" id="iOd-0Q-nai"/>
-                                    <constraint firstAttribute="trailing" secondItem="91N-TW-76l" secondAttribute="trailing" constant="16" id="u3T-Oc-Wcr"/>
-                                    <constraint firstItem="ODf-G5-a7f" firstAttribute="leading" secondItem="91N-TW-76l" secondAttribute="leading" id="wGG-7X-McJ"/>
+                                    <constraint firstItem="91N-TW-76l" firstAttribute="leading" secondItem="kQQ-xk-qd9" secondAttribute="leading" constant="16" id="VBZ-hn-Mv2"/>
+                                    <constraint firstItem="91N-TW-76l" firstAttribute="trailing" secondItem="ODf-G5-a7f" secondAttribute="trailing" id="bHZ-f1-0ne"/>
+                                    <constraint firstItem="91N-TW-76l" firstAttribute="top" secondItem="kQQ-xk-qd9" secondAttribute="topMargin" id="uVX-2n-pOH"/>
                                 </constraints>
                             </view>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="zCx-l1-pZR">
@@ -124,7 +123,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="9s3-6o-505">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="9s3-6o-505">
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="9s3-6o-505" id="IZQ-6r-VUA">
