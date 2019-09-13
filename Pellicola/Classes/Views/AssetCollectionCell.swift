@@ -92,6 +92,7 @@ class AssetCollectionCell: UITableViewCell {
         albumTitle.textColor = style.titleColor
         photosCount.font = style.subtitleFont
         photosCount.textColor = style.subtitleColor
+        contentView.backgroundColor = style.backgroundColor
         
         ([thumbnailView, multiThumbnailView] as [UIView]).forEach { view in
             view.layer.borderWidth = (1.0 / UIScreen.main.scale) * 1.0 //This is used to achieve a 1px width

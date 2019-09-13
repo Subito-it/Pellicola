@@ -39,4 +39,8 @@ struct AssetCollectionCellStyle {
         return style.grayColor
     }
     
+    var backgroundColor: UIColor {
+        return style.backgroundColor
+    }
+    
 }

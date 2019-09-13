@@ -112,7 +112,7 @@ class AssetsViewController: UIViewController {
     }
     
     private func setupCollectionView() {
-        
+        collectionView.backgroundColor = style.backgroundColor
         collectionView.allowsSelection = true
         collectionView.allowsMultipleSelection = false
         collectionView.register(AssetCell.self, forCellWithReuseIdentifier: AssetCell.identifier)

@@ -165,6 +165,7 @@ final class AssetCollectionsViewController: UIViewController {
         tableView.separatorStyle = .none
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.backgroundColor = style.backgroundColor
     }
 
     private func createPlaceholderImage(withSize size: CGSize) -> UIImage? {
