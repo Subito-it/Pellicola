@@ -45,7 +45,9 @@ class AssetCollectionsViewModelTests: XCTestCase {
         dataStorage.removeImage(withIdentifier: array[1].1)
         array.remove(at: 1)
         
-        XCTAssertEqual(array.compactMap{$0.0}, viewModel.getSelectedImages())
+        viewModel.getSelectedImages { urls in
+            XCTAssertEqual(array.compactMap { $0.0 }.count, urls.count)
+        }
         
     }
     

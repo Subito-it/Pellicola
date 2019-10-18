@@ -82,7 +82,9 @@ class DataStorageTests: XCTestCase {
             dataStorage.addImage($0, withIdentifier: UUID().uuidString)
         }
         
-        XCTAssertEqual(array, dataStorage.getImagesOrderedBySelection())
+        dataStorage.getImagesOrderedBySelection { urls in
+            XCTAssertEqual(array.count, urls.count)
+        }
     }
     
     func testOrderedImagesStoreAfterRemotion() {
@@ -97,7 +99,9 @@ class DataStorageTests: XCTestCase {
         dataStorage.removeImage(withIdentifier: array[1].1)
         array.remove(at: 1)
         
-        XCTAssertEqual(array.compactMap{$0.0}, dataStorage.getImagesOrderedBySelection())
+        dataStorage.getImagesOrderedBySelection { urls in
+            XCTAssertEqual(array.count, urls.count)
+        }
     }
     
 }
