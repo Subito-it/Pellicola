@@ -20,9 +20,10 @@ final class FileHandler {
     
     func saveImage(_ image: UIImage, at url: URL) throws {
         do {
-            let imageData = image.pngData()
-            try createSubfoldersBeforeCreatingFile(at: url)
-            try imageData?.write(to: url, options: .atomic)
+            if let imageData = image.pngData() {
+                try createSubfoldersBeforeCreatingFile(at: url)
+                try imageData.write(to: url, options: .atomic)
+            }
         } catch {
             throw error
         }
