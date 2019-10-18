@@ -19,7 +19,7 @@ class AssetsViewController: UIViewController {
     
     private var doneBarButton: UIBarButtonItem?
     
-    var didSelectImages: (([UIImage]) -> Void)?
+    var didSelectImages: (([URL]) -> Void)?
     var didPeekOnAsset: ((PHAsset) -> UIViewController?)?
     var shouldUpdateToolbar: (() -> ())?
     
@@ -140,8 +140,11 @@ class AssetsViewController: UIViewController {
             return
         }
         
-        didSelectImages?(viewModel.getSelectedImages())
-        
+        if let didSelectImages = self.didSelectImages {
+            viewModel.getSelectedImages { urls in
+                didSelectImages(urls)
+            }
+        }
     }
     
     // MARK: Asset Caching
@@ -222,7 +225,11 @@ extension AssetsViewController: UICollectionViewDelegate {
                 
                 guard let sSelf = self else { return }
                 if sSelf.viewModel.maxNumberOfSelection == 1 {
-                    sSelf.didSelectImages?(sSelf.viewModel.getSelectedImages())
+                    if let didSelectImages = sSelf.didSelectImages {
+                        sSelf.viewModel.getSelectedImages { urls in
+                            didSelectImages(urls)
+                        }
+                    }
                 } else {
                     updateUI(at: indexPath, asset: selectedAsset)
                 }
