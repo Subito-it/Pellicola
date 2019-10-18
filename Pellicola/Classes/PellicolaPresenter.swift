@@ -20,7 +20,7 @@ public final class PellicolaPresenter: NSObject {
                                                                      .albumSyncedEvent,
                                                                      .albumSyncedAlbum])
     
-    @objc public var didSelectImages: (([UIImage]) -> Void)?
+    @objc public var didSelectImages: (([URL]) -> Void)?
     @objc public var userDidCancel: (() -> Void)?
     
     private lazy var navigationController: PellicolaNavigationController = {
@@ -120,7 +120,8 @@ public final class PellicolaPresenter: NSObject {
     }
     
     private func setupPresenter(with maxNumberOfSelections: Int) {
-        imagesDataStorage = ImagesDataStorage(limit: maxNumberOfSelections <= 0 ? nil : maxNumberOfSelections)
+        let limit = maxNumberOfSelections <= 0 ? nil : maxNumberOfSelections
+        imagesDataStorage = ImagesDataStorage(limit: limit)
         imagesDataFetcher = ImagesDataFetcher()
     }
     
@@ -137,9 +138,11 @@ public final class PellicolaPresenter: NSObject {
         
         let leftBarButtonType: AssetCollectionsViewController.LeftBarButtonType = isRootLevel ? .dismiss : .back
         let assetCollectionsVC = AssetCollectionsViewController(viewModel: viewModel, style: style, leftBarButtonType: leftBarButtonType)
-        assetCollectionsVC.didSelectImages = { [weak self] images in
-            self?.dismissWithImages(images)
+        assetCollectionsVC.didSelectImages = { [weak self] urls in
+            self?.didSelectImages?(urls)
+            self?.navigationController.dismiss(animated: true)
         }
+
         assetCollectionsVC.didCancel = { [weak self] in
             self?.dismiss()
         }
@@ -167,8 +170,10 @@ public final class PellicolaPresenter: NSObject {
                                         imagesDataFetcher: imagesDataFetcher,
                                         albumData: album)
         let assetsViewController = AssetsViewController(viewModel: viewModel, style: style)
-        assetsViewController.didSelectImages = { [weak self] images in
-            self?.dismissWithImages(images)
+        
+        assetsViewController.didSelectImages = { [weak self] urls in
+            self?.didSelectImages?(urls)
+            self?.navigationController.dismiss(animated: true)
         }
         
         assetsViewController.didPeekOnAsset = { [weak self] asset in
@@ -187,11 +192,6 @@ public final class PellicolaPresenter: NSObject {
         let viewModel = DetailAssetViewModel(asset: asset)
         let detailViewController = DetailAssetViewController(viewModel: viewModel)
         return detailViewController
-    }
-    
-    private func dismissWithImages(_ images: [UIImage]) {
-        didSelectImages?(images)
-        navigationController.dismiss(animated: true)
     }
     
     private func dismiss() {
