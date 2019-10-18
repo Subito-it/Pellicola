@@ -23,7 +23,7 @@ final class AssetCollectionsViewController: UIViewController {
     @IBOutlet private var tableView: UITableView!
     
     var didCancel: (() -> Void)?
-    var didSelectImages: (([UIImage]) -> Void)?
+    var didSelectImages: (([URL]) -> Void)?
     var didSelectAlbum: ((AlbumData) -> Void)?
     var didSelectSecondLevelEntry: (() -> Void)?
     var randomImages = [AnyHashable: UIImage]()
@@ -234,7 +234,11 @@ final class AssetCollectionsViewController: UIViewController {
             return
         }
         
-        didSelectImages?(viewModel.getSelectedImages())
+        if let didSelectImages = didSelectImages {
+            viewModel.getSelectedImages { urls in
+                didSelectImages(urls)
+            }
+        }
     }
     
     @objc func cancelButtonTapped() {
