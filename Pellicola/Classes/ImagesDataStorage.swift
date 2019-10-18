@@ -55,7 +55,7 @@ class ImagesDataStorage: NSObject {
     
     func removeImage(withIdentifier identifier: String) {
         
-        guard images[identifier] != nil else { return }
+        guard let image = images[identifier] else { return }
         
         images.removeValue(forKey: identifier)
         index -= 1
