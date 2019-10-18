@@ -59,4 +59,8 @@
     return UIStatusBarStyleLightContent;
 }
 
+- (UIColor *)backgroundColor {
+    return [UIColor whiteColor];
+}
+
 @end
