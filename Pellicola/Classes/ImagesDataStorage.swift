@@ -26,8 +26,9 @@ class ImagesDataStorage: NSObject {
     private var index = 0
     
     let limit: Int?
-    let fileQueue = DispatchQueue(label: "com.subito.pellicola.files")
-    private let fileHandler = FileHandler()
+    private let fileQueue = DispatchQueue(label: "com.subito.pellicola.files")
+    private let fileHandler = PellicolaFileHandler()
+    private var fileActions = [DispatchWorkItem]()
     
     init(limit: Int?) {
         self.limit = limit
@@ -43,14 +44,12 @@ class ImagesDataStorage: NSObject {
         images[identifier] = orderedImage
         index += 1
         
-        if let url = fileHandler.fileURL(forIdentifier: UUID().uuidString) {
-            fileQueue.async { [weak self] in
-                do {
-                    try self?.fileHandler.saveImage(image, at: url)
-                    orderedImage.url = url
-                } catch { }
-            }
+        let saveItem = DispatchWorkItem { [weak self] in
+            orderedImage.url = self?.fileHandler.saveImage(image, named: UUID().uuidString)
         }
+        fileActions.append(saveItem)
+        
+        fileQueue.async(execute: saveItem)
     }
     
     func removeImage(withIdentifier identifier: String) {
@@ -60,17 +59,19 @@ class ImagesDataStorage: NSObject {
         images.removeValue(forKey: identifier)
         index -= 1
         
-        if let url = image.url {
-            fileQueue.async { [weak self] in
-                try? self?.fileHandler.deleteImage(at: url)
-            }
+        guard let url = image.url else { return }
+        
+        let deleteItem = DispatchWorkItem { [weak self] in
+            self?.fileHandler.deleteImage(at: url)
         }
+        fileActions.append(deleteItem)
+        
+        fileQueue.async(execute: deleteItem)
     }
     
     func containsImage(withIdentifier identifier: String) -> Bool {
         return images[identifier] != nil
     }
-    
     
     func getImagesOrderedBySelection(block: @escaping (([URL]) -> ())) {
         fileQueue.async { [weak self] in
@@ -80,15 +81,13 @@ class ImagesDataStorage: NSObject {
             DispatchQueue.main.async {
                 block(urls)
             }
+            self.clear()
         }
     }
     
     func clear() {
         images.removeAll()
-        
-        fileQueue.async { [weak self] in
-            guard let self = self else { return }
-            self.fileHandler.deleteAllImages()
-        }
+        fileActions.forEach { $0.cancel() }
+        fileActions.removeAll()
     }
 }
