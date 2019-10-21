@@ -8,7 +8,7 @@
 import Foundation
 
 public final class PellicolaCache: NSObject {
-    private let fileHandler = FileHandler()
+    private let fileHandler = PellicolaFileHandler()
     
     @objc public func clear() {
         DispatchQueue.global(qos: .utility).async {
