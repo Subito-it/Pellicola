@@ -1,5 +1,5 @@
 //
-//  FileHandler.swift
+//  PellicolaFileHandler.swift
 //  Pellicola
 //
 //  Created by marco.rossi on 18/10/2019.
@@ -7,39 +7,40 @@
 
 import Foundation
 
-final class FileHandler {
-    let fileManager: FileManager
+@objcMembers
+public final class PellicolaFileHandler: NSObject {
+    private let fileManager: FileManager
     
-    init(fileManager: FileManager = FileManager.default) {
+    public static func defaultHandler() -> PellicolaFileHandler {
+        return PellicolaFileHandler()
+    }
+    
+    public init(fileManager: FileManager = FileManager.default) {
         self.fileManager = fileManager
     }
     
-    func fileURL(forIdentifier identifier: String) -> URL? {
-        return cacheFolder()?.appendingPathComponent(identifier + ".png")
-    }
-    
-    func saveImage(_ image: UIImage, at url: URL) throws {
+    public func saveImage(_ image: UIImage, named: String) -> URL? {
+        guard let url = fileURL(forIdentifier: named), let imageData = image.pngData() else { return nil }
         do {
-            if let imageData = image.pngData() {
-                try createSubfoldersBeforeCreatingFile(at: url)
-                try imageData.write(to: url, options: .atomic)
-            }
+            try createSubfoldersBeforeCreatingFile(at: url)
+            try imageData.write(to: url, options: .atomic)
+            return url
         } catch {
-            throw error
+            return nil
         }
     }
     
-    func deleteImage(at url: URL) throws {
-        do {
-            try fileManager.removeItem(at: url)
-        } catch {
-            throw error
-        }
+    public func deleteImage(at url: URL) {
+        try? fileManager.removeItem(at: url)
     }
     
-    func deleteAllImages() {
+    public func deleteAllImages() {
         guard let cacheFolder = self.cacheFolder() else { return }
         try? fileManager.removeItem(at: cacheFolder)
+    }
+    
+    private func fileURL(forIdentifier identifier: String) -> URL? {
+        return cacheFolder()?.appendingPathComponent(identifier + ".png")
     }
     
     private func cacheFolder() -> URL? {
