@@ -19,6 +19,14 @@ public final class PellicolaFileHandler: NSObject {
         self.fileManager = fileManager
     }
     
+    private var cacheFolder: URL? {
+        guard let cacheDirURL = fileManager.urls(for: .cachesDirectory, in: .userDomainMask).first else {
+            assertionFailure("Failed on retrieving caches directory")
+            return nil
+        }
+        return cacheDirURL.appendingPathComponent("Pellicola_Images")
+    }
+    
     public func saveImage(_ image: UIImage, named: String) -> URL? {
         guard let url = fileURL(forIdentifier: named), let imageData = image.pngData() else { return nil }
         do {
@@ -35,17 +43,12 @@ public final class PellicolaFileHandler: NSObject {
     }
     
     public func deleteAllImages() {
-        guard let cacheFolder = self.cacheFolder() else { return }
+        guard let cacheFolder = cacheFolder else { return }
         try? fileManager.removeItem(at: cacheFolder)
     }
     
     private func fileURL(forIdentifier identifier: String) -> URL? {
-        return cacheFolder()?.appendingPathComponent(identifier + ".png")
-    }
-    
-    private func cacheFolder() -> URL? {
-        guard let cacheDirURL = fileManager.urls(for: .cachesDirectory, in: .userDomainMask).first else { return nil }
-        return cacheDirURL.appendingPathComponent("Pellicola_Images")
+        return cacheFolder?.appendingPathComponent(identifier + ".png")
     }
     
     private func createSubfoldersBeforeCreatingFile(at url: URL) throws {
