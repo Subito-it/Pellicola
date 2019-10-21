@@ -61,8 +61,6 @@
     
     _pellicolaPresenter.userDidCancel = ^{
         NSLog(@"User did cancel the flow.");
-        PellicolaCache *cache = [PellicolaCache new];
-        [cache clear];
     };
 }
 

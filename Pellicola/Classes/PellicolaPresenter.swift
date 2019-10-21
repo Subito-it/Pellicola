@@ -144,8 +144,9 @@ public final class PellicolaPresenter: NSObject {
         }
         
         assetCollectionsVC.didFinishProcessingImages = { [weak self] urls in
-            self?.didFinishProcessingImages?(urls)
-            self?.navigationController.dismiss(animated: true)
+            self?.navigationController.dismiss(animated: true) {
+                self?.didFinishProcessingImages?(urls)
+            }
         }
 
         assetCollectionsVC.didCancel = { [weak self] in
@@ -181,8 +182,9 @@ public final class PellicolaPresenter: NSObject {
         }
         
         assetsViewController.didFinishProcessingImages = { [weak self] urls in
-            self?.didFinishProcessingImages?(urls)
-            self?.navigationController.dismiss(animated: true)
+            self?.navigationController.dismiss(animated: true) {
+                self?.didFinishProcessingImages?(urls)
+            }
         }
         
         assetsViewController.didPeekOnAsset = { [weak self] asset in

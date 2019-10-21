@@ -79,8 +79,9 @@ class AssetCollectionsViewModel: NSObject {
         }
     }
     
-    func stopDownloadingImages() {
+    func cancel() {
         imagesDataFetcher.clear()
+        imagesDataStorage.clear()
     }
 
     // MARK: Album Data creation

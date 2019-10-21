@@ -224,7 +224,7 @@ final class AssetCollectionsViewController: UIViewController {
     
     @objc func doneButtonTapped() {
         guard !viewModel.isDownloadingImages else {
-            viewModel.stopDownloadingImages()
+            viewModel.cancel()
             let alert = UIAlertController(title: Pellicola.localizedString("alert_deselection.title"),
                                           message: nil,
                                           preferredStyle: .alert)
@@ -249,6 +249,7 @@ final class AssetCollectionsViewController: UIViewController {
     }
     
     @objc func cancelButtonTapped() {
+        viewModel.cancel()
         didCancel?()
     }
     

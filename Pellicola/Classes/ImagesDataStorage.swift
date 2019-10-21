@@ -81,7 +81,6 @@ class ImagesDataStorage: NSObject {
             DispatchQueue.main.async {
                 block(urls)
             }
-            self.clear()
         }
     }
     
