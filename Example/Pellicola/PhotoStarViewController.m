@@ -10,6 +10,7 @@
 #import "ImageCell.h"
 #import "Pellicola-Swift.h"
 #import "PhotoStarStyle.h"
+#import <SVProgressHUD.h>
 
 @interface PhotoStarViewController () <UICollectionViewDelegate, UICollectionViewDataSource>
 
@@ -43,13 +44,19 @@
 - (void)setupPellicola {
     PhotoStarStyle* customStyle = [[PhotoStarStyle alloc] init];
     _pellicolaPresenter = [[PellicolaPresenter alloc] initWithStyle:customStyle];
+    _pellicolaPresenter.imageSize = CGSizeMake(1600, 1600);
+    
+    _pellicolaPresenter.didStartProcessingImages = ^{
+        [SVProgressHUD show];
+    };
     
     __weak typeof(self) weakSelf = self;
-    _pellicolaPresenter.didSelectImages = ^(NSArray <NSURL *>*urls) {
+    _pellicolaPresenter.didFinishProcessingImages = ^(NSArray <NSURL *>*urls) {
         weakSelf.maxNumberOfPhotos -= (int) [urls count];
         [weakSelf.urls addObjectsFromArray:urls];
         [weakSelf.collectionView reloadData];
         [weakSelf updateMessage];
+        [SVProgressHUD dismiss];
     };
     
     _pellicolaPresenter.userDidCancel = ^{

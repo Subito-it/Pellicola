@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Pellicola
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -25,6 +26,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIBarButtonItem.appearance().setTitleTextAttributes([NSAttributedString.Key.font: UIFont(name: "shonenpunk!custom", size: 13)!], for: .normal)
         UIBarButtonItem.appearance().setTitleTextAttributes([NSAttributedString.Key.font: UIFont(name: "shonenpunk!custom", size: 13)!], for: .disabled)
         UIBarButtonItem.appearance().setTitleTextAttributes([NSAttributedString.Key.font: UIFont(name: "shonenpunk!custom", size: 13)!], for: .highlighted)
+        
+        let cache = PellicolaCache()
+        cache.clear()
         
         return true
     }
