@@ -23,7 +23,8 @@ final class AssetCollectionsViewController: UIViewController {
     @IBOutlet private var tableView: UITableView!
     
     var didCancel: (() -> Void)?
-    var didSelectImages: (([URL]) -> Void)?
+    var didStartProcessingImages: (() -> Void)?
+    var didFinishProcessingImages: (([URL]) -> Void)?
     var didSelectAlbum: ((AlbumData) -> Void)?
     var didSelectSecondLevelEntry: (() -> Void)?
     var randomImages = [AnyHashable: UIImage]()
@@ -234,9 +235,15 @@ final class AssetCollectionsViewController: UIViewController {
             return
         }
         
-        if let didSelectImages = didSelectImages {
+        processSelectedImages()
+    }
+    
+    private func processSelectedImages() {
+        didStartProcessingImages?()
+        
+        if let didFinishProcessingImages = self.didFinishProcessingImages {
             viewModel.getSelectedImages { urls in
-                didSelectImages(urls)
+                didFinishProcessingImages(urls)
             }
         }
     }

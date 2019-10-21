@@ -19,7 +19,8 @@ class AssetsViewController: UIViewController {
     
     private var doneBarButton: UIBarButtonItem?
     
-    var didSelectImages: (([URL]) -> Void)?
+    var didStartProcessingImages: (() -> Void)?
+    var didFinishProcessingImages: (([URL]) -> Void)?
     var didPeekOnAsset: ((PHAsset) -> UIViewController?)?
     var shouldUpdateToolbar: (() -> ())?
     
@@ -139,10 +140,16 @@ class AssetsViewController: UIViewController {
             present(alert, animated: true)
             return
         }
+    
+        processSelectedImages()
+    }
+    
+    private func processSelectedImages() {
+        didStartProcessingImages?()
         
-        if let didSelectImages = self.didSelectImages {
+        if let didFinishProcessingImages = self.didFinishProcessingImages {
             viewModel.getSelectedImages { urls in
-                didSelectImages(urls)
+                didFinishProcessingImages(urls)
             }
         }
     }
@@ -225,11 +232,7 @@ extension AssetsViewController: UICollectionViewDelegate {
                 
                 guard let sSelf = self else { return }
                 if sSelf.viewModel.maxNumberOfSelection == 1 {
-                    if let didSelectImages = sSelf.didSelectImages {
-                        sSelf.viewModel.getSelectedImages { urls in
-                            didSelectImages(urls)
-                        }
-                    }
+                    sSelf.processSelectedImages()
                 } else {
                     updateUI(at: indexPath, asset: selectedAsset)
                 }
