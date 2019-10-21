@@ -10,6 +10,8 @@ import Photos
 
 class ImagesDataFetcher {
     
+    let targetSize: CGSize
+    
     private let imageManager = PHCachingImageManager()
     
     private var requestsID: [String: PHImageRequestID] = [String: PHImageRequestID]()
@@ -18,24 +20,28 @@ class ImagesDataFetcher {
         return requestsID.count
     }
     
+    init(targetSize: CGSize = PHImageManagerMaximumSize) {
+        self.targetSize = targetSize
+    }
+    
     func requestImage(for asset: PHAsset, onProgress: @escaping () -> Void, onComplete: ((UIImage) -> Void)?) {
         
         guard requestsID[asset.localIdentifier] == nil else { return }
         
         let requestOptions = PHImageRequestOptions()
         requestOptions.isNetworkAccessAllowed = true
+        requestOptions.resizeMode = .exact
+        requestOptions.deliveryMode = .highQualityFormat // result handler is called only one time
         requestOptions.progressHandler = { (progress, error, stop, info) in
             onProgress()
         }
-        
-        let request = imageManager.requestImageData(for: asset, options: requestOptions, resultHandler: { [weak self] (imageData, _, _, info) in
-            
-            if let imageData = imageData, let image = UIImage(data: imageData) {
+    
+        let request = imageManager.requestImage(for: asset, targetSize: targetSize, contentMode: .aspectFit, options: requestOptions) { [weak self] (image, _) in
+            if let image = image {
                 self?.requestsID.removeValue(forKey: asset.localIdentifier)
                 onComplete?(image)
             }
-            
-        })
+        }
         
         requestsID[asset.localIdentifier] = request
         

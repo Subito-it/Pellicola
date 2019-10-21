@@ -1,16 +1,23 @@
 PODS:
-  - Pellicola (1.0.0)
+  - Pellicola (1.0.1)
+  - SVProgressHUD (2.2.5)
 
 DEPENDENCIES:
   - Pellicola (from `../`)
+  - SVProgressHUD
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - SVProgressHUD
 
 EXTERNAL SOURCES:
   Pellicola:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Pellicola: d648c781a0f511bc70e1bd8682ef5e53dc044a9b
+  Pellicola: 9ddef685d72ffa6ea3a20bba4ab91c03d33e5075
+  SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
 
-PODFILE CHECKSUM: 060ccc712a90cebcb9cf8c3f78e6b75bed6aff8c
+PODFILE CHECKSUM: 7847d8aa1bad3ef969b83601105a6201a91506d1
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.6.2

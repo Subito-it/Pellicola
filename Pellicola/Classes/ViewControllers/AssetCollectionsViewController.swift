@@ -23,7 +23,8 @@ final class AssetCollectionsViewController: UIViewController {
     @IBOutlet private var tableView: UITableView!
     
     var didCancel: (() -> Void)?
-    var didSelectImages: (([UIImage]) -> Void)?
+    var didStartProcessingImages: (() -> Void)?
+    var didFinishProcessingImages: (([URL]) -> Void)?
     var didSelectAlbum: ((AlbumData) -> Void)?
     var didSelectSecondLevelEntry: (() -> Void)?
     var randomImages = [AnyHashable: UIImage]()
@@ -223,7 +224,7 @@ final class AssetCollectionsViewController: UIViewController {
     
     @objc func doneButtonTapped() {
         guard !viewModel.isDownloadingImages else {
-            viewModel.stopDownloadingImages()
+            viewModel.cancel()
             let alert = UIAlertController(title: Pellicola.localizedString("alert_deselection.title"),
                                           message: nil,
                                           preferredStyle: .alert)
@@ -234,10 +235,21 @@ final class AssetCollectionsViewController: UIViewController {
             return
         }
         
-        didSelectImages?(viewModel.getSelectedImages())
+        processSelectedImages()
+    }
+    
+    private func processSelectedImages() {
+        didStartProcessingImages?()
+        
+        if let didFinishProcessingImages = self.didFinishProcessingImages {
+            viewModel.getSelectedImages { urls in
+                didFinishProcessingImages(urls)
+            }
+        }
     }
     
     @objc func cancelButtonTapped() {
+        viewModel.cancel()
         didCancel?()
     }
     

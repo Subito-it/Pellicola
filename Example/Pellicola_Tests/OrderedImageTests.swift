@@ -12,8 +12,8 @@ import XCTest
 class OrderedImageTests: XCTestCase {
     
     func testCompareOrderedImage() {
-        let img1 = OrderedImage(image: UIImage(), index: 1)
-        let img2 = OrderedImage(image: UIImage(), index: 2)
+        let img1 = OrderedImage(index: 1)
+        let img2 = OrderedImage(index: 2)
         
         XCTAssertGreaterThan(img2, img1)
     }

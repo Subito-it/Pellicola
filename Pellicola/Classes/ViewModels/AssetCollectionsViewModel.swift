@@ -73,12 +73,15 @@ class AssetCollectionsViewModel: NSObject {
         imagesDataStorage.removeObserver(self, forKeyPath: #keyPath(ImagesDataStorage.images))
     }
     
-    func getSelectedImages() -> [UIImage] {
-        return imagesDataStorage.getImagesOrderedBySelection()
+    func getSelectedImages(_ block: @escaping (([URL]) -> ())) {
+        imagesDataStorage.getImagesOrderedBySelection { urls in
+            block(urls)
+        }
     }
     
-    func stopDownloadingImages() {
+    func cancel() {
         imagesDataFetcher.clear()
+        imagesDataStorage.clear()
     }
 
     // MARK: Album Data creation

@@ -19,9 +19,10 @@ public final class PellicolaPresenter: NSObject {
                                                                      .albumCloudShared,
                                                                      .albumSyncedEvent,
                                                                      .albumSyncedAlbum])
-    
-    @objc public var didSelectImages: (([UIImage]) -> Void)?
+    @objc public var didStartProcessingImages: (() -> Void)?
+    @objc public var didFinishProcessingImages: (([URL]) -> Void)?
     @objc public var userDidCancel: (() -> Void)?
+    @objc public var imageSize: CGSize = PHImageManagerMaximumSize
     
     private lazy var navigationController: PellicolaNavigationController = {
         return PellicolaNavigationController()
@@ -120,8 +121,9 @@ public final class PellicolaPresenter: NSObject {
     }
     
     private func setupPresenter(with maxNumberOfSelections: Int) {
-        imagesDataStorage = ImagesDataStorage(limit: maxNumberOfSelections <= 0 ? nil : maxNumberOfSelections)
-        imagesDataFetcher = ImagesDataFetcher()
+        let limit = maxNumberOfSelections <= 0 ? nil : maxNumberOfSelections
+        imagesDataStorage = ImagesDataStorage(limit: limit)
+        imagesDataFetcher = ImagesDataFetcher(targetSize: imageSize)
     }
     
     // MARK: - View Controller creation
@@ -137,9 +139,16 @@ public final class PellicolaPresenter: NSObject {
         
         let leftBarButtonType: AssetCollectionsViewController.LeftBarButtonType = isRootLevel ? .dismiss : .back
         let assetCollectionsVC = AssetCollectionsViewController(viewModel: viewModel, style: style, leftBarButtonType: leftBarButtonType)
-        assetCollectionsVC.didSelectImages = { [weak self] images in
-            self?.dismissWithImages(images)
+        assetCollectionsVC.didStartProcessingImages = { [weak self] in
+            self?.didStartProcessingImages?()
         }
+        
+        assetCollectionsVC.didFinishProcessingImages = { [weak self] urls in
+            self?.navigationController.dismiss(animated: true) {
+                self?.didFinishProcessingImages?(urls)
+            }
+        }
+
         assetCollectionsVC.didCancel = { [weak self] in
             self?.dismiss()
         }
@@ -167,8 +176,15 @@ public final class PellicolaPresenter: NSObject {
                                         imagesDataFetcher: imagesDataFetcher,
                                         albumData: album)
         let assetsViewController = AssetsViewController(viewModel: viewModel, style: style)
-        assetsViewController.didSelectImages = { [weak self] images in
-            self?.dismissWithImages(images)
+        
+        assetsViewController.didStartProcessingImages = { [weak self] in
+            self?.didStartProcessingImages?()
+        }
+        
+        assetsViewController.didFinishProcessingImages = { [weak self] urls in
+            self?.navigationController.dismiss(animated: true) {
+                self?.didFinishProcessingImages?(urls)
+            }
         }
         
         assetsViewController.didPeekOnAsset = { [weak self] asset in
@@ -187,11 +203,6 @@ public final class PellicolaPresenter: NSObject {
         let viewModel = DetailAssetViewModel(asset: asset)
         let detailViewController = DetailAssetViewController(viewModel: viewModel)
         return detailViewController
-    }
-    
-    private func dismissWithImages(_ images: [UIImage]) {
-        didSelectImages?(images)
-        navigationController.dismiss(animated: true)
     }
     
     private func dismiss() {
