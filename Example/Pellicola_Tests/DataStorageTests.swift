@@ -82,9 +82,14 @@ class DataStorageTests: XCTestCase {
             dataStorage.addImage($0, withIdentifier: UUID().uuidString)
         }
         
+        let expectation = XCTestExpectation(description: "Add images")
+        
         dataStorage.getImagesOrderedBySelection { urls in
             XCTAssertEqual(array.count, urls.count)
+            expectation.fulfill()
         }
+        
+        wait(for: [expectation], timeout: 5)
     }
     
     func testOrderedImagesStoreAfterRemotion() {
@@ -99,9 +104,15 @@ class DataStorageTests: XCTestCase {
         dataStorage.removeImage(withIdentifier: array[1].1)
         array.remove(at: 1)
         
+        
+        let expectation = XCTestExpectation(description: "Remove images")
+        
         dataStorage.getImagesOrderedBySelection { urls in
             XCTAssertEqual(array.count, urls.count)
+            expectation.fulfill()
         }
+        
+        wait(for: [expectation], timeout: 5)
     }
     
 }

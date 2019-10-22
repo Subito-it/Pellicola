@@ -83,12 +83,15 @@
                                                                              forIndexPath:indexPath];
     CGSize size = cell.imageView.bounds.size;
     NSURL *imageURL = _urls[indexPath.item];
+    cell.imageURL = imageURL;
     __weak typeof(self) weakSelf = self;
     dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
         UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:imageURL]];
         UIImage *resizedImage = [weakSelf imageWithImage:image scaledToFillSize:size];
         dispatch_async(dispatch_get_main_queue(), ^(void){
-            cell.imageView.image = resizedImage;
+            if (cell.imageURL == imageURL) {
+                cell.imageView.image = resizedImage;
+            } 
         });
     });
     

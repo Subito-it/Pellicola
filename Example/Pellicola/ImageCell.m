@@ -10,4 +10,10 @@
 
 @implementation ImageCell
 
+- (void)prepareForReuse {
+    [super prepareForReuse];
+    self.imageURL = nil;
+    self.imageView.image = nil;
+}
+
 @end

@@ -28,7 +28,6 @@ class ImagesDataStorage: NSObject {
     let limit: Int?
     private let fileQueue = DispatchQueue(label: "com.subito.pellicola.files")
     private let fileHandler = PellicolaFileHandler()
-    private var fileActions = [DispatchWorkItem]()
     
     init(limit: Int?) {
         self.limit = limit
@@ -44,12 +43,9 @@ class ImagesDataStorage: NSObject {
         images[identifier] = orderedImage
         index += 1
         
-        let saveItem = DispatchWorkItem { [weak self] in
+        fileQueue.async { [weak self] in
             orderedImage.url = self?.fileHandler.saveImage(image, named: UUID().uuidString)
         }
-        fileActions.append(saveItem)
-        
-        fileQueue.async(execute: saveItem)
     }
     
     func removeImage(withIdentifier identifier: String) {
@@ -61,12 +57,9 @@ class ImagesDataStorage: NSObject {
         
         guard let url = image.url else { return }
         
-        let deleteItem = DispatchWorkItem { [weak self] in
+        fileQueue.async { [weak self] in
             self?.fileHandler.deleteImage(at: url)
         }
-        fileActions.append(deleteItem)
-        
-        fileQueue.async(execute: deleteItem)
     }
     
     func containsImage(withIdentifier identifier: String) -> Bool {
@@ -86,7 +79,5 @@ class ImagesDataStorage: NSObject {
     
     func clear() {
         images.removeAll()
-        fileActions.forEach { $0.cancel() }
-        fileActions.removeAll()
     }
 }
