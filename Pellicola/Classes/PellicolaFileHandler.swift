@@ -30,7 +30,8 @@ public final class PellicolaFileHandler: NSObject {
     public func saveImage(_ image: UIImage, named: String) -> URL? {
         guard let url = fileURL(forIdentifier: named), let imageData = image.pngData() else { return nil }
         do {
-            try createSubfoldersBeforeCreatingFile(at: url)
+            let subfolderUrl = url.deletingLastPathComponent()
+            try fileManager.createDirectory(at: subfolderUrl, withIntermediateDirectories: true, attributes: nil)
             try imageData.write(to: url, options: .atomic)
             return url
         } catch {
@@ -49,23 +50,5 @@ public final class PellicolaFileHandler: NSObject {
     
     private func fileURL(forIdentifier identifier: String) -> URL? {
         return cacheFolder?.appendingPathComponent(identifier + ".png")
-    }
-    
-    private func createSubfoldersBeforeCreatingFile(at url: URL) throws {
-        do {
-            let subfolderUrl = url.deletingLastPathComponent()
-            var subfolderExists = false
-            var isDirectory: ObjCBool = false
-            if fileManager.fileExists(atPath: subfolderUrl.path, isDirectory: &isDirectory) {
-                if isDirectory.boolValue {
-                    subfolderExists = true
-                }
-            }
-            if !subfolderExists {
-                try fileManager.createDirectory(at: subfolderUrl, withIntermediateDirectories: true, attributes: nil)
-            }
-        } catch {
-            throw error
-        }
     }
 }
