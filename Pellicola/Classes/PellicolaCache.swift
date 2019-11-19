@@ -10,7 +10,12 @@ import Foundation
 @objcMembers
 public final class PellicolaCache: NSObject {
     private let fileHandler = PellicolaFileHandler()
-    public var expirationDate = Date()
+    private let expirationDate: Date
+    
+    public init(expirationDate: Date) {
+        self.expirationDate = expirationDate
+        super.init()
+    }
     
     public func clear() {
         DispatchQueue.global(qos: .utility).async {
