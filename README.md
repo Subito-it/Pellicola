@@ -64,7 +64,11 @@ class ViewController: UIViewController {
         
         pellicolaPresenter = PellicolaPresenter(style: DefaultPellicolaStyle())
         
-        pellicolaPresenter.didSelectImages = { images in
+        pellicolaPresenter.didStartProcessingImages = {
+            print("Processing images")
+        }
+        
+        pellicolaPresenter.didFinishProcessingImages = { images in
             print("User selected \(images.count) images")
         }
         
