@@ -7,12 +7,19 @@
 
 import Foundation
 
+@objcMembers
 public final class PellicolaCache: NSObject {
     private let fileHandler = PellicolaFileHandler()
+    private let expirationDate: Date
     
-    @objc public func clear() {
+    public init(expirationDate: Date) {
+        self.expirationDate = expirationDate
+        super.init()
+    }
+    
+    public func clear() {
         DispatchQueue.global(qos: .utility).async {
-            self.fileHandler.deleteAllImages()
+            self.fileHandler.deleteImages(olderThan: self.expirationDate)
         }
     }
 }

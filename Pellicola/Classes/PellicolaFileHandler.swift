@@ -43,9 +43,21 @@ public final class PellicolaFileHandler: NSObject {
         try? fileManager.removeItem(at: url)
     }
     
-    public func deleteAllImages() {
-        guard let cacheFolder = cacheFolder else { return }
-        try? fileManager.removeItem(at: cacheFolder)
+    public func deleteImages(olderThan expirationDate: Date = Date()) {
+        guard let cacheFolder = cacheFolder,
+            let fileUrls = try? fileManager.contentsOfDirectory(at: cacheFolder, includingPropertiesForKeys: nil, options: [])
+            else { return }
+        
+        let expiredImages = fileUrls.filter { file in
+            guard let attributes = try? fileManager.attributesOfItem(atPath: file.path) as NSDictionary,
+                let creationDate = attributes.fileModificationDate() else {
+                    return false
+            }
+            
+            return expirationDate > creationDate
+        }
+        
+        expiredImages.forEach { try? fileManager.removeItem(at: $0) }
     }
     
     private func fileURL(forIdentifier identifier: String) -> URL? {
