@@ -23,6 +23,7 @@ public final class PellicolaPresenter: NSObject {
     @objc public var didFinishProcessingImages: (([URL]) -> Void)?
     @objc public var userDidCancel: (() -> Void)?
     @objc public var imageSize: CGSize = PHImageManagerMaximumSize
+    private var minImageSizeToShow: CGSize = CGSize.zero
     
     private lazy var navigationController: PellicolaNavigationController = {
         return PellicolaNavigationController()
@@ -61,6 +62,11 @@ public final class PellicolaPresenter: NSObject {
     @objc public init(style: PellicolaStyleProtocol) {
         self.style = style
         super.init()
+    }
+    
+    @objc(hideImagesSmallerThanSize:)
+    public func hideImagesSmallerThan(size: CGSize) {
+        self.minImageSizeToShow = size
     }
     
     /*
