@@ -9,6 +9,7 @@ import Photos
 
 class AlbumData {
     let title: String
+    let minAssetSize: CGSize
     
     var photoCount: Int {
         return PHAsset.fetchImageAssets(in: assetCollection).count
@@ -21,8 +22,9 @@ class AlbumData {
         return PHAsset.fetchImageAssets(in: assetCollection).lastObject
     }
     
-    init(title: String, assetCollection: PHAssetCollection) {
+    init(title: String, assetCollection: PHAssetCollection, minAssetSize: CGSize = CGSize.zero) {
         self.title = title
         self.assetCollection = assetCollection
+        self.minAssetSize = minAssetSize
     }
 }
