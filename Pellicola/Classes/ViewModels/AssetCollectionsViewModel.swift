@@ -89,7 +89,7 @@ class AssetCollectionsViewModel: NSObject {
     // MARK: Album Data creation
     
     private func albumData(fromAssetCollection assetCollection: PHAssetCollection) -> AlbumData {
-        let albumData = AlbumData(title: assetCollection.localizedTitle ?? "", assetCollection: assetCollection)
+        let albumData = AlbumData(title: assetCollection.localizedTitle ?? "", assetCollection: assetCollection, minAssetSize: minAssetSize)
         return albumData
     }
     
