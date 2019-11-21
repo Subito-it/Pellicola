@@ -142,6 +142,7 @@ public final class PellicolaPresenter: NSObject {
                                                   imagesDataFetcher: imagesDataFetcher,
                                                   albumType: albumType,
                                                   secondLevelAlbumType: secondLevelType)
+        viewModel.minAssetSize = minImageSizeToShow
         
         let leftBarButtonType: AssetCollectionsViewController.LeftBarButtonType = isRootLevel ? .dismiss : .back
         let assetCollectionsVC = AssetCollectionsViewController(viewModel: viewModel, style: style, leftBarButtonType: leftBarButtonType)

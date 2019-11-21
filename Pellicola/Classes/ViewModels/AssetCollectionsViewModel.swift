@@ -41,6 +41,8 @@ class AssetCollectionsViewModel: NSObject {
         return imagesDataFetcher.count != 0
     }
     
+    var minAssetSize: CGSize = CGSize.zero
+    
     init(imagesDataStorage: ImagesDataStorage,
          imagesDataFetcher: ImagesDataFetcher,
          albumType: AlbumType,
