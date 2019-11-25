@@ -41,6 +41,8 @@ class AssetCollectionsViewModel: NSObject {
         return imagesDataFetcher.count != 0
     }
     
+    var minAssetSize: CGSize = CGSize.zero
+    
     init(imagesDataStorage: ImagesDataStorage,
          imagesDataFetcher: ImagesDataFetcher,
          albumType: AlbumType,
@@ -87,7 +89,7 @@ class AssetCollectionsViewModel: NSObject {
     // MARK: Album Data creation
     
     private func albumData(fromAssetCollection assetCollection: PHAssetCollection) -> AlbumData {
-        let albumData = AlbumData(title: assetCollection.localizedTitle ?? "", assetCollection: assetCollection)
+        let albumData = AlbumData(title: assetCollection.localizedTitle ?? "", assetCollection: assetCollection, minAssetSize: minAssetSize)
         return albumData
     }
     

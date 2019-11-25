@@ -9,20 +9,27 @@ import Photos
 
 class AlbumData {
     let title: String
-    
-    var photoCount: Int {
-        return PHAsset.fetchImageAssets(in: assetCollection).count
-    }
+    let assetCollection: PHAssetCollection
+    let minAssetSize: CGSize
     
     var thumbnail: UIImage?
-    let assetCollection: PHAssetCollection
     
-    var thumbnailAsset: PHAsset? {
-        return PHAsset.fetchImageAssets(in: assetCollection).lastObject
+    private(set) lazy var assets: PHFetchResult<PHAsset> = {
+        let result = PHAsset.fetchImageAssets(in: assetCollection, largerThan: minAssetSize)
+        return result
+    }()
+    
+    var photoCount: Int {
+        return assets.count
     }
     
-    init(title: String, assetCollection: PHAssetCollection) {
+    var thumbnailAsset: PHAsset? {
+        return assets.lastObject
+    }
+    
+    init(title: String, assetCollection: PHAssetCollection, minAssetSize: CGSize = CGSize.zero) {
         self.title = title
         self.assetCollection = assetCollection
+        self.minAssetSize = minAssetSize
     }
 }

@@ -50,7 +50,7 @@ class AssetsViewModel: NSObject {
         self.imagesDataFetcher = imagesDataFetcher
     
         assetCollectionName = albumData.assetCollection.localizedTitle
-        assets = PHAsset.fetchImageAssets(in: albumData.assetCollection)
+        assets = albumData.assets
     
         super.init()
         
